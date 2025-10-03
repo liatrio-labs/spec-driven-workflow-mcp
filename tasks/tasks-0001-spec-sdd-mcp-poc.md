@@ -2,24 +2,26 @@
 
 ## Relevant Files
 
-- `mcp_server/__init__.py` - FastMCP application factory and transport wiring.
-- `mcp_server/config.py` - Runtime configuration (workspace root, transport options, logging).
-- `mcp_server/prompts_loader.py` - Dynamic loader for Markdown prompts in `prompts/`.
-- `mcp_server/resources.py` - Resource and ResourceTemplate definitions surfacing docs and workspace artifacts.
-- `mcp_server/tools.py` - Helper tools (listing artifacts, creating stubs, summarizing diffs).
-- `mcp_server/notifications.py` - Notification dispatch helpers for artifact events.
-- `mcp_server/sampling.py` - Sampling orchestration utilities for delegated LLM content.
-- `mcp_server/logging.py` - Structured logging setup and metrics hooks.
-- `fastmcp.json` - Transport presets for STDIO and HTTP operation.
-- `Dockerfile` - Container image definition with `uv`/`uvx` entrypoints.
-- `kustomize/overlays/dev/kustomization.yaml` - Dev overlay for Kubernetes deployment.
-- `kustomize/overlays/dev/deployment.yaml` - Deployment manifest with readiness probe and volume mounts.
-- `tests/conftest.py` - Pytest fixtures spinning up temporary workspace directories.
-- `tests/test_prompts.py` - Tests covering prompt registration and `_meta` tagging.
-- `tests/test_resources.py` - Tests exercising resources and resource templates.
-- `tests/test_tools_protocol.py` - Tests covering helper tools, notifications, and sampling flows.
-- `docs/operations.md` - Operator documentation for transports, configs, and MCP clients.
-- `docs/workspace-examples/` - Sample generated specs/task lists demonstrating round-trip workflow.
+- `mcp_server/__init__.py` - FastMCP application factory and transport wiring (CREATED)
+- `mcp_server/config.py` - Runtime configuration (workspace root, transport options, logging) (CREATED)
+- `mcp_server/prompts_loader.py` - Dynamic loader for Markdown prompts in `prompts/` (CREATED)
+- `mcp_server/resources.py` - Resource and ResourceTemplate definitions surfacing docs and workspace artifacts (TODO)
+- `mcp_server/tools.py` - Helper tools (listing artifacts, creating stubs, summarizing diffs) (TODO)
+- `mcp_server/notifications.py` - Notification dispatch helpers for artifact events (TODO)
+- `mcp_server/sampling.py` - Sampling orchestration utilities for delegated LLM content (TODO)
+- `mcp_server/logging.py` - Structured logging setup and metrics hooks (TODO)
+- `fastmcp.json` - Transport presets for STDIO and HTTP operation (TODO)
+- `Dockerfile` - Container image definition with `uv`/`uvx` entrypoints (TODO)
+- `kustomize/overlays/dev/kustomization.yaml` - Dev overlay for Kubernetes deployment (TODO)
+- `kustomize/overlays/dev/deployment.yaml` - Deployment manifest with readiness probe and volume mounts (TODO)
+- `tests/conftest.py` - Pytest fixtures spinning up temporary workspace directories (CREATED)
+- `tests/test_prompts.py` - Tests covering prompt registration and `_meta` tagging (CREATED)
+- `tests/test_resources.py` - Tests exercising resources and resource templates (TODO)
+- `tests/test_tools_protocol.py` - Tests covering helper tools, notifications, and sampling flows (TODO)
+- `docs/operations.md` - Operator documentation for transports, configs, and MCP clients (CREATED)
+- `docs/workspace-examples/` - Sample generated specs/task lists demonstrating round-trip workflow (TODO)
+- `README.md` - Project overview and quick start guide (UPDATED)
+- `pyproject.toml` - Project configuration and dependencies (UPDATED)
 
 ### Notes
 
@@ -33,7 +35,7 @@
 
 ## Tasks
 
-- [~] 1.0 Establish FastMCP server foundation
+- [x] 1.0 Establish FastMCP server foundation
   - Demo Criteria: Run `uvx fastmcp run mcp_server:app` for STDIO and `fastmcp run --transport http --port 8000` so Inspector lists prompts/resources/tools.
   - Proof Artifact(s): Terminal recording of both transports; Inspector screenshot capturing catalog entries with `_meta` tags.
   - [x] 1.1 Define package layout (`mcp_server/`, `tests/`, `docs/`) and configure `pyproject.toml` pinning FastMCP plus dev dependencies.
