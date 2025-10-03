@@ -33,14 +33,14 @@
 
 ## Tasks
 
-- [ ] 1.0 Establish FastMCP server foundation
+- [~] 1.0 Establish FastMCP server foundation
   - Demo Criteria: Run `uvx fastmcp run mcp_server:app` for STDIO and `fastmcp run --transport http --port 8000` so Inspector lists prompts/resources/tools.
   - Proof Artifact(s): Terminal recording of both transports; Inspector screenshot capturing catalog entries with `_meta` tags.
-  - [ ] 1.1 Define package layout (`mcp_server/`, `tests/`, `docs/`) and configure `pyproject.toml` pinning FastMCP plus dev dependencies.
-  - [ ] 1.2 Implement `mcp_server/config.py` for workspace paths, transports, logging, and environment overrides with testable defaults.
-  - [ ] 1.3 Build `mcp_server/prompts_loader.py` to ingest Markdown prompts with `_meta` tagging and expose them via FastMCP prompts API.
-  - [ ] 1.4 Scaffold `mcp_server/__init__.py` application factory registering prompts, resources, tools, notifications, and sampling stubs.
-  - [ ] 1.5 Create initial pytest fixtures and failing tests (`tests/test_prompts.py`) exercising prompt registration to drive TDD cycle.
+  - [x] 1.1 Define package layout (`mcp_server/`, `tests/`, `docs/`) and configure `pyproject.toml` pinning FastMCP plus dev dependencies.
+  - [x] 1.2 Implement `mcp_server/config.py` for workspace paths, transports, logging, and environment overrides with testable defaults.
+  - [x] 1.3 Build `mcp_server/prompts_loader.py` to ingest Markdown prompts with `_meta` tagging and expose them via FastMCP prompts API.
+  - [x] 1.4 Scaffold `mcp_server/__init__.py` application factory registering prompts, resources, tools, notifications, and sampling stubs.
+  - [x] 1.5 Create initial pytest fixtures and failing tests (`tests/test_prompts.py`) exercising prompt registration to drive TDD cycle.
   - [ ] 1.6 Document local execution workflow in `README.md` and `docs/operations.md`, including STDIO vs HTTP invocation examples.
 
 - [ ] 2.0 Deliver end-to-end SDD round trip via MCP
