@@ -12,11 +12,11 @@ The MCP is driven by basic Markdown files that function as prompts for the AI ag
 
 ## Goals
 
-- **Ubiquitous:** Can be used anywhere an AI agent is used as a collaborator.
 - **Simple:** Easy to use and understand with transparent access to the underlying tools and processes.
+- **Ubiquitous:** Can be used anywhere an AI agent is used as a collaborator.
+- **Reliable:** Reliable and can be trusted to deliver consistent results.
 - **Flexible:** Can be used with any AI tool and AI model inside any workflow.
 - **Scalable:** Can be used with any size of project.
-- **Reliable:** Reliable and can be trusted to deliver consistent results.
 
 Future functionality will include:
 
