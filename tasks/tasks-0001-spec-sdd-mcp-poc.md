@@ -41,7 +41,7 @@
   - [x] 1.3 Build `mcp_server/prompts_loader.py` to ingest Markdown prompts with `_meta` tagging and expose them via FastMCP prompts API.
   - [x] 1.4 Scaffold `mcp_server/__init__.py` application factory registering prompts, resources, tools, notifications, and sampling stubs.
   - [x] 1.5 Create initial pytest fixtures and failing tests (`tests/test_prompts.py`) exercising prompt registration to drive TDD cycle.
-  - [ ] 1.6 Document local execution workflow in `README.md` and `docs/operations.md`, including STDIO vs HTTP invocation examples.
+  - [x] 1.6 Document local execution workflow in `README.md` and `docs/operations.md`, including STDIO vs HTTP invocation examples.
 
 - [ ] 2.0 Deliver end-to-end SDD round trip via MCP
   - Demo Criteria: Invoke `generate-spec`, `generate-task-list-from-spec`, and `manage-tasks` prompts through MCP to create artifacts inside a mounted workspace.
