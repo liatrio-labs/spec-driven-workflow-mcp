@@ -46,38 +46,44 @@
   - [x] 1.5 Create initial pytest fixtures and failing tests (`tests/test_prompts.py`) exercising prompt registration to drive TDD cycle.
   - [x] 1.6 Document local execution workflow in `README.md` and `docs/operations.md`, including STDIO vs HTTP invocation examples.
 
-- [~] 2.0 Deliver end-to-end SDD round trip via MCP
+> NOTE: Task 2 was deemed unnecessary. The ResourceTemplates functionality is not required and would over-complicate the tool
+
+- [!] 2.0 Deliver end-to-end SDD round trip via MCP
   - Demo Criteria: Invoke `generate-spec`, `generate-task-list-from-spec`, and `manage-tasks` prompts through MCP to create artifacts inside a mounted workspace.
   - Proof Artifact(s): Sample spec and task list files under `/workspace/sdd/`; execution transcript or Markdown log of the workflow.
-  - [~] 2.1 Implement workspace ResourceTemplates mapping spec/task artifacts under configurable root while excluding repo `tasks/`.
-  - [ ] 2.2 Add helper tool(s) enabling artifact creation/listing tied to user workspace, ensuring idempotent operations.
-  - [ ] 2.3 Execute TDD loop for `tests/test_resources.py` covering resource/template discovery and workspace isolation.
-  - [ ] 2.4 Capture demo workspace examples (`docs/workspace-examples/`) generated entirely via MCP interactions.
-  - [ ] 2.5 Update documentation describing the round-trip flow and how to mount external workspaces during runs.
+  - [!] 2.1 Implement workspace ResourceTemplates mapping spec/task artifacts under configurable root while excluding repo `tasks/`.
+  - [!] 2.2 Add helper tool(s) enabling artifact creation/listing tied to user workspace, ensuring idempotent operations.
+  - [!] 2.3 Execute TDD loop for `tests/test_resources.py` covering resource/template discovery and workspace isolation.
+  - [!] 2.4 Capture demo workspace examples (`docs/workspace-examples/`) generated entirely via MCP interactions.
+  - [!] 2.5 Update documentation describing the round-trip flow and how to mount external workspaces during runs.
 
-- [ ] 3.0 Validate remote MCP client integration
+- [x] 3.0 Validate remote MCP client integration
   - Demo Criteria: Connect a secondary MCP-aware client (e.g., Claude Desktop) over HTTP to trigger prompts and tools successfully.
+    - this has been fully tested with multiple clients (Claude Code, Windsurf, VS Code, Codex, Gemini CLI, etc.)
   - Proof Artifact(s): Connection configuration snippet and client-side screenshot/log showing prompt execution results.
-  - [ ] 3.1 Harden HTTP transport configuration (CORS headers, host/port envs) in `fastmcp.json` and `mcp_server/config.py`.
-  - [ ] 3.2 Draft client onboarding instructions in `docs/operations.md` for FastMCP Inspector, Claude Desktop, and VS Code MCP plugin.
-  - [ ] 3.3 Record validated client session (screenshots/logs) invoking prompts/resources via HTTP endpoint.
-  - [ ] 3.4 Add integration test (async) using `fastmcp.Client` to call prompts over HTTP within pytest suite.
+  - [!] 3.1 Harden HTTP transport configuration (CORS headers, host/port envs) in `fastmcp.json` and `mcp_server/config.py`.
+    - Deferred to [issue #3](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/3)
+  - [x] 3.2 Draft client onboarding instructions in `docs/operations.md` for FastMCP Inspector, Claude Desktop, and VS Code MCP plugin.
+  - [x] 3.3 Record validated client session (screenshots/logs) invoking prompts/resources via HTTP endpoint.
+  - [x] 3.4 Add integration test (async) using `fastmcp.Client` to call prompts over HTTP within pytest suite.
 
-- [ ] 4.0 Package and deploy for Kubernetes
+- [!] 4.0 Package and deploy for Kubernetes
   - Demo Criteria: Build Docker image, apply Kustomize overlay to deploy in a test cluster, and verify `/mcp/health` readiness plus metrics endpoints.
   - Proof Artifact(s): Docker build log, rendered Kubernetes manifest, and `kubectl` output confirming pod readiness.
-  - [ ] 4.1 Author Dockerfile leveraging `uv` for dependency sync and multi-stage build with non-root runtime user.
-  - [ ] 4.2 Provide container entrypoints/scripts (`uvx fastmcp run`) supporting both STDIO and HTTP configurations.
-  - [ ] 4.3 Create base and overlay Kustomize manifests defining config maps, secrets placeholders, volume mounts, and readiness probes.
-  - [ ] 4.4 Document Kubernetes deployment process and environment variables in `docs/operations.md` including sample manifests.
-  - [ ] 4.5 Run deployment smoke test (kind or remote cluster) capturing `kubectl` outputs and `/mcp/health` check results.
+  - Deferred to [issue #4](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/4)
+  - [!] 4.1 Author Dockerfile leveraging `uv` for dependency sync and multi-stage build with non-root runtime user.
+  - [!] 4.2 Provide container entrypoints/scripts (`uvx fastmcp run`) supporting both STDIO and HTTP configurations.
+  - [!] 4.3 Create base and overlay Kustomize manifests defining config maps, secrets placeholders, volume mounts, and readiness probes.
+  - [!] 4.4 Document Kubernetes deployment process and environment variables in `docs/operations.md` including sample manifests.
+  - [!] 4.5 Run deployment smoke test (kind or remote cluster) capturing `kubectl` outputs and `/mcp/health` check results.
 
-- [ ] 5.0 Showcase protocol extensions and observability
+- [!] 5.0 Showcase protocol extensions and observability
   - Demo Criteria: Trigger helper tools, emit notifications on new artifacts, exercise sampling request flow, and capture structured logs/metrics.
   - Proof Artifact(s): Test run outputs covering tools/notifications/sampling; log excerpts illustrating structured events and metrics export.
-  - [ ] 5.1 Implement `mcp_server/tools.py` helper tools (list artifacts, create spec stub, summarize diff) with corresponding FastMCP decorators.
-  - [ ] 5.2 Build notification broadcaster (`mcp_server/notifications.py`) emitting events on workspace file creation with hooks into FastMCP emitter.
-  - [ ] 5.3 Implement sampling orchestrator (`mcp_server/sampling.py`) requesting client-generated summaries and handling responses.
-  - [ ] 5.4 Add structured logging/metrics setup (`mcp_server/logging.py`) and expose `/mcp/health` readiness route.
-  - [ ] 5.5 Drive TDD cycle for `tests/test_tools_protocol.py` validating tools, notifications, sampling, and logging signals.
-  - [ ] 5.6 Capture observability outputs (logs, metrics sample) and summarize guidance in `docs/operations.md`.
+  - Deferred to [issue #5](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/5)
+  - [!] 5.1 Implement `mcp_server/tools.py` helper tools (list artifacts, create spec stub, summarize diff) with corresponding FastMCP decorators.
+  - [!] 5.2 Build notification broadcaster (`mcp_server/notifications.py`) emitting events on workspace file creation with hooks into FastMCP emitter.
+  - [!] 5.3 Implement sampling orchestrator (`mcp_server/sampling.py`) requesting client-generated summaries and handling responses.
+  - [!] 5.4 Add structured logging/metrics setup (`mcp_server/logging.py`) and expose `/mcp/health` readiness route.
+  - [!] 5.5 Drive TDD cycle for `tests/test_tools_protocol.py` validating tools, notifications, sampling, and logging signals.
+  - [!] 5.6 Capture observability outputs (logs, metrics sample) and summarize guidance in `docs/operations.md`.

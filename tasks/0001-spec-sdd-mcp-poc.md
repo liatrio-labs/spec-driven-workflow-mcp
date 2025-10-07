@@ -38,18 +38,21 @@ Deliver a FastMCP-based server that exposes the existing Spec Driven Development
 - **Purpose & Users:** Validate consumption from a secondary MCP-aware client.
 - **Demo Criteria:** Configure an external MCP client (e.g., Claude Desktop, VS Code MCP plugin) to reach the server over HTTP and successfully invoke prompts.
 - **Proof Artifact(s):** Connection configuration snippet; client-side screenshot/log showing prompt execution.
+- **Status:** HTTP transport hardening deferred to [issue #3](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/3) for focused implementation (CORS, host/port configuration).
 
 ### Slice 4 – Deployable packaging
 
 - **Purpose & Users:** Provide operational packaging for platform engineers.
 - **Demo Criteria:** Build container image locally, apply Kustomize overlay to deploy in a test cluster, and confirm `/mcp` endpoint readiness probe succeeds.
 - **Proof Artifact(s):** Docker build log, Kubernetes deployment manifest, `kubectl` output validating pod readiness.
+- **Status:** Packaging and Kubernetes deployment deferred to [issue #4](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/4).
 
 ### Slice 5 – Protocol extensions showcase
 
 - **Purpose & Users:** Demonstrate FastMCP-specific protocol capabilities that enrich the SDD workflow for engineers and AI assistants.
 - **Demo Criteria:** Trigger a sampling request from the server (e.g., prompt the client LLM to draft a spec summary) and emit a notification when new artifacts land in `/tasks/`; verify both in the Inspector or alternate client.
 - **Proof Artifact(s):** Recorded interaction showing sampling exchange, notification payload captured via client logs.
+- **Status:** Protocol extensions and observability deferred to [issue #5](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/5).
 
 ## Functional Requirements
 
