@@ -31,13 +31,13 @@ This guide covers deployment, configuration, and operation of the Spec-Driven De
 The STDIO transport is ideal for local development and integration with MCP clients like Claude Desktop:
 
 ```bash
-uvx fastmcp run mcp_server:app
+uvx fastmcp run server.py
 ```
 
 Or using the development server with the MCP Inspector:
 
 ```bash
-uvx fastmcp dev mcp_server:app
+uvx fastmcp dev server.py
 ```
 
 This will start the server and open the MCP Inspector in your browser, allowing you to:
@@ -51,7 +51,7 @@ This will start the server and open the MCP Inspector in your browser, allowing 
 For remote access or integration with web-based clients:
 
 ```bash
-uvx fastmcp run mcp_server:app --transport http --port 8000
+uvx fastmcp run server.py --transport http --port 8000
 ```
 
 The server will be available at `http://localhost:8000`.
@@ -100,7 +100,7 @@ Add the following to your Claude Desktop configuration (`~/Library/Application S
   "mcpServers": {
     "spec-driven-development": {
       "command": "uvx",
-      "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/mcp_server:app"]
+      "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/server.py"]
     }
   }
 }
@@ -116,7 +116,7 @@ Add the following to your Claude Desktop configuration (`~/Library/Application S
      "mcp.servers": {
        "spec-driven-development": {
          "command": "uvx",
-         "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/mcp_server:app"]
+         "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/server.py"]
        }
      }
    }
@@ -127,7 +127,7 @@ Add the following to your Claude Desktop configuration (`~/Library/Application S
 The FastMCP Inspector provides a web-based interface for testing and debugging:
 
 ```bash
-uvx fastmcp dev mcp_server:app
+uvx fastmcp dev server.py
 ```
 
 This will:

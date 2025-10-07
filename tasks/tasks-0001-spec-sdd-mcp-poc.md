@@ -2,6 +2,7 @@
 
 ## Relevant Files
 
+- `server.py` - FastMCP server entrypoint (standard convention) (CREATED)
 - `mcp_server/__init__.py` - FastMCP application factory and transport wiring (CREATED)
 - `mcp_server/config.py` - Runtime configuration (workspace root, transport options, logging) (CREATED)
 - `mcp_server/prompts_loader.py` - Dynamic loader for Markdown prompts in `prompts/` (CREATED)
@@ -45,10 +46,10 @@
   - [x] 1.5 Create initial pytest fixtures and failing tests (`tests/test_prompts.py`) exercising prompt registration to drive TDD cycle.
   - [x] 1.6 Document local execution workflow in `README.md` and `docs/operations.md`, including STDIO vs HTTP invocation examples.
 
-- [ ] 2.0 Deliver end-to-end SDD round trip via MCP
+- [~] 2.0 Deliver end-to-end SDD round trip via MCP
   - Demo Criteria: Invoke `generate-spec`, `generate-task-list-from-spec`, and `manage-tasks` prompts through MCP to create artifacts inside a mounted workspace.
   - Proof Artifact(s): Sample spec and task list files under `/workspace/sdd/`; execution transcript or Markdown log of the workflow.
-  - [ ] 2.1 Implement workspace ResourceTemplates mapping spec/task artifacts under configurable root while excluding repo `tasks/`.
+  - [~] 2.1 Implement workspace ResourceTemplates mapping spec/task artifacts under configurable root while excluding repo `tasks/`.
   - [ ] 2.2 Add helper tool(s) enabling artifact creation/listing tied to user workspace, ensuring idempotent operations.
   - [ ] 2.3 Execute TDD loop for `tests/test_resources.py` covering resource/template discovery and workspace isolation.
   - [ ] 2.4 Capture demo workspace examples (`docs/workspace-examples/`) generated entirely via MCP interactions.

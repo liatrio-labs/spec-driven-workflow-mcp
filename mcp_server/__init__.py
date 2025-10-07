@@ -24,6 +24,12 @@ def create_app() -> FastMCP:
     # Load prompts from the prompts directory
     load_prompts_from_directory(mcp, config.prompts_dir)
 
+    @mcp.tool(name="basic-example", description="Return a static message for testing.")
+    def basic_example_tool() -> str:
+        """Basic example tool used to verify MCP tool registration."""
+
+        return "Basic example tool invoked successfully."
+
     # TODO: Register resources (Task 2.1)
     # TODO: Register tools (Task 5.1)
     # TODO: Setup notifications (Task 5.2)
