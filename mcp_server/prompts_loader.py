@@ -9,7 +9,7 @@ from typing import Any
 
 import yaml
 from fastmcp import FastMCP
-from mcp.types import PromptMessage
+from mcp.types import PromptMessage, TextContent
 
 
 def load_prompts_from_directory(mcp: FastMCP, prompts_dir: Path) -> None:
@@ -54,10 +54,7 @@ def _load_prompt_file(mcp: FastMCP, prompt_file: Path) -> None:
             return [
                 PromptMessage(
                     role="user",
-                    content={
-                        "type": "text",
-                        "text": prompt_body,
-                    },
+                    content=TextContent(type="text", text=prompt_body),
                 )
             ]
 
