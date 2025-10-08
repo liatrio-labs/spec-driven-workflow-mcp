@@ -1,5 +1,7 @@
 # Spec Driven Development (SDD) MCP
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 ## Why does this exist?
 
 This project provides a ubiquitous framework for spec driven development (SDD) that can be used anywhere an AI agent is used as a collaborator.
@@ -42,3 +44,8 @@ Future functionality will include:
 | AI Dev Tasks | Example of a basic SDD workflow using only markdown files. | <https://github.com/snarktank/ai-dev-tasks> |
 | AI Dev Tasks (customized) | A customized version of AI Dev Tasks | <https://github.com/liatrio/read-me/tree/main/damien-storm/ai-stuff#feature-development-flow> |
 | Spec Driven Workflow | Liatrio app that provides a unified development workflow system | <https://github.com/liatrio-labs/spec-driven-workflow> |
+
+## License
+
+This project is licensed under the Apache License, Version 2.0. See the
+[LICENSE](LICENSE) file for details.

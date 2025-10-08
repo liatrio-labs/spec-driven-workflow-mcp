@@ -16,14 +16,14 @@
 
 ## Tasks
 
-- [ ] 1.0 Add Apache 2.0 licensing artifacts
+- [~] 1.0 Add Apache 2.0 licensing artifacts
   - Demo Criteria: `LICENSE` present at repo root and referenced in README.
   - Proof Artifact(s): Files `LICENSE` and (optional) `NOTICE`; `git diff`.
-  - [ ] 1.1 Add official Apache 2.0 text to `LICENSE` at repo root
-  - [ ] 1.2 Add a license badge and License section reference in `README.md`
-  - [ ] 1.3 Cross-check `pyproject.toml` and `README.md` for correct license naming
-  - [ ] 1.4 Run linters: `pre-commit run --all-files` (markdownlint/ruff fixups)
-  - [ ] 1.5 Verify links render on GitHub (badge and License section)
+  - [x] 1.1 Add official Apache 2.0 text to `LICENSE` at repo root
+  - [x] 1.2 Add a license badge and License section reference in `README.md`
+  - [x] 1.3 Cross-check `pyproject.toml` and `README.md` for correct license naming
+  - [x] 1.4 Run linters: `pre-commit run --all-files` (markdownlint/ruff fixups)
+  - [x] 1.5 Verify links render on GitHub (badge and License section)
 
 - [ ] 2.0 Refresh README with visual asset and links
   - Demo Criteria: `README.md` includes an image (diagram/screenshot/banner), Apache 2.0 license mention, and links to `docs/operations.md` and `CONTRIBUTING.md`.

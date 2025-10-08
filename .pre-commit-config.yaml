@@ -36,4 +36,4 @@ repos:
           - "MD034"  # Bare URLs
           - "MD041"  # First line in file must be a top-level heading
           - "--"
-        exclude: "CHANGELOG.md"
+        exclude: "CHANGELOG.md|LICENSE"
