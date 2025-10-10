@@ -92,8 +92,8 @@ The server provides three core prompts for spec-driven development:
 
 ```bash
 # Clone the repository
-git clone https://github.com/liatrio/spec-driven-development-mcp.git
-cd spec-driven-development-mcp
+git clone https://github.com/liatrio-labs/spec-driven-workflow-mcp.git
+cd spec-driven-workflow-mcp
 
 # Install dependencies
 uv sync
