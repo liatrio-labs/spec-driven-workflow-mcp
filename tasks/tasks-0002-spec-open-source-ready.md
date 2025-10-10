@@ -43,14 +43,14 @@
   - [x] 3.4 Reference issue templates and `docs/operations.md`
   - [x] 3.5 Run `pre-commit run --all-files`
 
-- [ ] 4.0 Add GitHub Issue Templates
+- [x] 4.0 Add GitHub Issue Templates
   - Demo Criteria: Issue forms for bug, feature, and question collect summary, repro/context, environment (Python, OS), logs/output, and related prompt/task IDs; `config.yml` enforces usage and default labels.
   - Proof Artifact(s): `.github/ISSUE_TEMPLATE/{bug_report.yml,feature_request.yml,question.yml,config.yml}`; `git diff`.
-  - [ ] 4.1 Create `.github/ISSUE_TEMPLATE/bug_report.yml` with fields: Summary, Repro Steps, Expected, Actual, Logs/Output, Environment (OS, Python), Related Prompt/Task IDs
-  - [ ] 4.2 Create `.github/ISSUE_TEMPLATE/feature_request.yml` with fields: Problem, Desired Outcome, Acceptance Criteria, Affected Prompts/Workflows, Additional Context
-  - [ ] 4.3 Create `.github/ISSUE_TEMPLATE/question.yml` with fields: Context, Commands Run, Referenced Spec/Task IDs, What’s been tried
-  - [ ] 4.4 Add `.github/ISSUE_TEMPLATE/config.yml` with `blank_issues_disabled: true`, default labels, and optional contact links
-  - [ ] 4.5 Validate YAML (passes `check-yaml`), then run `pre-commit run --all-files`
+  - [x] 4.1 Create `.github/ISSUE_TEMPLATE/bug_report.yml` with fields: Summary, Repro Steps, Expected, Actual, Logs/Output, Environment (OS, Python), Related Prompt/Task IDs
+  - [x] 4.2 Create `.github/ISSUE_TEMPLATE/feature_request.yml` with fields: Problem, Desired Outcome, Acceptance Criteria, Affected Prompts/Workflows, Additional Context
+  - [x] 4.3 Create `.github/ISSUE_TEMPLATE/question.yml` with fields: Context, Commands Run, Referenced Spec/Task IDs, What’s been tried
+  - [x] 4.4 Add `.github/ISSUE_TEMPLATE/config.yml` with `blank_issues_disabled: true`, default labels, and optional contact links
+  - [x] 4.5 Validate YAML (passes `check-yaml`), then run `pre-commit run --all-files`
 
 - [ ] 5.0 Document SemVer expectations
   - Demo Criteria: README/CONTRIBUTING note clarifies semver is CI/CD-managed (no manual tagging), with conventional commits required.

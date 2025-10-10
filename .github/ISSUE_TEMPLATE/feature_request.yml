@@ -1,0 +1,58 @@
+name: Feature request
+description: Suggest an idea or enhancement with clear problem and acceptance criteria.
+labels:
+  - enhancement
+  - needs-triage
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a feature! Please describe the problem and the desired outcome.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem are you trying to solve? Why is it a problem?
+      placeholder: Describe the pain point or limitation
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired_outcome
+    attributes:
+      label: Desired Outcome
+      description: What should happen when this feature is implemented?
+      placeholder: Describe the ideal behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List concrete, testable criteria for success.
+      placeholder: |
+        - [ ] Given ..., when ..., then ...
+        - [ ] ...
+
+  - type: input
+    id: affected_prompts
+    attributes:
+      label: Affected Prompts/Workflows
+      description: Which prompts/workflows/spec tasks are impacted?
+      placeholder: e.g., manage-tasks; generate-spec; 0002/4.0
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-Submission Checks
+      options:
+        - label: I searched existing issues for duplicates
+          required: true
