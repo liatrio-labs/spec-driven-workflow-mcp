@@ -3,12 +3,83 @@ name = "spec-driven-development-mcp"
 version = "0.1.0"
 description = "A framework for spec driven development (SDD) that can be used anywhere an AI agent is used as a collaborator."
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "fastmcp>=2.12.4",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.0",
 ]
 
 [dependency-groups]
 dev = [
     "python-semantic-release>=10.4.1",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcp_server"]
+
+
+# --- Ruff (linter + formatter) ---
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+preview = true
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "I",   # import sorting
+  "B",   # flake8-bugbear
+  "UP",  # pyupgrade
+  "SIM", # flake8-simplify
+  "PL",  # Pylint-inspired
+  "RUF", # Ruff-specific
+]
+ignore = [
+  "PLR2004", # allow simple length comparisons without constants
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra"
+testpaths = ["tests"]
+
+# --- Semantic Release ---
+[tool.semantic_release]
+# Use annotated tags like v1.2.3
+tag_format = "v{version}"
+# Default commit parser (Angular/Conventional Commits)
+# Generate changelog and commit version bumps
+# Update the version field in pyproject.toml
+version_toml = ["pyproject.toml:project.version"]
+# Ensure uv.lock stays in sync with version changes and is committed
+# Run uv to refresh the lock file, then stage it so PSR includes it
+build_command = """
+    curl -LsSf https://astral.sh/uv/install.sh | sh -s
+    export PATH="$HOME/.local/bin:$PATH"
+    uv lock
+    git add uv.lock
+"""
+# Generate changelog and commit version bumps
+assets = ["uv.lock"]
+
+[tool.semantic_release.changelog]
+# Generate CHANGELOG.md in Markdown
+default_templates = { changelog_file = "CHANGELOG.md", output_format = "md" }
+
+[tool.semantic_release.branches]
+# Release from the main branch
+main = { match = "main" }

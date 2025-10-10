@@ -1,0 +1,7 @@
+issuer: https://token.actions.githubusercontent.com
+# subject pattern is defining what repo and branch is allowed to generate a token at the permission level set below
+subject_pattern: "repo:liatrio-labs/spec-driven-workflow-mcp:ref:refs/heads/main"
+
+permissions:
+  contents: write
+  packages: write

@@ -1,0 +1,56 @@
+name: Semantic Release
+
+on:
+  workflow_run:
+    workflows: ["Run tests and linting"]
+    branches: [main]
+    types: [completed]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  semantic-release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: semantic-release-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f # v1.0.0
+        id: octo-sts
+        with:
+          scope: ${{ github.repository }}
+          identity: main-semantic-release
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+
+      - name: Get GitHub App User ID
+        id: get-user-id
+        run: echo "user-id=$(gh api "/users/octo-sts[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+
+      - name: Configure git author
+        run: |
+          set -eox pipefail
+          git config --global user.name 'octo-sts[bot]'
+          git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+octo-sts[bot]@users.noreply.github.com'
+
+      - name: Use PAT for pushes to origin
+        run: |
+          git remote set-url origin \
+            https://x-access-token:${{ steps.octo-sts.outputs.token }}@github.com/${{ github.repository }}.git
+          # sanity check
+          git ls-remote --heads origin >/dev/null
+
+      - name: Semantic Release
+        uses: python-semantic-release/python-semantic-release@v10
+        with:
+          github_token: ${{ steps.octo-sts.outputs.token }}

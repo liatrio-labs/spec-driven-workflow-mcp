@@ -1,0 +1,54 @@
+name: Question
+description: Ask a question about usage, behavior, or development workflow.
+labels:
+  - question
+  - needs-triage
+title: "[Question]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your question! Please include context and what you have tried.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Background information, what you are trying to achieve, relevant details.
+    validations:
+      required: true
+
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands Run
+      description: Include exact commands and output where relevant (mask secrets).
+      render: shell
+
+  - type: input
+    id: spec_task_ids
+    attributes:
+      label: Referenced Spec/Task IDs
+      description: Any related Spec or Task IDs.
+      placeholder: e.g., 0002/4.3
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What's been tried
+      description: Steps or approaches attempted so far.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-Submission Checks
+      options:
+        - label: I searched existing issues and discussions
+          required: true

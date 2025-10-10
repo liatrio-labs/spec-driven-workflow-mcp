@@ -1,0 +1,49 @@
+fail_fast: false
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      -   id: check-yaml
+      -   id: end-of-file-fixer
+      -   id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.0
+    hooks:
+      - id: ruff-check
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: no-commit-to-branch
+        name: prevent commits to main
+        args: [--branch, main]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.45.0
+    hooks:
+      - id: markdownlint-fix
+        args:
+          - "--disable"
+          - "MD013"  # Line length
+          - "MD024"  # Duplicate headings
+          - "MD033"  # Inline HTML
+          - "MD034"  # Bare URLs
+          - "MD041"  # First line in file must be a top-level heading
+          - "--"
+        exclude: "CHANGELOG.md|LICENSE"
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.23.0
+    hooks:
+      - id: commitlint
+        name: lint commit message for Conventional Commits compliance
+        additional_dependencies:
+          - '@commitlint/config-conventional'
+        stages: [commit-msg]
+        args:
+          - "--extends=@commitlint/config-conventional"
