@@ -52,10 +52,10 @@
   - [x] 4.4 Add `.github/ISSUE_TEMPLATE/config.yml` with `blank_issues_disabled: true`, default labels, and optional contact links
   - [x] 4.5 Validate YAML (passes `check-yaml`), then run `pre-commit run --all-files`
 
-- [ ] 5.0 Document SemVer expectations
+- [x] 5.0 Document SemVer expectations
   - Demo Criteria: README/CONTRIBUTING note clarifies semver is CI/CD-managed (no manual tagging), with conventional commits required.
   - Proof Artifact(s): Updated section in `README.md` or `CONTRIBUTING.md`; `git diff`.
-  - [ ] 5.1 Add a section documenting CI-managed releases (semantic-release) and tag policy
-  - [ ] 5.2 Link to `python-semantic-release` and note CHANGELOG generation
-  - [ ] 5.3 Emphasize Conventional Commits as the contributor requirement
-  - [ ] 5.4 Run `pre-commit run --all-files`
+  - [x] 5.1 Add a section documenting CI-managed releases (semantic-release) and tag policy
+  - [x] 5.2 Link to `python-semantic-release` and note CHANGELOG generation
+  - [x] 5.3 Emphasize Conventional Commits as the contributor requirement
+  - [x] 5.4 Run `pre-commit run --all-files`
