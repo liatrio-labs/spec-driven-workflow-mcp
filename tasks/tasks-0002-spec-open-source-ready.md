@@ -34,14 +34,14 @@
   - [x] 2.4 Add a brief License section pointing to `LICENSE`
   - [x] 2.5 Run `pre-commit run --all-files` to satisfy markdownlint
 
-- [ ] 3.0 Add CONTRIBUTING.md
+- [x] 3.0 Add CONTRIBUTING.md
   - Demo Criteria: Contribution workflow documented (setup via `uv sync`, tests via `uv run pytest`, `pre-commit run`, branch/commit conventions, PR review process; Code of Conduct link/placeholder).
   - Proof Artifact(s): `CONTRIBUTING.md`; `git diff`.
-  - [ ] 3.1 Draft structure: Overview, Getting Started, Dev Setup, Style, Testing, Commits, PRs, Code of Conduct
-  - [ ] 3.2 Document environment setup: `uv sync`, `pre-commit install`, running hooks, `uv run pytest`
-  - [ ] 3.3 Define branch naming and Conventional Commits format with examples
-  - [ ] 3.4 Reference issue templates and `docs/operations.md`
-  - [ ] 3.5 Run `pre-commit run --all-files`
+  - [x] 3.1 Draft structure: Overview, Getting Started, Dev Setup, Style, Testing, Commits, PRs, Code of Conduct
+  - [x] 3.2 Document environment setup: `uv sync`, `pre-commit install`, running hooks, `uv run pytest`
+  - [x] 3.3 Define branch naming and Conventional Commits format with examples
+  - [x] 3.4 Reference issue templates and `docs/operations.md`
+  - [x] 3.5 Run `pre-commit run --all-files`
 
 - [ ] 4.0 Add GitHub Issue Templates
   - Demo Criteria: Issue forms for bug, feature, and question collect summary, repro/context, environment (Python, OS), logs/output, and related prompt/task IDs; `config.yml` enforces usage and default labels.
