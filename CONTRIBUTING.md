@@ -15,7 +15,7 @@ Please open an issue first for significant changes to discuss the approach.
 ## Getting Started
 
 1. Fork and clone the repository.
-2. Ensure you have Python 3.11+ and [`uv`](https://docs.astral.sh/uv/) installed.
+2. Ensure you have Python 3.12+ and [`uv`](https://docs.astral.sh/uv/) installed.
 3. Set up the development environment:
 
 ```bash
