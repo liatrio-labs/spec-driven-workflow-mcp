@@ -27,7 +27,13 @@ class Config:
         # Transport configuration
         self.transport: TransportType = os.getenv("SDD_TRANSPORT", "stdio")  # type: ignore
         self.http_host = os.getenv("SDD_HTTP_HOST", "0.0.0.0")
-        self.http_port = int(os.getenv("SDD_HTTP_PORT", "8000"))
+        port_str = os.getenv("SDD_HTTP_PORT", "8000")
+        try:
+            self.http_port = int(port_str)
+            if not 1 <= self.http_port <= 65535:
+                raise ValueError(f"Port must be between 1 and 65535, got {self.http_port}")
+        except ValueError as exc:
+            raise ValueError(f"Invalid SDD_HTTP_PORT value '{port_str}': {exc}") from exc
 
         # Logging configuration
         self.log_level = os.getenv("SDD_LOG_LEVEL", "INFO")
@@ -35,7 +41,11 @@ class Config:
 
         # CORS configuration for HTTP transport
         self.cors_enabled = os.getenv("SDD_CORS_ENABLED", "true").lower() == "true"
-        self.cors_origins = os.getenv("SDD_CORS_ORIGINS", "*").split(",")
+        self.cors_origins = [
+            origin.strip()
+            for origin in os.getenv("SDD_CORS_ORIGINS", "*").split(",")
+            if origin.strip()
+        ]
 
     def ensure_workspace_dirs(self) -> None:
         """Create workspace directories if they don't exist."""

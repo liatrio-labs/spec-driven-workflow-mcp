@@ -86,7 +86,7 @@ The server can be configured via environment variables:
 ```bash
 export SDD_WORKSPACE_ROOT=/home/user/workspace
 export SDD_LOG_LEVEL=DEBUG
-uvx fastmcp run mcp_server:app
+uvx fastmcp run server.py
 ```
 
 ## MCP Client Integration

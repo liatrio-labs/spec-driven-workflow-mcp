@@ -37,7 +37,3 @@ def create_app() -> FastMCP:
     # TODO: Setup logging (Task 5.4)
 
     return mcp
-
-
-# Create the global app instance
-app = create_app()
