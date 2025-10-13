@@ -31,26 +31,55 @@ def temp_prompts_dir():
     with tempfile.TemporaryDirectory() as tmpdir:
         prompts_dir = Path(tmpdir)
 
-        # Create test prompt files
-        (prompts_dir / "test-prompt.md").write_text(
+        (prompts_dir / "generate-spec.md").write_text(
             """---
-description: A test prompt
+name: generate-spec
+title: Generate Specification
+description: Generate a Specification (Spec) for a feature
+tags:
+  - planning
+  - specification
+arguments: []
+meta:
+  category: spec-development
 ---
 
-# Test Prompt
-
-This is a test prompt for testing purposes.
+# Generate Specification
 """
         )
 
-        (prompts_dir / "another-prompt.md").write_text(
+        (prompts_dir / "generate-task-list-from-spec.md").write_text(
             """---
-description: Another test prompt
+name: generate-task-list-from-spec
+title: Generate Task List From Spec
+description: Generate a task list from a Spec
+tags:
+  - planning
+  - tasks
+arguments: []
+meta:
+  category: spec-development
 ---
 
-# Another Prompt
+# Generate Task List
+"""
+        )
 
-This is another test prompt.
+        (prompts_dir / "manage-tasks.md").write_text(
+            """---
+name: manage-tasks
+title: Manage Tasks
+description: Guidelines for managing task lists and working on tasks/subtasks
+tags:
+  - execution
+  - tasks
+arguments: []
+meta:
+  category: task-management
+allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+---
+
+# Manage Tasks
 """
         )
 

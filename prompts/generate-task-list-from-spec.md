@@ -1,8 +1,17 @@
 ---
-description: generate a task list from a Spec
+name: generate-task-list-from-spec
+title: Generate Task List From Spec
+description: Generate a task list from a Spec
+tags:
+  - planning
+  - tasks
+arguments: []
+meta:
+  category: spec-development
+  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
-# Generating a Task List from a Spec
+## Generate Task List From Spec
 
 ## Goal
 

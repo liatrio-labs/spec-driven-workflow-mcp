@@ -1,8 +1,17 @@
 ---
-description: generate a Specification (Spec) for a feature
+name: generate-spec
+title: Generate Specification
+description: Generate a Specification (Spec) for a feature
+tags:
+  - planning
+  - specification
+arguments: []
+meta:
+  category: spec-development
+  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
-# Generating a Feature Specification (Spec)
+## Generate Specification
 
 ## Goal
 

@@ -7,7 +7,7 @@ spec-driven development workflows.
 from fastmcp import FastMCP
 
 from .config import config
-from .prompts_loader import load_prompts_from_directory
+from .prompts_loader import register_prompts
 
 __version__ = "0.1.0"
 
@@ -21,8 +21,8 @@ def create_app() -> FastMCP:
     # Initialize FastMCP server
     mcp = FastMCP(name="spec-driven-development-mcp")
 
-    # Load prompts from the prompts directory
-    load_prompts_from_directory(mcp, config.prompts_dir)
+    # Load prompts from the prompts directory and register them
+    register_prompts(mcp, config.prompts_dir)
 
     @mcp.tool(name="basic-example", description="Return a static message for testing.")
     def basic_example_tool() -> str:
