@@ -19,9 +19,7 @@ class Config:
     def __init__(self) -> None:
         """Initialize configuration with defaults and environment overrides."""
         # Workspace paths
-        self.workspace_root = Path(
-            os.getenv("SDD_WORKSPACE_ROOT", "/workspace")
-        ).resolve()
+        self.workspace_root = Path(os.getenv("SDD_WORKSPACE_ROOT", "/workspace")).resolve()
         self.prompts_dir = Path(
             os.getenv("SDD_PROMPTS_DIR", str(Path(__file__).parent.parent / "prompts"))
         ).resolve()
