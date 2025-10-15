@@ -1,6 +1,6 @@
 [project]
 name = "spec-driven-development-mcp"
-version = "1.0.0"
+version = "1.1.0"
 description = "A framework for spec driven development (SDD) that can be used anywhere an AI agent is used as a collaborator."
 readme = "README.md"
 license = { file = "LICENSE" }
