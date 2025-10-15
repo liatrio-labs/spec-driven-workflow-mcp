@@ -1,9 +1,17 @@
 ---
+name: manage-tasks
+title: Manage Tasks
 description: Guidelines for managing task lists and working on tasks/subtasks
+tags:
+  - execution
+  - tasks
+arguments: []
+meta:
+  category: task-management
 allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
-# Task List Management
+## Manage Tasks
 
 Guidelines for managing task lists in markdown files to track progress on completing a Spec
 
