@@ -1,0 +1,27 @@
+name: opencode-gpt-5-codex
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  opencode:
+    if: |
+      contains(github.event.comment.body, ' /oc-gpt-5-codex') ||
+      startsWith(github.event.comment.body, '/oc-gpt-5-codex') ||
+      contains(github.event.comment.body, ' /opencode-gpt-5-codex') ||
+      startsWith(github.event.comment.body, '/opencode-gpt-5-codex')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run opencode
+        uses: sst/opencode/github@latest
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY_FOR_OPENCODE }}
+        with:
+          model: openai/gpt-5-codex
