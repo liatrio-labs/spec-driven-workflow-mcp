@@ -2,6 +2,35 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-10-16)
+
+### Bug Fixes
+
+- Add newline at end of claude.yml
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+- Trigger on issue edited instead of assigned
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+### Chores
+
+- Remove automatic PR review workflow
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+### Features
+
+- Add timeout and concurrency controls to Claude workflow
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+- Restrict Claude workflow to authorized users only
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+### Refactoring
+
+- Simplify author association checks
+  ([`d03e86e`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/d03e86ea47de61a151830ed313426fd0cf3e356d))
+
+
 ## v1.1.0 (2025-10-15)
 
 ### Bug Fixes
