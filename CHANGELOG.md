@@ -2,6 +2,21 @@
 
 <!-- version list -->
 
+## v1.3.0 (2025-10-16)
+
+### Bug Fixes
+
+- Make entry point callable for console script
+  ([#10](https://github.com/liatrio-labs/spec-driven-workflow-mcp/pull/10),
+  [`17cffda`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/17cffdadda0f58046f7c6e84b2974c44070264ba))
+
+### Features
+
+- Add CLI entry point and include prompts in package
+  ([#10](https://github.com/liatrio-labs/spec-driven-workflow-mcp/pull/10),
+  [`17cffda`](https://github.com/liatrio-labs/spec-driven-workflow-mcp/commit/17cffdadda0f58046f7c6e84b2974c44070264ba))
+
+
 ## v1.2.0 (2025-10-16)
 
 ### Bug Fixes
