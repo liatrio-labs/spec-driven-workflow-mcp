@@ -34,7 +34,6 @@ def temp_prompts_dir():
         (prompts_dir / "generate-spec.md").write_text(
             """---
 name: generate-spec
-title: Generate Specification
 description: Generate a Specification (Spec) for a feature
 tags:
   - planning
@@ -51,7 +50,6 @@ meta:
         (prompts_dir / "generate-task-list-from-spec.md").write_text(
             """---
 name: generate-task-list-from-spec
-title: Generate Task List From Spec
 description: Generate a task list from a Spec
 tags:
   - planning
@@ -68,7 +66,6 @@ meta:
         (prompts_dir / "manage-tasks.md").write_text(
             """---
 name: manage-tasks
-title: Manage Tasks
 description: Guidelines for managing task lists and working on tasks/subtasks
 tags:
   - execution
@@ -76,7 +73,7 @@ tags:
 arguments: []
 meta:
   category: task-management
-allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
 # Manage Tasks
