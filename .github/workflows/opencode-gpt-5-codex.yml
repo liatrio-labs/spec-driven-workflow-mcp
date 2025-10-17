@@ -3,15 +3,41 @@ name: opencode-gpt-5-codex
 on:
   issue_comment:
     types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, edited]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   opencode:
+    timeout-minutes: 30 # to accomodate Codex's ability to run for extended periods
+    concurrency:
+      group: opencode-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: true
     if: |
-      contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
-      (contains(github.event.comment.body, ' /oc-gpt-5-codex') ||
-       startsWith(github.event.comment.body, '/oc-gpt-5-codex') ||
-       contains(github.event.comment.body, ' /opencode-gpt-5-codex') ||
-       startsWith(github.event.comment.body, '/opencode-gpt-5-codex'))
+      (
+        github.event_name == 'issue_comment' &&
+        contains(github.event.comment.body, '/oc-codex') &&
+        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) || (
+        github.event_name == 'pull_request_review_comment' &&
+        contains(github.event.comment.body, '/oc-codex') &&
+        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) || (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.body != null &&
+        contains(github.event.review.body, '/oc-codex') &&
+        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.review.author_association)
+      ) || (
+        github.event_name == 'issues' &&
+        (
+          (github.event.issue.body != null && contains(github.event.issue.body, '/oc-codex')) ||
+          contains(github.event.issue.title, '/oc-codex')
+        ) &&
+        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,6 +47,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run opencode
+        # They are moving fast at https://github.com/sst/opencode/releases, so pinning the version isn't practical yet. We'll keep it at `latest` for now and monitor the changes for a stable version. Latest version as of this writing is `v0.15.3`.
         uses: sst/opencode/github@latest
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY_FOR_OPENCODE }}
