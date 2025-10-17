@@ -1,8 +1,19 @@
-# Spec Driven Development Workflow
+<div align="center">
+    <img src="./misc/header.png" alt="Spec Driven Development header" width="400"/>
+    <h1>🧭 Spec Driven Development Workflow</h1>
+    <h3><em>Build predictable software with a repeatable AI-guided workflow.</em></h3>
+</div>
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+<p align="center">
+    <strong>Spec-driven development tools for collaborating with AI agents to deliver reliable outcomes.</strong>
+</p>
 
-<img alt="Spec Driven Development header" src="./misc/header.png" width="400">
+<p align="center">
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow-mcp?style=social" alt="GitHub stars"/></a>
+    <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
+</p>
 
 ## Why Spec Driven Development?
 
