@@ -12,7 +12,7 @@ on:
 
 jobs:
   opencode:
-    timeout-minutes: 30 # to accomodate Codex's ability to run for extended periods
+    timeout-minutes: 30 # to accommodate Codex's ability to run for extended periods
     concurrency:
       group: opencode-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
       cancel-in-progress: true
