@@ -1,6 +1,6 @@
 ---
 name: generate-spec
-description: Generate a Specification (Spec) for a feature
+description: "Generate a Specification (Spec) for a feature"
 tags:
   - planning
   - specification

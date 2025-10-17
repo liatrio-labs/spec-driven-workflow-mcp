@@ -19,7 +19,6 @@ class PromptArgumentSpec:
 class MarkdownPrompt:
     path: Path
     name: str
-    title: str | None
     description: str | None
     tags: set[str] | None
     meta: dict[str, Any] | None
@@ -29,8 +28,6 @@ class MarkdownPrompt:
 
     def decorator_kwargs(self) -> dict[str, Any]:
         kwargs: dict[str, Any] = {"name": self.name}
-        if self.title:
-            kwargs["title"] = self.title
         if self.description:
             kwargs["description"] = self.description
         if self.tags:
@@ -50,7 +47,6 @@ def load_markdown_prompt(path: Path) -> MarkdownPrompt:
     frontmatter, body = parse_frontmatter(content)
 
     name = frontmatter.get("name") or path.stem
-    title = frontmatter.get("title")
     description = frontmatter.get("description")
     tags = _ensure_tag_set(frontmatter.get("tags"))
     enabled = frontmatter.get("enabled", True)
@@ -62,7 +58,6 @@ def load_markdown_prompt(path: Path) -> MarkdownPrompt:
         if key
         not in {
             "name",
-            "title",
             "description",
             "tags",
             "arguments",
@@ -77,7 +72,6 @@ def load_markdown_prompt(path: Path) -> MarkdownPrompt:
     return MarkdownPrompt(
         path=path,
         name=name,
-        title=title,
         description=description,
         tags=tags,
         meta=meta,

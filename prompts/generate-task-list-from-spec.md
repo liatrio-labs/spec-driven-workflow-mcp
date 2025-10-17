@@ -1,7 +1,6 @@
 ---
 name: generate-task-list-from-spec
-title: Generate Task List From Spec
-description: Generate a task list from a Spec
+description: "Generate a task list from a Spec"
 tags:
   - planning
   - tasks
