@@ -1,14 +1,13 @@
 ---
 name: manage-tasks
-title: Manage Tasks
-description: Guidelines for managing task lists and working on tasks/subtasks
+description: "Guidelines for managing task lists and working on tasks/subtasks"
 tags:
   - execution
   - tasks
 arguments: []
 meta:
   category: task-management
-allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
 ## Manage Tasks
