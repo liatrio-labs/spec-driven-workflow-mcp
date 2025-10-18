@@ -2,6 +2,27 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-10-18)
+
+### Bug Fixes
+
+- Correct typo ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+### Features
+
+- Add opencode configuration ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+- **ci**: Enhance opencode workflow with comprehensive triggers
+  ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+- **ci**: Restrict opencode workflow to authorized users only
+  ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+
 ## v1.3.1 (2025-10-18)
 
 ### Bug Fixes
