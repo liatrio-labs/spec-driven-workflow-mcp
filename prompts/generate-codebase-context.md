@@ -77,7 +77,7 @@ Categorize every finding by confidence level:
   - Experimental or dormant code paths
   - Dead code that may no longer be used
 
-**Always flag Medium and Low confidence items for user validation in the analysis**
+### Always Flag Medium and Low Confidence Items for User Validation
 
 ## Process
 
@@ -139,7 +139,7 @@ Automatically detect and analyze:
    - f) Build/Deploy pipeline
    - g) Other: [specify]
 
-**⛔ STOP - Wait for answers before proceeding**
+### ⛔ STOP - Wait for Answers Before Proceeding
 
 ---
 
@@ -190,7 +190,7 @@ Find and catalog:
 
 **Present to user:** Summary of documentation found and any conflicts/gaps discovered. Ask for clarification if needed.
 
-**⛔ STOP - Wait for any needed clarifications**
+### ⛔ STOP - Wait for Any Needed Clarifications
 
 ---
 
@@ -328,7 +328,7 @@ Example:
 
 **Present findings:** Share code analysis summary with file:line citations and confidence levels.
 
-**⛔ STOP - Ask user to validate findings, especially Medium/Low confidence items**
+### ⛔ STOP - Ask User to Validate Findings, Especially Medium/Low Confidence Items
 
 ---
 
@@ -422,7 +422,7 @@ I found some gaps that need your input:
    - Question: Why was JWT selected? (This will help document the decision)
 ```
 
-**⛔ STOP - Wait for user answers**
+### ⛔ STOP - Wait for User Answers
 
 **Capture answers as direct quotes:**
 
