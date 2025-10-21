@@ -19,6 +19,50 @@ To guide an AI assistant in thoroughly analyzing and understanding a codebase's 
 
 **Core Principle:** Code explains WHAT the system does and HOW it's built. Documentation explains WHY choices were made. Users provide goals and intent. Keep these separate and clearly attributed.
 
+## AI Behavior Guidelines
+
+**Critical Rules for Execution:**
+
+- **Do not summarize without evidence:** Every claim must be backed by file:line citations or doc references
+- **Use citations before synthesis:** Gather evidence first, then draw conclusions
+- **When uncertain, explicitly state "Cannot confirm":** Better to flag unknowns than guess
+- **Never infer rationale (WHY) unless documented or confirmed by user:** Stay in your lane
+- **Ask 3-5 focused questions per round:** Not long questionnaires - short, conversational iteration
+- **Present findings incrementally:** Don't wait until the end - engage user throughout
+- **Flag Medium/Low confidence items immediately:** Users should validate uncertain findings early
+
+## Tool Usage by Phase
+
+This prompt requires specific tools for different analysis phases:
+
+- **Phase 1 (Repository Structure):**
+  - `Glob` - Enumerate files and directories, detect project structure
+  - `Read` - Inspect key configuration files (package.json, requirements.txt, etc.)
+
+- **Phase 2 (Documentation Audit):**
+  - `Glob` - Find documentation files (`**/*.md`, `**/docs/**`)
+  - `Read` - Extract content and metadata from docs
+  - `Grep` - Search for specific decision rationale or WHY statements
+
+- **Phase 3 (Code Analysis):**
+  - `Grep` - Search for patterns, imports, framework usage
+  - `Read` - Inspect specific files for WHAT and HOW
+  - `Glob` - Find related files (e.g., all controllers, all services)
+
+- **Phase 3.5 (Pattern Recognition):**
+  - `Grep` - Detect recurring patterns across files
+  - `Read` - Verify pattern implementation details
+
+- **Phase 4 (Integration Points):**
+  - `Grep` - Find API calls, database queries, external service usage
+  - `Read` - Understand integration implementation
+
+- **Phase 5 (Gaps & User Collaboration):**
+  - No tools - conversational phase with user
+
+- **Phase 6 (Document Generation):**
+  - `Write` - Create final analysis document
+
 ## Output
 
 - **Format:** Markdown (`.md`)
@@ -51,31 +95,51 @@ To guide an AI assistant in thoroughly analyzing and understanding a codebase's 
 
 Categorize every finding by confidence level:
 
-### High Confidence
+### High Confidence (🟢)
 
 - **Criteria:** Strong evidence from working code or explicit documentation
-- **Examples:**
+- **Automation Examples:**
+  - `Grep` confirms 3+ consistent code references across different files
+  - Feature exists in working code with traced execution path
+  - Technology explicitly listed in dependencies AND usage found in code
+  - Design decision documented in ADR with matching code implementation
+- **Manual Verification:**
   - Feature exists with traced working code path
-  - Technology explicitly listed in dependencies with usage found
-  - Design decision documented in ADR or architecture docs
+  - Explicit documentation with recent timestamps
+  - Active usage in production code (not commented out)
 
-### Medium Confidence (Needs Validation)
+### Medium Confidence (🟡 Needs Validation)
 
 - **Criteria:** Inferred from context, behind feature flags, or implied
-- **Examples:**
+- **Automation Examples:**
+  - Evidence only appears in code comments (not executable code)
+  - `Grep` finds 1-2 references only (limited usage)
+  - Pattern inferred from file structure but not explicitly implemented
+  - Dependency listed but no usage found in code
+- **Manual Verification:**
   - Feature toggle currently disabled (code exists but may not be active)
   - Pattern inferred from code structure (not explicitly documented)
-  - Technology mentioned in comments only
-  - Outdated documentation that may not reflect current code
+  - Outdated documentation (>6 months old) that may not reflect current code
 
-### Low Confidence (Unknown)
+### Low Confidence (🔴 Unknown)
 
 - **Criteria:** Cannot determine from available information
-- **Examples:**
+- **Automation Examples:**
+  - No code references found via `Grep`
+  - Conflicting dependency versions
+  - Files exist but appear unreferenced
+- **Manual Verification:**
   - Rationale missing from both docs and code
-  - Conflicting information between sources
+  - Conflicting information between sources (code vs. docs)
   - Experimental or dormant code paths
   - Dead code that may no longer be used
+
+**Automatic Confidence Rules:**
+
+- If `Grep/Glob` confirms ≥3 consistent references → Start with Medium, verify for High
+- If evidence only in comments → Maximum Medium Confidence
+- If no code references found → Start with Low Confidence
+- If docs are >6 months old without code confirmation → Maximum Medium Confidence
 
 ### Always Flag Medium and Low Confidence Items for User Validation
 
@@ -116,6 +180,25 @@ Automatically detect and analyze:
 4. **Directory Structure:**
    - Map high-level organization
    - Identify patterns (feature-based, layer-based, domain-driven)
+
+5. **Repository Size Assessment:**
+   - Count total files (use `Glob` with appropriate patterns)
+   - Estimate total lines of code (sample representative files)
+   - Check for large binary assets or dependencies
+
+#### Scoping Controls (Automatic)
+
+**If repository exceeds these thresholds, request narrowed scope:**
+
+- **>5,000 files:** "This repository has [N] files. To ensure focused analysis, please specify which components or directories to analyze."
+- **>100 MB of source code:** "This is a large codebase. Would you like me to focus on specific modules or services?"
+- **Multiple independent apps:** "I've detected [N] independent applications. Should I analyze all, or focus on specific ones?"
+
+**Scoping Options to Present:**
+
+- Option A: Full repository analysis (may take significant time)
+- Option B: Focus on specific directory/module (e.g., `src/auth/`, `packages/api/`)
+- Option C: Focus on specific functionality (e.g., "authentication flow", "payment processing")
 
 **Present to user:** "I've detected [structure type] with [key components]. Is this correct?"
 
@@ -332,6 +415,79 @@ Example:
 
 ---
 
+### Phase 3.5: Pattern Recognition & Architectural Philosophy
+
+**Goal:** Bridge raw analysis with system-level architectural understanding
+
+**Purpose:** This phase synthesizes code findings into architectural patterns and design philosophies that guide system evolution.
+
+#### Design Patterns Detection
+
+**Automatically detect and document recurring patterns:**
+
+1. **Structural Patterns:**
+   - Repository pattern (data access layer)
+   - Factory pattern (object creation)
+   - Singleton pattern (shared instances)
+   - Adapter pattern (interface translation)
+   - **Evidence Format:** "Repository pattern used (UserRepository.ts:23-45, ProductRepository.ts:34-67, OrderRepository.ts:45-89)"
+
+2. **Architectural Patterns:**
+   - CQRS (Command Query Responsibility Segregation)
+   - Event Sourcing
+   - Microservices communication patterns
+   - Layered architecture (presentation, business, data)
+   - **Evidence Format:** "CQRS pattern: Commands in commands/, Queries in queries/ (found 12 command handlers, 8 query handlers)"
+
+3. **Framework-Specific Conventions:**
+   - NestJS modules and providers
+   - Django apps structure
+   - Rails MVC conventions
+   - Spring Boot controllers and services
+   - **Evidence Format:** "NestJS module pattern: Each feature has .module.ts, .controller.ts, .service.ts (auth/, users/, products/)"
+
+#### Anti-Pattern Detection
+
+**Flag concerning patterns that may indicate technical debt:**
+
+1. **Cyclic Dependencies:**
+   - Use `Grep` to detect circular imports
+   - **Example:** "Potential cycle: AuthService imports UserService, UserService imports AuthService"
+   - **Confidence:** 🔴 Low if inferred, 🟢 High if confirmed via import analysis
+
+2. **Cross-Layer Violations:**
+   - Controllers directly accessing database
+   - Business logic in views/templates
+   - Data layer calling API layer
+   - **Example:** "Anti-pattern: Controller directly queries database (UserController.ts:45 has SQL query)"
+
+3. **God Objects / Large Classes:**
+   - Files exceeding 500 lines
+   - Classes with >10 public methods
+   - **Example:** "Large class warning: UserService.ts (847 lines, 23 public methods)"
+
+#### Architectural Philosophy Synthesis
+
+**Infer the system's architectural philosophy (with evidence):**
+
+- **Modularity Approach:**
+  - "Highly modular: Each feature isolated in packages/ (8 independent modules found)"
+  - "Monolithic: Shared state across src/ (no module boundaries detected)"
+
+- **Coupling Level:**
+  - "Loose coupling: Dependency injection used (12 constructors inject interfaces)"
+  - "Tight coupling: Direct instantiation pattern (14 files use 'new' keyword for dependencies)"
+
+- **Consistency:**
+  - "High consistency: 95% of files follow UserModule pattern"
+  - "Mixed patterns: 3 different controller patterns found (REST, GraphQL, gRPC)"
+
+**Present findings:** "I've identified [N] architectural patterns and [M] potential anti-patterns. Key philosophy appears to be [description]."
+
+### ⛔ STOP - User may want to discuss pattern findings before proceeding
+
+---
+
 ### Phase 4: Integration Points & Dependencies
 
 **Goal:** Understand how the system integrates with external systems
@@ -369,7 +525,68 @@ Example:
 - Event-driven patterns
 - WebSocket or real-time communication
 
-**Present findings:** Integration inventory with evidence.
+#### Crosscutting Concerns
+
+**Goal:** Analyze system-wide quality attributes that cut across all components
+
+These concerns are often overlooked but critical for understanding system maturity:
+
+1. **Logging & Observability:**
+   - Logging framework used (Winston, Log4j, Serilog, etc.)
+   - Log levels and structure (structured logging JSON, plain text)
+   - Distributed tracing (OpenTelemetry, Jaeger, Zipkin)
+   - Metrics collection (Prometheus, StatsD, custom)
+   - **Evidence:** `Grep` for logger imports/usage, configuration files
+   - **Example:** "Structured logging with Winston (src/config/logger.ts:12, used in 47 files)"
+
+2. **Error Handling & Resilience:**
+   - Global error handling strategy
+   - Retry mechanisms
+   - Circuit breaker patterns
+   - Graceful degradation
+   - **Evidence:** Error handler middleware, retry decorators, error classes
+   - **Example:** "Global error handler (src/middleware/errorHandler.ts:23), Retry decorator (src/decorators/retry.ts:12-45)"
+
+3. **Configuration Management:**
+   - Environment variables strategy (.env, config files)
+   - Secrets management (AWS Secrets Manager, HashiCorp Vault, etc.)
+   - Feature flags/toggles
+   - Multi-environment configuration (dev, staging, prod)
+   - **Evidence:** Config files, environment variable usage
+   - **Example:** "Config via dotenv (config/.env.example has 34 vars), no secrets manager detected"
+
+4. **Security Practices:**
+   - Authentication middleware (JWT, OAuth, session-based)
+   - Authorization patterns (RBAC, ABAC, ACL)
+   - Input validation (sanitization, schema validation)
+   - CORS configuration
+   - Rate limiting
+   - **Evidence:** Auth middleware, validators, security headers
+   - **Example:** "JWT auth middleware (src/middleware/auth.ts:23), Joi validation (src/validators/, 12 schemas)"
+
+5. **Performance & Caching:**
+   - Caching strategy (Redis, in-memory, CDN)
+   - Database query optimization
+   - Lazy loading patterns
+   - Pagination strategies
+   - **Evidence:** Cache imports, query patterns
+   - **Example:** "Redis caching layer (src/cache/redis.ts:12, used in 8 services)"
+
+6. **Testing Approach:**
+   - Test frameworks (Jest, PyTest, JUnit, etc.)
+   - Test coverage strategy
+   - Testing patterns (unit, integration, e2e)
+   - Mocking/stubbing approach
+   - **Evidence:** Test file structure, configuration files
+   - **Example:** "Jest with 73% coverage (jest.config.js, 234 test files in **/*.spec.ts)"
+
+**Confidence Assessment for Crosscutting Concerns:**
+
+- 🟢 High: Active implementation found with configuration and usage
+- 🟡 Medium: Partial implementation or inconsistent usage
+- 🔴 Low: Not implemented or unclear strategy
+
+**Present findings:** Crosscutting concerns summary with quality attribute assessment.
 
 ---
 
@@ -379,23 +596,50 @@ Example:
 
 #### Automated Gap Detection
 
-Compare code analysis vs. documentation to find:
+Compare code analysis vs. documentation to find gaps, then **prioritize them**:
+
+**Priority Levels:**
+
+- 🟥 **Critical:** Blocks new development or introduces significant risk
+- 🟧 **Important:** Should be resolved soon, impacts architectural decisions
+- 🟨 **Minor:** Cosmetic, informational, or low-impact
+
+**Gap Categories with Prioritization:**
 
 1. **Missing Rationale:**
    - Technologies used in code but no "why" in docs
    - Patterns implemented but no decision record
    - Architectural choices without explanation
+   - **Priority Assessment:**
+     - 🟥 Critical: Core authentication/security decisions undocumented
+     - 🟧 Important: Database choice, framework selection without rationale
+     - 🟨 Minor: Utility library choices, formatting tools
 
 2. **Conflicts:**
    - Code contradicts documentation
    - Diagrams show different structure than code
    - Comments claim one thing, code does another
+   - **Priority Assessment:**
+     - 🟥 Critical: Security/auth flows mismatch code vs docs
+     - 🟧 Important: API contracts differ from implementation
+     - 🟨 Minor: Outdated diagram with minor structural differences
 
 3. **Unknowns:**
    - Feature toggles (which are active?)
    - Experimental code (what's the status?)
    - Dead code (can it be removed?)
    - Performance requirements (what are the targets?)
+   - **Priority Assessment:**
+     - 🟥 Critical: Feature toggles blocking production features
+     - 🟧 Important: Experimental code in main execution paths
+     - 🟨 Minor: Old commented-out code, unused utilities
+
+**Prioritization Rules:**
+
+- If gap relates to **security, auth, or data integrity** → 🟥 Critical
+- If gap relates to **core business logic or API contracts** → 🟧 Important
+- If gap relates to **documentation quality or code cleanup** → 🟨 Minor
+- If gap **blocks spec development** → Escalate priority by one level
 
 #### User Questions (Focused, NOT Batch)
 
@@ -437,7 +681,51 @@ I found some gaps that need your input:
 
 **Goal:** Create complete, evidence-based codebase context document
 
+**Output Modes:**
+
+- **Full Analysis (Default):** Complete detailed document with all sections (~10-20 pages)
+- **Executive Summary Mode (Optional):** 2-page high-level summary first, then full details
+
+**To enable summary mode, user can request:** "Generate an executive summary first"
+
 #### Document Structure
+
+**If Executive Summary Mode requested, start with:**
+
+```markdown
+# Executive Summary: [Project Name]
+
+**Date:** YYYY-MM-DD | **Analysis Scope:** [Full/Partial] | **Analyst:** AI Assistant
+
+## Quick Facts
+- **Repository Type:** Monorepo with 8 packages
+- **Primary Language:** TypeScript (85%), Python (15%)
+- **Architecture:** Microservices with shared event bus
+- **Key Technologies:** NestJS, PostgreSQL, Redis, Docker
+- **Overall Maturity:** Production-ready with good test coverage (78%)
+
+## Strengths
+- ✅ Well-documented decision records (12 ADRs)
+- ✅ Consistent architectural patterns (Repository + CQRS)
+- ✅ Comprehensive testing strategy
+- ✅ Active logging and observability
+
+## Areas Needing Attention
+- ⚠️ Missing rationale for Redis vs. alternatives
+- ⚠️ Experimental features without clear roadmap
+- ⚠️ Some anti-patterns in legacy modules
+
+## Recommended Next Steps
+1. Document Redis decision in ADR
+2. Clarify status of experimental features
+3. Refactor legacy modules to match current patterns
+
+---
+
+**Full detailed analysis follows below...**
+```
+
+#### Full Analysis Structure
 
 ```markdown
 # Codebase Context: [Project Name]
@@ -460,6 +748,58 @@ I found some gaps that need your input:
 - **Frameworks:** [List with evidence]
 - **Databases:** [List with evidence]
 - **Infrastructure:** [Cloud provider, key services]
+
+### 1.3 Version Control & Evolution Patterns
+
+**Repository Health Indicators (if Git history available):**
+
+#### Commit Activity
+- **Total commits:** ~2,450 commits
+- **Active contributors:** 8 developers
+- **Commit frequency:** ~15 commits/week (healthy pace)
+- **Last major refactor:** 3 months ago
+
+#### Code Maturity Signals
+- **High-churn files** (volatility indicators):
+  - `src/api/routes/users.ts` - 47 commits (high change rate)
+  - `src/services/PaymentService.ts` - 34 commits (complex domain)
+  - Indicates these are core business logic areas under active development
+
+- **Stable core** (low-churn files):
+  - `src/db/migrations/` - 5 commits total (stable schema)
+  - `src/config/` - 8 commits (stable configuration)
+  - Indicates architectural foundation is mature
+
+#### Ownership Patterns
+- **Primary maintainers** (by commit count):
+  - alice@example.com: 45% of commits (backend focus)
+  - bob@example.com: 30% of commits (frontend focus)
+  - team@example.com: 15% (automated commits)
+
+- **Key service owners** (inferred from commit patterns):
+  - Auth system: alice@example.com (67% of auth/* commits)
+  - Payment system: charlie@example.com (80% of payment/* commits)
+  - Indicates domain ownership and expertise areas
+
+#### Architectural Evolution
+- **Major changes over time:**
+  - 12 months ago: Monolith → Started microservices migration
+  - 6 months ago: Added event-driven patterns (Redis pub/sub)
+  - 3 months ago: Migrated from REST to GraphQL for mobile API
+  - **Evidence:** Commit messages, file creation dates, refactoring commits
+
+- **Migration status:**
+  - 60% of services extracted from monolith
+  - 40% still in legacy monolith (src/legacy/)
+  - **Evidence:** Directory structure + commit history
+
+#### Technical Debt Indicators
+- **Files with highest churn + size:**
+  - Large + frequently changing = potential refactor targets
+  - Example: `src/services/OrderService.ts` (847 lines, 45 commits)
+  - Suggests this is a God Object that may need splitting
+
+**Confidence:** 🟡 Medium (depends on Git history availability)
 
 ---
 
