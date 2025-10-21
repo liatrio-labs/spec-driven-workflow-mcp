@@ -591,6 +591,7 @@ src/api/routes/users.ts:25 (HTTP endpoint)
 ```
 
 **Event-Driven (Async):**
+
 ```text
 
 PaymentService.processCharge() (src/services/PaymentService.ts:89)
@@ -603,15 +604,18 @@ PaymentService.processCharge() (src/services/PaymentService.ts:89)
 ### 4.3 Architectural Patterns
 
 #### 🟢 Layered Architecture
+
 - **Evidence:** Clear separation: API → Services → Repositories → Database
 - **Rationale:** [Not explicitly documented]
 - **[User stated: "Standard pattern for maintainability"]**
 
 #### 🟢 Dependency Injection
+
 - **Evidence:** Services injected via constructor (src/services/*.ts)
 - **Implementation:** Custom DI container (src/di/container.ts:12)
 
 #### 🟡 Event-Driven (Partial)
+
 - **Evidence:** Event bus exists (src/events/bus.ts)
 - **Usage:** Only for email notifications, not fully adopted
 - **[User confirmed: "Plan to expand event usage for audit logging"]**
@@ -621,11 +625,13 @@ PaymentService.processCharge() (src/services/PaymentService.ts:89)
 ## 5. Conventions & Standards
 
 ### 5.1 Code Style
+
 - **Linter:** ESLint (eslintrc.json) - Airbnb config
 - **Formatter:** Prettier (prettierrc.json)
 - **TypeScript:** Strict mode enabled (tsconfig.json:5)
 
 ### 5.2 Naming Conventions
+
 - **Files:** camelCase for TS/JS files (userService.ts)
 - **Components:** PascalCase for React (UserProfile.tsx)
 - **Functions:** camelCase (getUserById)
@@ -633,11 +639,13 @@ PaymentService.processCharge() (src/services/PaymentService.ts:89)
 - **Constants:** UPPER_SNAKE_CASE (MAX_RETRY_ATTEMPTS)
 
 ### 5.3 File Organization
+
 - **Pattern:** Layer-based (api/, services/, repositories/)
 - **Co-location:** Tests alongside source (userService.ts + userService.test.ts)
 - **Barrel exports:** index.ts files in each directory
 
 ### 5.4 Git Workflow
+
 - **Branching:** Feature branches (feature/*, bugfix/*)
 - **Commits:** Conventional Commits (feat:, fix:, docs:)
 - **PRs:** Required reviews, CI must pass
@@ -647,15 +655,18 @@ PaymentService.processCharge() (src/services/PaymentService.ts:89)
 ## 6. Testing Strategy
 
 ### 6.1 Frameworks
+
 - **Unit:** Jest (package.json:34)
 - **Integration:** Jest + Supertest (for API tests)
 - **E2E:** [None found]
 
 ### 6.2 Coverage
+
 - **Current:** ~75% (from jest.config.js coverage report)
 - **Target:** [User stated: "Aiming for 80%"]
 
 ### 6.3 Patterns
+
 - **Location:** Co-located (*.test.ts alongside source)
 - **Naming:** *.test.ts
 - **Run command:** `npm test`
@@ -665,16 +676,19 @@ PaymentService.processCharge() (src/services/PaymentService.ts:89)
 ## 7. Build & Deployment
 
 ### 7.1 Build Process
+
 - **Tool:** Webpack (webpack.config.js)
 - **Command:** `npm run build`
 - **Output:** dist/ directory
 
 ### 7.2 Environments
+
 - **Development:** Local (npm run dev)
 - **Staging:** [Not configured yet - User confirmed]
 - **Production:** AWS ECS (infrastructure/ecs-task-def.json)
 
 ### 7.3 CI/CD
+
 - **Platform:** GitHub Actions (.github/workflows/ci.yml)
 - **Pipeline:**
   1. Lint check
@@ -767,6 +781,7 @@ Priority files for anyone working on this codebase:
 ## 10. Confidence Summary
 
 ### High Confidence Findings ✅
+
 - Authentication flow (complete code trace + tests)
 - Payment integration (active production usage)
 - Database choice (explicit ADR)
@@ -774,11 +789,13 @@ Priority files for anyone working on this codebase:
 - Technology stack (explicit dependencies)
 
 ### Medium Confidence (Needs Validation) ⚠️
+
 - Event-driven pattern (partially implemented)
 - React choice rationale (documented but brief)
 - Target code coverage (stated by user)
 
 ### Low Confidence (Unknown) ❓
+
 - Redis caching decision (no documentation)
 - Deployment to staging (not configured)
 - E2E testing strategy (none found)
@@ -788,6 +805,7 @@ Priority files for anyone working on this codebase:
 ## 11. Open Questions & Gaps
 
 ### For User Validation
+
 1. ❓ **Redis Caching:**
    - Used in src/cache/redis.ts:12
    - No decision documentation found
@@ -798,12 +816,14 @@ Priority files for anyone working on this codebase:
    - User mentioned it exists - where?
 
 ### Documentation Gaps
+
 1. 📝 Need ADR for Redis caching choice
 2. 📝 Update API documentation (currently outdated: 2023-06-15)
 3. 📝 Document event-driven pattern expansion plan
 4. 📝 Remove or document deprecated OAuth code
 
 ### Code Gaps
+
 1. 🔧 Remove deprecated MongoDB client code
 2. 🔧 Remove unused OAuth handlers
 3. 🔧 Add E2E testing framework
