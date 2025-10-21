@@ -695,33 +695,21 @@ I found some gaps that need your input:
 ```markdown
 # Executive Summary: [Project Name]
 
-**Date:** YYYY-MM-DD | **Analysis Scope:** [Full/Partial] | **Analyst:** AI Assistant
+**Date:** YYYY-MM-DD | **Analysis Scope:** [Full/Partial]
 
 ## Quick Facts
-- **Repository Type:** Monorepo with 8 packages
-- **Primary Language:** TypeScript (85%), Python (15%)
-- **Architecture:** Microservices with shared event bus
-- **Key Technologies:** NestJS, PostgreSQL, Redis, Docker
-- **Overall Maturity:** Production-ready with good test coverage (78%)
+- Repository Type, Languages, Architecture, Key Technologies, Maturity Level
 
 ## Strengths
-- ✅ Well-documented decision records (12 ADRs)
-- ✅ Consistent architectural patterns (Repository + CQRS)
-- ✅ Comprehensive testing strategy
-- ✅ Active logging and observability
+- ✅ List 3-5 key strengths with evidence
 
 ## Areas Needing Attention
-- ⚠️ Missing rationale for Redis vs. alternatives
-- ⚠️ Experimental features without clear roadmap
-- ⚠️ Some anti-patterns in legacy modules
+- ⚠️ List 3-5 priority concerns with priority levels (🟥🟧🟨)
 
 ## Recommended Next Steps
-1. Document Redis decision in ADR
-2. Clarify status of experimental features
-3. Refactor legacy modules to match current patterns
+1-3 actionable next steps
 
 ---
-
 **Full detailed analysis follows below...**
 ```
 
@@ -738,527 +726,205 @@ I found some gaps that need your input:
 
 ## 1. Repository Overview
 
-### 1.1 Structure
+### 1.1 Structure & Stack
 - **Type:** [Monorepo / Single app / Multi-service workspace]
-- **Components:** [List of main components/services/packages]
-- **Organization:** [Feature-based / Layer-based / Domain-driven]
+- **Components:** [List main components with evidence]
+- **Languages & Frameworks:** [List with file:line evidence]
+- **Databases & Infrastructure:** [List with evidence]
 
-### 1.2 Technology Stack
-- **Languages:** [List with evidence]
-- **Frameworks:** [List with evidence]
-- **Databases:** [List with evidence]
-- **Infrastructure:** [Cloud provider, key services]
-
-### 1.3 Version Control & Evolution Patterns
-
-**Repository Health Indicators (if Git history available):**
-
-#### Commit Activity
-- **Total commits:** ~2,450 commits
-- **Active contributors:** 8 developers
-- **Commit frequency:** ~15 commits/week (healthy pace)
-- **Last major refactor:** 3 months ago
-
-#### Code Maturity Signals
-- **High-churn files** (volatility indicators):
-  - `src/api/routes/users.ts` - 47 commits (high change rate)
-  - `src/services/PaymentService.ts` - 34 commits (complex domain)
-  - Indicates these are core business logic areas under active development
-
-- **Stable core** (low-churn files):
-  - `src/db/migrations/` - 5 commits total (stable schema)
-  - `src/config/` - 8 commits (stable configuration)
-  - Indicates architectural foundation is mature
-
-#### Ownership Patterns
-- **Primary maintainers** (by commit count):
-  - alice@example.com: 45% of commits (backend focus)
-  - bob@example.com: 30% of commits (frontend focus)
-  - team@example.com: 15% (automated commits)
-
-- **Key service owners** (inferred from commit patterns):
-  - Auth system: alice@example.com (67% of auth/* commits)
-  - Payment system: charlie@example.com (80% of payment/* commits)
-  - Indicates domain ownership and expertise areas
-
-#### Architectural Evolution
-- **Major changes over time:**
-  - 12 months ago: Monolith → Started microservices migration
-  - 6 months ago: Added event-driven patterns (Redis pub/sub)
-  - 3 months ago: Migrated from REST to GraphQL for mobile API
-  - **Evidence:** Commit messages, file creation dates, refactoring commits
-
-- **Migration status:**
-  - 60% of services extracted from monolith
-  - 40% still in legacy monolith (src/legacy/)
-  - **Evidence:** Directory structure + commit history
-
-#### Technical Debt Indicators
-- **Files with highest churn + size:**
-  - Large + frequently changing = potential refactor targets
-  - Example: `src/services/OrderService.ts` (847 lines, 45 commits)
-  - Suggests this is a God Object that may need splitting
-
-**Confidence:** 🟡 Medium (depends on Git history availability)
+### 1.2 Version Control Patterns (if Git history available)
+- **Commit activity:** Total commits, contributors, frequency
+- **High-churn files:** [file.ts - N commits] - indicates active development
+- **Stable files:** [dir/ - few commits] - mature foundation
+- **Key maintainers:** [email patterns] - domain ownership
+- **Evolution:** Major architectural changes with timeline
+- **Confidence:** 🟡 Medium (depends on Git history)
 
 ---
 
 ## 2. Documentation Inventory
 
 ### 2.1 Found Documentation
-- `docs/architecture.md` — Architecture overview (Last updated: 2024-11-20)
-- `docs/adr/001-database-choice.md` — PostgreSQL decision (Last updated: 2024-10-15)
-- `README.md` — Getting started guide (Last updated: 2024-12-01)
+- List files with path, title, last modified date
 
-### 2.2 Decision Rationale Found
-1. **PostgreSQL Database:**
-   - **Why:** "Need ACID transactions for financial data" [docs/adr/001-database-choice.md#rationale]
-   - **Alternatives considered:** MongoDB, MySQL
-   - **Trade-off:** Performance vs. consistency - chose consistency
-   - **Confidence:** High (explicit ADR)
-
-2. **React Frontend:**
-   - **Why:** "Team familiarity and ecosystem" [docs/architecture.md#frontend]
-   - **Confidence:** Medium (documented but no detailed rationale)
+### 2.2 Decision Rationale (WHY)
+For each technology/pattern:
+- **Why chosen:** [Direct quote with source path#heading]
+- **Alternatives:** [What was considered]
+- **Confidence:** 🟢🟡🔴
 
 ### 2.3 Gaps & Conflicts
-- ❌ **Gap:** Redis caching used (src/cache/redis.ts:12) but no decision doc
-- ⚠️ **Conflict:** Diagram shows microservices, code is monolithic
-- ⏰ **Outdated:** API docs dated 2023-06-15, endpoints changed since then
+- ❌ **Gaps:** Technologies used but no WHY documented
+- ⚠️ **Conflicts:** Code contradicts docs
+- ⏰ **Outdated:** Old docs with evidence
 
 ---
 
 ## 3. System Capabilities (WHAT)
 
-### 3.1 Core Features
+**Format:** For each feature, provide:
+- **Entry point:** HTTP endpoint or function with file:line
+- **Flow:** Key steps (4-5 steps) with file:line references
+- **Business rules:** Critical validation/logic with evidence
+- **Confidence:** 🟢🟡🔴
 
-**Confidence Legend:** 🟢 High | 🟡 Medium | 🔴 Low
+**Example - User Authentication:**
+- **Entry:** `POST /api/auth/login` → src/api/routes/auth.ts:23
+- **Flow:** Validate → Check DB → Generate JWT → Return token
+- **Rules:** Password >=8 chars, 5 failed attempts = lock
+- **Confidence:** 🟢 High (working code + tests)
 
-#### 🟢 User Authentication
-- **Entry point:** `POST /api/auth/login` → src/api/routes/auth.ts:23
-- **Flow:**
-  1. Validate credentials → src/services/AuthService.ts:45
-  2. Check user in database → src/repositories/UserRepository.ts:67
-  3. Generate JWT → src/utils/jwt.ts:12
-  4. Return token → src/api/routes/auth.ts:34
-- **Business rules:**
-  - Password must be >= 8 characters (src/validators/password.ts:8)
-  - Max 5 failed attempts locks account (src/services/AuthService.ts:89)
-- **Evidence:** Working code path, tests exist, used in production
+**Group by confidence:**
+- 🟢 High: Active production features with tests
+- 🟡 Medium: Behind feature toggles, partial implementation
+- 🔴 Low: Dead code, deprecated, experimental
 
-#### 🟡 Dashboard Analytics
-- **Entry point:** `GET /api/dashboard` → src/api/routes/dashboard.ts:15
-- **Note:** Behind feature toggle `enable_new_dashboard = false`
-- **Status:** [User confirmed: "Experimental, not ready for production"]
-- **Evidence:** Code exists but currently disabled
+### External Integrations
 
-#### 🔴 Social Login
-- **Entry point:** OAuth handlers in src/auth/oauth/*.ts
-- **Note:** Code present but imports show it's never called
-- **Status:** [User confirmed: "Deprecated, safe to remove"]
-- **Evidence:** Dead code (no references found)
-
-### 3.2 External Integrations (Working)
-
-#### Stripe Payment Processing
-- **Usage:** Charges, subscriptions, webhook handling
-- **Evidence:** src/services/PaymentService.ts:34-178
-- **Configuration:** STRIPE_SECRET_KEY in .env
-- **Error handling:** Exponential backoff retry (src/utils/payment-retry.ts:12)
-- **Confidence:** 🟢 High (active production use)
-
-### 3.3 User Workflows
-
-**User Registration Flow:**
-1. Submit form → src/pages/SignUp.tsx:45
-2. POST /api/users → src/api/routes/users.ts:12
-3. Validate input → src/validators/userSchema.ts:8
-4. Hash password → src/utils/bcrypt.ts:15
-5. Insert user → src/repositories/UserRepository.ts:23
-6. Send welcome email → src/services/EmailService.ts:67
-7. Auto-login → redirects to /dashboard
+For each integration:
+- **Service:** Name and purpose
+- **Evidence:** file.ts:line-range
+- **Config:** Where credentials/endpoints configured
+- **Confidence:** 🟢🟡🔴
 
 ---
 
 ## 4. Architecture (HOW)
 
-### 4.1 Components
+**Format:** For each component, provide:
+- **Location & Responsibilities:** Where it lives, what it does
+- **Key files:** file:line-range evidence
+- **Confidence:** 🟢🟡🔴
 
-#### API Service
+**Example Component - API Layer:**
 - **Location:** src/api/
-- **Responsibilities:**
-  - HTTP routing and request handling
-  - Request validation
-  - Authentication middleware
-- **Key files:**
-  - src/api/routes/*.ts:* (route definitions)
-  - src/api/middleware/auth.ts:12 (auth middleware)
-  - src/api/middleware/validator.ts:8 (request validation)
+- **Responsibilities:** HTTP routing, validation, auth middleware
+- **Key files:** src/api/routes/*.ts:*, src/api/middleware/auth.ts:12
 - **Confidence:** 🟢 High (clear boundaries)
 
-#### Business Logic Layer
-- **Location:** src/services/
-- **Responsibilities:**
-  - Core business rules
-  - Transaction orchestration
-  - External service integration
-- **Key files:**
-  - src/services/UserService.ts:45-234 (user management)
-  - src/services/PaymentService.ts:34-178 (payment processing)
-- **Confidence:** 🟢 High
+### Communication Patterns
 
-#### Data Access Layer
-- **Location:** src/repositories/
-- **Responsibilities:**
-  - Database queries
-  - ORM interaction
-  - Data mapping
-- **Key files:**
-  - src/repositories/BaseRepository.ts:12 (common patterns)
-  - src/repositories/UserRepository.ts:23 (user data access)
-- **Confidence:** 🟢 High
+**Format:** Trace data flow through layers with file:line references
 
-### 4.2 Communication Patterns
-
-**API → Services → Repositories → Database:**
-```text
-
-src/api/routes/users.ts:25 (HTTP endpoint)
-  → UserService.createUser() (src/services/UserService.ts:67)
-    → UserRepository.insert() (src/repositories/UserRepository.ts:45)
-      → Database INSERT query
-
+**Example - Request Flow:**
+```
+API endpoint (file.ts:line)
+  → Service method (file.ts:line)
+    → Repository method (file.ts:line)
+      → Database query
 ```
 
-**Event-Driven (Async):**
+### Architectural Patterns
 
-```text
-
-PaymentService.processCharge() (src/services/PaymentService.ts:89)
-  → EventBus.publish('payment.processed') (src/events/bus.ts:23)
-    → EmailService listens (src/services/EmailService.ts:12)
-      → Sends receipt email
-
-```
-
-### 4.3 Architectural Patterns
-
-#### 🟢 Layered Architecture
-
-- **Evidence:** Clear separation: API → Services → Repositories → Database
-- **Rationale:** [Not explicitly documented]
-- **[User stated: "Standard pattern for maintainability"]**
-
-#### 🟢 Dependency Injection
-
-- **Evidence:** Services injected via constructor (src/services/*.ts)
-- **Implementation:** Custom DI container (src/di/container.ts:12)
-
-#### 🟡 Event-Driven (Partial)
-
-- **Evidence:** Event bus exists (src/events/bus.ts)
-- **Usage:** Only for email notifications, not fully adopted
-- **[User confirmed: "Plan to expand event usage for audit logging"]**
+List patterns with evidence and confidence:
+- 🟢 **Layered Architecture:** API → Services → Repos → DB (src/ structure)
+- 🟢 **Dependency Injection:** Constructor injection via DI container (src/di/container.ts:12)
+- 🟡 **Event-Driven (Partial):** Event bus exists (src/events/bus.ts) but limited usage
 
 ---
 
-## 5. Conventions & Standards
+## 5. Technical Implementation Details
 
-### 5.1 Code Style
+### Code Style & Conventions
+- **Linter/Formatter:** ESLint (Airbnb) + Prettier (config files in root)
+- **TypeScript:** Strict mode (tsconfig.json:5)
+- **Naming:** camelCase files, PascalCase classes/components, UPPER_SNAKE_CASE constants
+- **File Organization:** Layer-based (api/, services/, repositories/), tests co-located (*.test.ts)
+- **Git:** Feature branches (feature/*), Conventional Commits, required PR reviews
 
-- **Linter:** ESLint (eslintrc.json) - Airbnb config
-- **Formatter:** Prettier (prettierrc.json)
-- **TypeScript:** Strict mode enabled (tsconfig.json:5)
+### Testing
+- **Frameworks:** Jest + Supertest (package.json:34)
+- **Coverage:** 75% current, 80% target [User stated]
+- **E2E:** None found
+- **Pattern:** Co-located *.test.ts, run via `npm test`
 
-### 5.2 Naming Conventions
-
-- **Files:** camelCase for TS/JS files (userService.ts)
-- **Components:** PascalCase for React (UserProfile.tsx)
-- **Functions:** camelCase (getUserById)
-- **Classes:** PascalCase (UserService)
-- **Constants:** UPPER_SNAKE_CASE (MAX_RETRY_ATTEMPTS)
-
-### 5.3 File Organization
-
-- **Pattern:** Layer-based (api/, services/, repositories/)
-- **Co-location:** Tests alongside source (userService.ts + userService.test.ts)
-- **Barrel exports:** index.ts files in each directory
-
-### 5.4 Git Workflow
-
-- **Branching:** Feature branches (feature/*, bugfix/*)
-- **Commits:** Conventional Commits (feat:, fix:, docs:)
-- **PRs:** Required reviews, CI must pass
+### Build & Deployment
+- **Build:** Webpack → dist/ (`npm run build`)
+- **Environments:** Dev (local), Staging (not configured), Production (AWS ECS)
+- **CI/CD:** GitHub Actions (.github/workflows/ci.yml) - lint → test → build → deploy
 
 ---
 
-## 6. Testing Strategy
+## 6. Essential Files to Read
 
-### 6.1 Frameworks
+**List 5-10 priority files** with file:line-range and purpose:
+1. **file.ts:line-range** - Description of what it does/why it's essential
+2. **docs/file.md** - Decision rationale or architecture overview
 
-- **Unit:** Jest (package.json:34)
-- **Integration:** Jest + Supertest (for API tests)
-- **E2E:** [None found]
-
-### 6.2 Coverage
-
-- **Current:** ~75% (from jest.config.js coverage report)
-- **Target:** [User stated: "Aiming for 80%"]
-
-### 6.3 Patterns
-
-- **Location:** Co-located (*.test.ts alongside source)
-- **Naming:** *.test.ts
-- **Run command:** `npm test`
-
----
-
-## 7. Build & Deployment
-
-### 7.1 Build Process
-
-- **Tool:** Webpack (webpack.config.js)
-- **Command:** `npm run build`
-- **Output:** dist/ directory
-
-### 7.2 Environments
-
-- **Development:** Local (npm run dev)
-- **Staging:** [Not configured yet - User confirmed]
-- **Production:** AWS ECS (infrastructure/ecs-task-def.json)
-
-### 7.3 CI/CD
-
-- **Platform:** GitHub Actions (.github/workflows/ci.yml)
-- **Pipeline:**
-  1. Lint check
-  2. Unit tests
-  3. Build
-  4. Deploy to staging (on main branch)
-
----
-
-## 8. Essential Files to Read
-
-Priority files for anyone working on this codebase:
-
+**Example:**
 1. **src/api/routes/index.ts:12-89** - Main route definitions, entry points
 2. **src/services/UserService.ts:45-234** - Core user management logic
-3. **src/services/PaymentService.ts:34-178** - Payment processing flow
-4. **src/repositories/BaseRepository.ts:12-67** - Common data access patterns
-5. **src/utils/jwt.ts:12-45** - Authentication token handling
-6. **src/api/middleware/auth.ts:23-67** - Request authentication
-7. **docs/architecture.md** - High-level architecture overview
-8. **docs/adr/001-database-choice.md** - PostgreSQL decision rationale
+3. **docs/adr/001-database-choice.md** - PostgreSQL decision rationale
 
 ---
 
-## 9. Execution Path Examples
+## 7. Execution Path Examples
 
-### Example 1: User Login
+**Trace 1-2 critical user flows** end-to-end with file:line references at each step.
 
-```text
-
-1. User submits credentials via POST /api/auth/login
-   Entry: src/api/routes/auth.ts:23
-
-2. Request hits auth middleware (if protected route)
-   Middleware: src/api/middleware/validator.ts:8
-   Validates: email format, password presence
-
-3. Controller delegates to service
-   Controller: src/api/routes/auth.ts:25 calls AuthService.login()
-
-4. Service validates credentials
-   Service: src/services/AuthService.ts:45
-   → UserRepository.findByEmail(email)
-   Repository: src/repositories/UserRepository.ts:34
-   → Database SELECT query
-
-5. Service verifies password
-   Service: src/services/AuthService.ts:67
-   → bcrypt.compare() in src/utils/bcrypt.ts:15
-
-6. Service generates JWT
-   Service: src/services/AuthService.ts:78
-   → jwt.sign() in src/utils/jwt.ts:12
-
-7. Response sent to client
-   Controller: src/api/routes/auth.ts:34
-   Returns: { token, user }
-
+**Example - User Login:**
 ```
-
-### Example 2: Background Payment Processing
-
-```text
-
-1. Webhook received from Stripe
-   Entry: src/api/routes/webhooks/stripe.ts:12
-
-2. Signature verification
-   Middleware: src/api/middleware/stripeWebhook.ts:8
-
-3. Event published to bus
-   Handler: src/api/routes/webhooks/stripe.ts:23
-   → EventBus.publish('payment.received')
-   Bus: src/events/bus.ts:45
-
-4. Multiple subscribers react:
-   a) EmailService sends receipt
-      Subscriber: src/services/EmailService.ts:67
-
-   b) AnalyticsService tracks event
-      Subscriber: src/services/AnalyticsService.ts:34
-
-   c) UserService updates balance
-      Subscriber: src/services/UserService.ts:123
-
+1. POST /api/auth/login → src/api/routes/auth.ts:23
+2. Validation middleware → src/api/middleware/validator.ts:8
+3. AuthService.login() → src/services/AuthService.ts:45
+4. UserRepository.findByEmail() → src/repositories/UserRepository.ts:34
+5. Password verify → src/utils/bcrypt.ts:15
+6. Generate JWT → src/utils/jwt.ts:12
+7. Return { token, user } → src/api/routes/auth.ts:34
 ```
 
 ---
 
-## 10. Confidence Summary
+## 8. Analysis Summary & Next Steps
 
-### High Confidence Findings ✅
+### Confidence Levels
+- **🟢 High:** List key high-confidence findings (code + tests + docs)
+- **🟡 Medium:** List findings needing validation (partial evidence)
+- **🔴 Low:** List unknowns (gaps in code/docs)
 
-- Authentication flow (complete code trace + tests)
-- Payment integration (active production usage)
-- Database choice (explicit ADR)
-- Layered architecture (clear code organization)
-- Technology stack (explicit dependencies)
+### Open Questions & Gaps
+**For User:**
+- ❓ List questions needing user clarification (with evidence of what's unclear)
 
-### Medium Confidence (Needs Validation) ⚠️
+**Documentation Gaps:**
+- 📝 List missing or outdated documentation
 
-- Event-driven pattern (partially implemented)
-- React choice rationale (documented but brief)
-- Target code coverage (stated by user)
+**Code Gaps:**
+- 🔧 List deprecated code, missing tests, or incomplete features
 
-### Low Confidence (Unknown) ❓
+### Recommendations for New Development
 
-- Redis caching decision (no documentation)
-- Deployment to staging (not configured)
-- E2E testing strategy (none found)
+**Architecture Patterns to Follow:**
+- List key patterns with file:line references (e.g., "Follow layered pattern: API → Service → Repository")
 
----
+**Integration Points:**
+- List existing systems to reuse (e.g., "Use JWT middleware at file.ts:line for auth")
 
-## 11. Open Questions & Gaps
+**Standards:**
+- List style guides, testing targets, and conventions
 
-### For User Validation
+### Next Steps
+1. Use `generate-spec` prompt to create feature specification
+2. Reference this analysis for architectural decisions
+3. Follow identified patterns for consistency
+4. Address blocking gaps before starting implementation
 
-1. ❓ **Redis Caching:**
-   - Used in src/cache/redis.ts:12
-   - No decision documentation found
-   - Question: Why Redis? What alternatives were considered?
-
-2. ❓ **Staging Environment:**
-   - No configuration found for staging
-   - User mentioned it exists - where?
-
-### Documentation Gaps
-
-1. 📝 Need ADR for Redis caching choice
-2. 📝 Update API documentation (currently outdated: 2023-06-15)
-3. 📝 Document event-driven pattern expansion plan
-4. 📝 Remove or document deprecated OAuth code
-
-### Code Gaps
-
-1. 🔧 Remove deprecated MongoDB client code
-2. 🔧 Remove unused OAuth handlers
-3. 🔧 Add E2E testing framework
-4. 🔧 Configure staging environment
+**Analysis completed:** YYYY-MM-DD | **Status:** Ready for spec generation
 
 ---
 
-## 12. Recommendations for New Features
-
-When building new features in this codebase:
-
-1. **Architecture:**
-   - Follow layered pattern: API → Service → Repository
-   - Place routes in src/api/routes/[feature].ts
-   - Business logic in src/services/[Feature]Service.ts
-   - Data access in src/repositories/[Feature]Repository.ts
-
-2. **Authentication:**
-   - Use existing JWT middleware (src/api/middleware/auth.ts:23)
-   - Follow pattern in src/api/routes/auth.ts for protected routes
-
-3. **Database:**
-   - Use Prisma ORM (already configured)
-   - Create migrations with `npm run migrate:create`
-   - Follow patterns in src/repositories/BaseRepository.ts
-
-4. **Testing:**
-   - Co-locate tests with source (*.test.ts)
-   - Aim for 80% coverage (current: 75%)
-   - Run tests with `npm test`
-
-5. **Styling:**
-   - Follow ESLint + Prettier config
-   - Use camelCase for files, PascalCase for classes/components
-   - Conventional Commits for commit messages
-
-6. **Events:**
-   - Consider using event bus for async operations
-   - Follow pattern in src/services/PaymentService.ts:89 for publishing
-   - Subscribe in relevant services (src/services/EmailService.ts:12 example)
-
----
-
-## 13. Next Steps
-
-After this context analysis:
-
-1. **Use `generate-spec` prompt** to create detailed specification for your feature
-2. **Reference this analysis** when making architectural decisions
-3. **Follow identified patterns** to ensure consistency
-4. **Address high-priority gaps** if they block your work
-5. **Update this analysis** if you discover new patterns during implementation
-
----
-
-**Analysis completed:** YYYY-MM-DD
-**Last validated with user:** YYYY-MM-DD
-**Status:** Ready for feature specification
-
----
-
-## Key Principles to Remember
-
-1. **Evidence-Based:** Every claim needs file:line or doc#heading citation
-2. **Confidence Levels:** Mark High/Medium/Low confidence for all findings
-3. **Separate WHAT/HOW/WHY:**
-   - Code analysis tells you WHAT and HOW
-   - Documentation tells you WHY
-   - User fills in gaps and confirms intent
-4. **Stay in Your Lane:** Don't infer WHY from code - flag it as a gap for user to answer
-5. **Interactive, Not Batch:** Short focused questions, wait for answers, then ask follow-ups
-6. **Flag Gaps Explicitly:** Better to document "Unknown" than to guess
-7. **Actionable Outputs:**
-   - Specific file lists with line numbers
-   - Execution path traces
-   - Clear recommendations for new development
-8. **Preserve User Input:** Capture direct quotes for later citation in specs/ADRs
-
----
-
-## Final Checklist Before Completing
+## Final Checklist
 
 Before saving the analysis document, verify:
 
-- [ ] All code findings have file:line citations
-- [ ] All documentation findings have path#heading references
+- [ ] All findings cite evidence (file:line or path#heading)
+- [ ] Confidence levels (🟢🟡🔴) marked for all findings
 - [ ] User answers captured as direct quotes with dates
-- [ ] Confidence levels marked for all findings
-- [ ] Essential files list includes 5-10 key files with line ranges
-- [ ] At least 2 execution path traces provided
-- [ ] Gaps and unknowns explicitly documented (not hidden)
-- [ ] Recommendations are specific and actionable
-- [ ] High/Medium/Low confidence findings categorized
-- [ ] Open questions listed for future resolution
+- [ ] Essential files list (5-10 files) with line ranges
+- [ ] At least 1-2 execution path traces
+- [ ] Gaps and unknowns explicitly documented
+- [ ] Recommendations specific and actionable
 
 ---
 
-This enhanced prompt will produce **evidence-based, confidence-assessed codebase analysis** that serves as a strong foundation for spec-driven development. The analysis clearly separates facts from inferences, documents gaps explicitly, and provides actionable guidance for building new features.
+**Output:** Evidence-based, confidence-assessed codebase analysis for spec-driven development.
