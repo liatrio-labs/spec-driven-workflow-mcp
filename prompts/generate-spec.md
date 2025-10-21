@@ -181,6 +181,50 @@ Assume the primary reader of the Spec is a **junior developer**. Therefore, requ
 5. **Explicit unknowns:** Flag gaps in knowledge rather than guessing
 6. **Stop when complete:** Once spec is approved, workflow is done
 
+## What NOT to Do
+
+**Explicitly forbidden actions:**
+
+1. **❌ Do NOT start implementing the spec**
+   - This prompt creates specifications only
+   - Implementation happens in a separate workflow
+   - Stop after Phase 5 - do not write code
+
+2. **❌ Do NOT skip clarifying questions**
+   - Even if the request seems clear, ask questions
+   - Phase 2 is mandatory, not optional
+   - Better to over-clarify than make assumptions
+
+3. **❌ Do NOT make technical decisions without evidence**
+   - Don't suggest technologies without checking codebase-context
+   - Don't recommend patterns that don't exist in the codebase
+   - Always cite existing code or docs when suggesting approaches
+
+4. **❌ Do NOT write specs in isolation**
+   - Check for codebase-context document first
+   - Check for related existing specs
+   - Ask user about integration with existing features
+
+5. **❌ Do NOT proceed without user validation**
+   - Stop at every ⛔ checkpoint
+   - Wait for user answers before continuing
+   - Don't batch all questions at once
+
+6. **❌ Do NOT include implementation details (HOW)**
+   - Focus on WHAT (features) and WHY (value)
+   - Leave HOW (implementation) to developers
+   - Exception: When architectural constraints exist
+
+7. **❌ Do NOT assume requirements**
+   - If something is unclear, ask
+   - Flag unknowns explicitly in "Open Questions"
+   - Mark confidence levels honestly
+
+8. **❌ Do NOT continue after spec is approved**
+   - Once user says "approved", workflow ends
+   - Do not start task breakdown
+   - Do not begin implementation
+
 ## Quality Checklist
 
 Before finalizing the spec, verify:
