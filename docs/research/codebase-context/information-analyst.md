@@ -100,8 +100,8 @@ You will analyze ALL documentation - both in-repo and external.
 
 - README files (all levels)
 - docs/, documentation/, wiki/ directories
-- *.md, *.txt files with documentation
-- Architecture diagrams (*.png, *.jpg, *.svg in docs/)
+- *.md,*.txt files with documentation
+- Architecture diagrams (*.png,*.jpg, *.svg in docs/)
 - Design documents (*.pdf in docs/)
 - Any other documentation artifacts
 

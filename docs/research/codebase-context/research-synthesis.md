@@ -21,10 +21,12 @@
 **"Code explains HOW the system currently behaves; the user supplies WHAT it is supposed to achieve and WHY choices were made."**
 
 This is **critical** - it separates:
+
 - What can be discovered automatically (code analysis)
 - What must be asked (requirements, rationale, decisions)
 
 **Application to Our Prompts:**
+
 - `generate-codebase-context` should focus on WHAT and HOW (from code)
 - Must have explicit phase to ask user for WHY and goals
 - Cannot infer intent from code alone
@@ -38,11 +40,13 @@ This is **critical** - it separates:
 #### Code Analyst (from code-analyst.md)
 
 **Responsibilities:**
+
 - Discover WHAT the system does (features, workflows, business rules)
 - Discover HOW it's structured (architecture, patterns, components)
 - Identify WHAT technologies are used
 
 **Output Format:**
+
 ```markdown
 ## Code Analysis Summary
 ### System Capabilities
@@ -69,6 +73,7 @@ This is **critical** - it separates:
 ```
 
 **Key Principles:**
+
 1. Code is ground truth - report what actually exists
 2. Be specific - reference exact file:line for evidence
 3. Distinguish fact from inference
@@ -77,6 +82,7 @@ This is **critical** - it separates:
 6. **Stay in your lane** - don't guess at "why"
 
 **What NOT to include:**
+
 - ❌ Internal data models (implementation detail)
 - ❌ Missing/planned features (belongs in roadmap)
 - ❌ Code quality judgments
@@ -88,6 +94,7 @@ This is **critical** - it separates:
 #### Information Analyst (from information-analyst.md)
 
 **Responsibilities:**
+
 - Discover WHY the system was built this way
 - Extract rationale from documentation
 - Find decision context and trade-offs
@@ -96,6 +103,7 @@ This is **critical** - it separates:
 **Primary Job:** Extract "WHY" - this is what code analysis can't provide
 
 **Output Format:**
+
 ```markdown
 ## Information Analysis Summary
 ### Documentation Found
@@ -149,6 +157,7 @@ This is **critical** - it separates:
 ```
 
 **Key Principles:**
+
 1. **Direct quotes for "why"** - quote docs verbatim
 2. **Source everything** - always say which doc/diagram
 3. **Attach metadata** - path, heading/anchor, timestamp
@@ -165,6 +174,7 @@ This is **critical** - it separates:
 **Pattern:** Manager coordinates specialized subprocess agents
 
 **Manager Responsibilities:**
+
 1. Detect repository structure (workspace, monorepo, single app)
 2. Launch Code Analyst subprocess
 3. Launch Information Analyst subprocess
@@ -174,6 +184,7 @@ This is **critical** - it separates:
 7. Review with user
 
 **Six-Phase Workflow:**
+
 1. **Analyze repository structure**
 2. **Audit existing documentation**
 3. **Deep code analysis** (subprocess: Code Analyst)
@@ -483,6 +494,7 @@ Ask targeted questions about:
 ### 🟢 LOW PRIORITY: Artifact Structure
 
 **Research Pattern:** Generate multiple focused documents:
+
 - PRDs (product requirements)
 - ADRs (architecture decisions in MADR format)
 - SYSTEM-OVERVIEW.md (architecture summary)
@@ -514,6 +526,7 @@ Ask targeted questions about:
 ### For `generate-codebase-context`
 
 **Add from code-analyst.md:**
+
 1. ✅ File:line evidence citations for all findings
 2. ✅ Confidence levels (High/Needs Validation/Unknown)
 3. ✅ "Stay in your lane" - don't infer WHY from code
@@ -524,6 +537,7 @@ Ask targeted questions about:
 8. ✅ Execution path traces with step-by-step flows
 
 **Add from information-analyst.md:**
+
 1. ✅ Documentation audit phase (scan + timestamp + inventory)
 2. ✅ Rationale extraction with direct quotes
 3. ✅ Source references with path#heading format
@@ -532,6 +546,7 @@ Ask targeted questions about:
 6. ✅ Metadata capture (last modified timestamps)
 
 **Add from context_bootstrap.md:**
+
 1. ✅ Repository structure detection (workspace/monorepo/single)
 2. ✅ User collaboration phase (interactive, not batch)
 3. ✅ Capture user answers as direct quotes for citation
@@ -541,6 +556,7 @@ Ask targeted questions about:
 ### For `generate-spec`
 
 **Add from research:**
+
 1. ✅ WHY questions (problem, value, strategic fit)
 2. ✅ Interactive phased questioning (not batch)
 3. ✅ Capture answers as direct quotes
@@ -552,6 +568,7 @@ Ask targeted questions about:
 ### For `generate-architecture-options` (NEW)
 
 **Inspired by code-architect.md:**
+
 1. ✅ Patterns & conventions found (with file:line refs)
 2. ✅ Multiple approaches (minimal/clean/pragmatic)
 3. ✅ Complete component design with responsibilities
@@ -565,6 +582,7 @@ Ask targeted questions about:
 ### For `review-implementation` (NEW)
 
 **Inspired by code-reviewer.md:**
+
 1. ✅ Confidence-based filtering (≥80% confidence)
 2. ✅ Categorize findings (Critical/Important/Nice-to-have)
 3. ✅ Specific fixes with file:line references
@@ -576,12 +594,14 @@ Ask targeted questions about:
 ## Key Principles to Embed
 
 ### 1. Separation of Concerns
+
 - **Code tells you WHAT and HOW**
 - **Docs tell you WHY**
 - **Users tell you goals and intent**
 - Don't conflate these sources
 
 ### 2. Evidence-Based
+
 - Every claim needs evidence
 - File:line for code
 - Path#heading for docs
@@ -589,18 +609,21 @@ Ask targeted questions about:
 - Timestamps for currency
 
 ### 3. Confidence Assessment
+
 - Distinguish fact from inference
 - Flag gaps explicitly
 - Mark validation needs
 - Document unknowns
 
 ### 4. Interactive Collaboration
+
 - Short focused conversations
 - Don't batch questions
 - Wait for answers between phases
 - Capture responses as quotes
 
 ### 5. Actionable Outputs
+
 - Specific file lists to read
 - Execution path traces
 - Concrete next steps
@@ -611,6 +634,7 @@ Ask targeted questions about:
 ## Implementation Roadmap
 
 ### Sprint 1: Core Evidence & Confidence (Week 1)
+
 **Goal:** Make analysis evidence-based and trustworthy
 
 - [ ] Add evidence citation standards to all prompts
@@ -624,6 +648,7 @@ Ask targeted questions about:
 ---
 
 ### Sprint 2: Interactive Collaboration (Week 2)
+
 **Goal:** Improve user engagement and rationale capture
 
 - [ ] Restructure spec questions into phased approach
@@ -637,6 +662,7 @@ Ask targeted questions about:
 ---
 
 ### Sprint 3: Architecture & Review (Week 3)
+
 **Goal:** Add missing workflow phases from Claude Code
 
 - [ ] Create `generate-architecture-options` prompt
@@ -652,6 +678,7 @@ Ask targeted questions about:
 ## Success Metrics
 
 ### Qualitative
+
 - ✅ Analysis includes file:line citations for all claims
 - ✅ Confidence levels clearly marked
 - ✅ User questions get thoughtful answers (not "whatever you think")
@@ -659,6 +686,7 @@ Ask targeted questions about:
 - ✅ Gaps explicitly documented vs. hidden
 
 ### Quantitative
+
 - ✅ 100% of code findings have file:line evidence
 - ✅ 100% of doc findings have path#heading source
 - ✅ 100% of user answers captured as quotes

@@ -16,6 +16,7 @@ This is a **Spec Driven Development (SDD) MCP** project that provides a ubiquito
 ## Common Development Commands
 
 ### Environment Setup
+
 ```bash
 # Install dependencies
 uv sync
@@ -25,6 +26,7 @@ source .venv/bin/activate
 ```
 
 ### Running the Application
+
 ```bash
 # Run the basic hello script
 python hello.py
@@ -34,6 +36,7 @@ uv run hello.py
 ```
 
 ### Development Tools
+
 ```bash
 # Install development dependencies
 uv sync --group dev
@@ -74,6 +77,7 @@ The project implements a **prompt-driven workflow system** with three main phase
 ### Workflow States and Transitions
 
 Tasks follow a strict progression:
+
 - Parent tasks contain demoable units of work with demo criteria and proof artifacts
 - Subtasks must be completed sequentially (one at a time)
 - All subtasks must pass tests before parent task completion
@@ -101,6 +105,7 @@ Tasks follow a strict progression:
 ### Generating a New Feature Spec
 
 Reference the `prompts/generate-spec.md` workflow to create specifications. The process involves:
+
 1. Providing initial feature description
 2. Answering structured clarifying questions
 3. Generating spec with required sections (goals, user stories, requirements, etc.)
@@ -109,6 +114,7 @@ Reference the `prompts/generate-spec.md` workflow to create specifications. The 
 ### Creating Task Lists from Specs
 
 Use `prompts/generate-task-list-from-spec.md` to convert specs into actionable tasks:
+
 1. Analyze existing spec file
 2. Generate high-level parent tasks (demoable units)
 3. Break down into detailed subtasks
@@ -117,6 +123,7 @@ Use `prompts/generate-task-list-from-spec.md` to convert specs into actionable t
 ### Task Execution Protocol
 
 Follow `prompts/manage-tasks.md` guidelines:
+
 - Work on one subtask at a time
 - Mark tasks in progress with `[~]`
 - Complete full test suite before marking parent tasks complete

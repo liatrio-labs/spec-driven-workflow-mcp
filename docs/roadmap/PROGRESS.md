@@ -9,6 +9,7 @@
 ## Overview
 
 This document tracks the implementation of improvements to our MCP spec-driven development prompts based on research from:
+
 1. Claude Code feature-dev plugin analysis
 2. Existing research files (code-analyst.md, information-analyst.md, context_bootstrap.md)
 
@@ -21,11 +22,13 @@ This document tracks the implementation of improvements to our MCP spec-driven d
 ### Completed Work (This PR)
 
 #### 1. Research & Analysis ✅
+
 **Branch:** `add-reverse-engineer-codebase-prompt`
 **Commits:** 4 commits
 **Status:** Complete
 
 **Deliverables:**
+
 - ✅ `docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md` (18,287 words)
   - Complete 7-phase workflow analysis
   - Agent specifications (code-explorer, code-architect, code-reviewer)
@@ -44,11 +47,13 @@ This document tracks the implementation of improvements to our MCP spec-driven d
   - `context_bootstrap.md` - Manager orchestration pattern
 
 #### 2. Renamed Prompt ✅
+
 - ✅ Renamed `reverse-engineer-codebase` → `generate-codebase-context`
   - Better reflects purpose: generating context for development
   - Aligns with workflow terminology
 
 #### 3. Enhanced `generate-codebase-context` Prompt ✅
+
 **File:** `prompts/generate-codebase-context.md`
 **Lines:** 877 lines (up from ~500)
 **Status:** Complete and ready for use
@@ -56,13 +61,16 @@ This document tracks the implementation of improvements to our MCP spec-driven d
 **Major Enhancements:**
 
 ##### Evidence Citation Standards ✅
+
 - **For Code:** `path/to/file.ts:45-67` with line ranges
 - **For Docs:** `path/to/doc.md#section-heading` with timestamps
 - **For User Input:** `[User confirmed: YYYY-MM-DD]` with direct quotes
 - **Example:** "Authentication uses JWT (src/auth/jwt.ts:23-45)"
 
 ##### Confidence Assessment ✅
+
 Every finding must be categorized:
+
 - 🟢 **High Confidence:** Strong evidence from working code or explicit docs
 - 🟡 **Medium Confidence:** Inferred, behind feature flags, or implied
 - 🔴 **Low Confidence:** Cannot determine, conflicts, or unknowns
@@ -70,11 +78,13 @@ Every finding must be categorized:
 Explicitly flags items needing user validation.
 
 ##### Separation of Concerns ✅
+
 - **WHAT/HOW:** Discovered from code analysis (stay in lane, don't infer WHY)
 - **WHY:** Extracted from documentation (rationale, decisions, trade-offs)
 - **Intent/Goals:** Provided by user (fills gaps, resolves conflicts)
 
 ##### Phased Analysis Process ✅
+
 1. **Repository Structure Analysis** - Auto-detect layout, tech stack
 2. **Documentation Audit** - Scan, inventory, extract rationale, flag gaps
 3. **Code Analysis (WHAT + HOW)** - Features, workflows, architecture, patterns
@@ -84,12 +94,15 @@ Explicitly flags items needing user validation.
 7. **Generate Analysis** - Complete evidence-based document
 
 ##### Interactive Questioning ✅
+
 - **OLD:** Long batch questionnaires
 - **NEW:** Short rounds (3-5 questions max), wait for answers, ask follow-ups
 - Captures user answers as direct quotes for later citation
 
 ##### Execution Path Tracing ✅
+
 Step-by-step flow examples:
+
 ```
 User Login Flow:
 1. POST /api/auth/login → src/api/routes/auth.ts:23
@@ -99,16 +112,20 @@ User Login Flow:
 ```
 
 ##### Essential Files List ✅
+
 - 5-10 priority files with specific line ranges
 - **Example:** `src/services/UserService.ts:45-234` - Core user management logic
 
 ##### Comprehensive Example Output ✅
+
 - Full 13-section document structure with real examples
 - Shows proper evidence citations, confidence emojis, execution traces
 - Includes gap documentation, open questions, next steps
 
 ##### Quality Checklist ✅
+
 Pre-completion verification:
+
 - [ ] All code findings have file:line citations
 - [ ] All doc findings have path#heading references
 - [ ] User answers captured as quotes with dates
@@ -118,6 +135,7 @@ Pre-completion verification:
 - [ ] Gaps/unknowns explicitly documented
 
 ##### Key Principles Embedded ✅
+
 1. Evidence-based (every claim needs proof)
 2. Confidence levels (distinguish fact from inference)
 3. Stay in lane (don't guess WHY from code)
@@ -130,6 +148,7 @@ Pre-completion verification:
 ## What This PR Includes
 
 ### Files Added/Modified
+
 ```
 ✅ prompts/generate-codebase-context.md (enhanced)
 ✅ docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md (new)
@@ -141,12 +160,14 @@ Pre-completion verification:
 ```
 
 ### Commits
+
 1. `feat: add reverse-engineer-codebase prompt for contextual analysis`
 2. `refactor: rename reverse-engineer-codebase to generate-codebase-context`
 3. `docs: add comprehensive research analysis for prompt improvements`
 4. `feat: enhance generate-codebase-context with evidence citations and confidence levels`
 
 ### Ready for Review
+
 - ✅ All code changes committed
 - ✅ Research documented
 - ✅ Enhanced prompt tested with prompt loader
@@ -162,11 +183,13 @@ The following improvements are **documented and ready to implement** but will be
 ### Priority 1: Critical Workflow Enhancements
 
 #### A. Enhance `generate-spec` with Mandatory Clarifying Phase
+
 **File:** `prompts/generate-spec.md`
 **Status:** Planned for next PR
 **Estimated Effort:** Medium (2-3 hours)
 
 **Changes Needed:**
+
 1. **Add Phase 2A: Context Review (NEW)**
    - Prerequisite: Must have run `generate-codebase-context`
    - Read analysis document
@@ -202,6 +225,7 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 #### B. Create `generate-architecture-options` Prompt (NEW)
+
 **File:** `prompts/generate-architecture-options.md`
 **Status:** Planned for next PR
 **Estimated Effort:** High (4-5 hours)
@@ -209,6 +233,7 @@ The following improvements are **documented and ready to implement** but will be
 **Purpose:** Generate 2-3 architectural approaches with trade-off analysis before task generation
 
 **Process:**
+
 1. **Prerequisites Check:**
    - Spec document exists
    - Codebase context analysis exists
@@ -247,6 +272,7 @@ The following improvements are **documented and ready to implement** but will be
    - Document rationale for choice (for future ADR)
 
 **Output Example:**
+
 ```markdown
 # Architecture Options: User Profile Editing (Spec 0001)
 
@@ -293,6 +319,7 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 #### C. Create `review-implementation` Prompt (NEW)
+
 **File:** `prompts/review-implementation.md`
 **Status:** Planned for next PR
 **Estimated Effort:** High (4-5 hours)
@@ -300,6 +327,7 @@ The following improvements are **documented and ready to implement** but will be
 **Purpose:** Quality review before considering feature complete
 
 **Process:**
+
 1. **Prerequisites:**
    - All implementation tasks marked complete in task list
    - Code has been committed (but not pushed/PR'd yet)
@@ -341,6 +369,7 @@ The following improvements are **documented and ready to implement** but will be
    - **Nice-to-Have (Optional):** Optimizations, minor improvements
 
 6. **Present to User:**
+
    ```markdown
    ## Review Findings
 
@@ -385,11 +414,13 @@ The following improvements are **documented and ready to implement** but will be
 ### Priority 2: Documentation & Workflow
 
 #### D. Update Workflow Documentation
+
 **File:** `docs/WORKFLOW.md` (new)
 **Status:** Planned for next PR
 **Estimated Effort:** Low (1-2 hours)
 
 **Content:**
+
 ```markdown
 # Spec-Driven Development Workflow
 
@@ -456,11 +487,13 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 #### E. Create ADR Template
+
 **File:** `prompts/templates/adr-template.md` (new)
 **Status:** Planned for next PR
 **Estimated Effort:** Low (30 minutes)
 
 **Content:**
+
 - MADR format template
 - Sections for context, decision drivers, options, outcome, consequences
 - Examples of good vs bad ADRs
@@ -471,11 +504,13 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 #### F. Create Examples & Tutorials
+
 **Files:** `docs/examples/` (new directory)
 **Status:** Planned for future PR
 **Estimated Effort:** Medium (3-4 hours)
 
 **Content:**
+
 - Complete example: Full workflow walkthrough
 - Before/after examples showing improvements
 - Common patterns and solutions
@@ -486,14 +521,17 @@ The following improvements are **documented and ready to implement** but will be
 ## Implementation Roadmap
 
 ### This PR (Phase 1) ✅ COMPLETE
+
 **Branch:** `add-reverse-engineer-codebase-prompt`
 **Timeline:** Complete
 **Deliverables:**
+
 - ✅ Research analysis and synthesis
 - ✅ Enhanced `generate-codebase-context` prompt
 - ✅ Progress documentation
 
 **Merge Criteria:**
+
 - [x] All commits clean and documented
 - [x] Enhanced prompt tested
 - [x] Research findings documented
@@ -503,11 +541,13 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 ### Next PR (Phase 2) - Critical Workflow Enhancements
+
 **Branch:** `enhance-spec-and-add-architecture-review` (future)
 **Timeline:** 2-3 days work
 **Estimated Effort:** High (10-12 hours)
 
 **Deliverables:**
+
 - [ ] Enhanced `generate-spec` with mandatory clarifying phase
 - [ ] New `generate-architecture-options` prompt
 - [ ] New `review-implementation` prompt
@@ -518,6 +558,7 @@ The following improvements are **documented and ready to implement** but will be
 **Blocking:** None (Phase 1 complete)
 
 **Acceptance Criteria:**
+
 - [ ] All 3 prompts work independently
 - [ ] Workflow flows smoothly from context → spec → architecture → tasks → review
 - [ ] Evidence citations and confidence levels used throughout
@@ -527,11 +568,13 @@ The following improvements are **documented and ready to implement** but will be
 ---
 
 ### Future PR (Phase 3) - Polish & Examples
+
 **Branch:** TBD
 **Timeline:** 1-2 days work
 **Estimated Effort:** Medium (4-6 hours)
 
 **Deliverables:**
+
 - [ ] Complete example walkthrough
 - [ ] Best practices guide
 - [ ] Troubleshooting documentation
@@ -545,6 +588,7 @@ The following improvements are **documented and ready to implement** but will be
 ## Success Metrics
 
 ### Phase 1 (This PR) ✅
+
 - ✅ Evidence citations present in 100% of code findings
 - ✅ Confidence levels marked for all findings
 - ✅ Documentation audit phase included
@@ -553,6 +597,7 @@ The following improvements are **documented and ready to implement** but will be
 - ✅ Execution path traces included in examples
 
 ### Phase 2 (Next PR)
+
 - [ ] Clarifying questions are mandatory (cannot proceed without answers)
 - [ ] Architecture options always present 2-3 approaches
 - [ ] User must explicitly choose architecture before tasks generated
@@ -561,6 +606,7 @@ The following improvements are **documented and ready to implement** but will be
 - [ ] Complete workflow documented with examples
 
 ### Phase 3 (Future PR)
+
 - [ ] Examples cover common use cases
 - [ ] New users can follow tutorial successfully
 - [ ] Troubleshooting guide addresses common issues
@@ -570,26 +616,31 @@ The following improvements are **documented and ready to implement** but will be
 ## Key Decisions Made
 
 ### Decision 1: Evidence Citations
+
 **Decision:** Require file:line for code, path#heading for docs, dated quotes for users
 **Rationale:** Provides traceability and accountability for all findings
 **Source:** code-analyst.md + information-analyst.md patterns
 
 ### Decision 2: Confidence Levels
+
 **Decision:** Categorize all findings as High/Medium/Low confidence
 **Rationale:** Distinguishes facts from inferences, flags items needing validation
 **Source:** Research synthesis recommendations
 
 ### Decision 3: Phased Implementation
+
 **Decision:** Split improvements across multiple PRs (Phase 1 = context, Phase 2 = spec+arch+review)
 **Rationale:** Keeps PRs focused and reviewable, allows incremental adoption
 **Source:** Team decision for maintainability
 
 ### Decision 4: Interactive Questioning
+
 **Decision:** Replace batch questionnaires with short focused rounds
 **Rationale:** Better user engagement, more thoughtful answers
 **Source:** context_bootstrap.md + Claude Code Phase 3 pattern
 
 ### Decision 5: Mandatory Clarifying Phase
+
 **Decision:** Make clarifying questions a STOP point in spec generation
 **Rationale:** Most feature failures from misunderstood requirements - prevent this
 **Source:** Claude Code research showing this as critical phase
@@ -599,6 +650,7 @@ The following improvements are **documented and ready to implement** but will be
 ## References
 
 ### Research Documents
+
 - [Claude Code Feature-Dev Comparison](./research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md)
 - [Research Synthesis](./research/reverse-engineer-prompts/research-synthesis.md)
 - [Code Analyst Pattern](./research/reverse-engineer-prompts/code-analyst.md)
@@ -606,6 +658,7 @@ The following improvements are **documented and ready to implement** but will be
 - [Context Bootstrap Pattern](./research/reverse-engineer-prompts/context_bootstrap.md)
 
 ### External Links
+
 - [Claude Code Repository](https://github.com/anthropics/claude-code)
 - [Feature-Dev Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev)
 - [MADR Format](https://adr.github.io/madr/)
@@ -615,6 +668,7 @@ The following improvements are **documented and ready to implement** but will be
 ## Contact & Questions
 
 For questions about this implementation:
+
 - Review research documents in `docs/research/reverse-engineer-prompts/`
 - Check progress updates in this document
 - Refer to commit messages for detailed change rationale

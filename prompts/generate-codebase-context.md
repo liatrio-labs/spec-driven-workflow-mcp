@@ -30,16 +30,19 @@ To guide an AI assistant in thoroughly analyzing and understanding a codebase's 
 **Every finding MUST include evidence:**
 
 ### For Code Findings
+
 - **Format:** `path/to/file.ts:45-67` (include line range when relevant)
 - **Example:** "Authentication uses JWT tokens (src/auth/AuthService.ts:23-45)"
 - Always provide specific line numbers, not just file names
 
 ### For Documentation Findings
+
 - **Format:** `path/to/doc.md#section-heading` or `path/to/doc.md:page-N`
 - **Example:** "PostgreSQL chosen for ACID guarantees (docs/architecture.md#database-decision)"
 - Include last modified timestamp when available: `(docs/ADR-001.md, updated 2024-12-15)`
 
 ### For User-Provided Information
+
 - **Format:** "[User confirmed: YYYY-MM-DD]" or "[User stated: 'direct quote']"
 - **Example:** "OAuth2 required by compliance team [User confirmed: 2025-01-21]"
 - Use direct quotes when possible to preserve exact meaning
@@ -49,6 +52,7 @@ To guide an AI assistant in thoroughly analyzing and understanding a codebase's 
 Categorize every finding by confidence level:
 
 ### High Confidence
+
 - **Criteria:** Strong evidence from working code or explicit documentation
 - **Examples:**
   - Feature exists with traced working code path
@@ -56,6 +60,7 @@ Categorize every finding by confidence level:
   - Design decision documented in ADR or architecture docs
 
 ### Medium Confidence (Needs Validation)
+
 - **Criteria:** Inferred from context, behind feature flags, or implied
 - **Examples:**
   - Feature toggle currently disabled (code exists but may not be active)
@@ -64,6 +69,7 @@ Categorize every finding by confidence level:
   - Outdated documentation that may not reflect current code
 
 ### Low Confidence (Unknown)
+
 - **Criteria:** Cannot determine from available information
 - **Examples:**
   - Rationale missing from both docs and code
@@ -149,7 +155,7 @@ Find and catalog:
    - README files (all levels)
    - docs/, documentation/, wiki/ directories
    - ARCHITECTURE.md, DESIGN.md, CONTRIBUTING.md
-   - Architecture diagrams (*.png, *.jpg, *.svg, *.drawio in docs/)
+   - Architecture diagrams (*.png,*.jpg, *.svg,*.drawio in docs/)
    - ADRs (Architecture Decision Records)
    - CHANGELOG.md, migration guides
 
@@ -170,6 +176,7 @@ Find and catalog:
 - What problems were these choices solving?
 
 **For each rationale found:**
+
 - Extract as direct quote
 - Note source: `path/to/doc.md#section-heading`
 - Include timestamp if available
@@ -198,12 +205,14 @@ Find and catalog:
 **Discover working features:**
 
 Trace from entry points to understand:
+
 - **Features:** What functional capabilities exist right now?
 - **User Workflows:** What complete user journeys are supported?
 - **Business Rules:** What validation/calculation logic is enforced?
 - **External Integrations:** What external systems does it integrate with (working API clients, SDKs)?
 
 **For each capability:**
+
 - Provide entry point with file:line (e.g., `src/api/routes/users.ts:12`)
 - Brief description of what it does
 - Key logic location (e.g., `src/services/UserService.ts:45-89`)
@@ -225,6 +234,7 @@ User Login Flow:
 ```
 
 **What NOT to include:**
+
 - ❌ Internal data models (implementation detail, not user-facing)
 - ❌ Missing or planned features (belongs in roadmap)
 - ❌ Code quality judgments (not your job)
@@ -245,6 +255,7 @@ From dependency files and imports, catalog:
 - **Authentication Approach:** JWT/OAuth/Sessions (from auth code)
 
 **Evidence format:**
+
 ```
 - **Framework:** React (package.json:15, imports in src/components/*.tsx)
 - **Database:** PostgreSQL (package.json:23 'pg', connection in src/db/pool.ts:8)
@@ -252,6 +263,7 @@ From dependency files and imports, catalog:
 ```
 
 **What NOT to include:**
+
 - ❌ Specific versions (e.g., "React 18.2.0" - too volatile)
 - ❌ Minor utility libraries
 - ❌ Testing frameworks (unless part of priority areas)
@@ -272,6 +284,7 @@ From dependency files and imports, catalog:
   - Data exchanged (brief description)
 
 Example:
+
 ```
 - **API Service → Database:**
   - Method: Direct ORM queries
@@ -289,6 +302,7 @@ Example:
   - Example: "Event-driven - found publishers (src/events/publisher.ts:12) and subscribers (src/events/handlers/*.ts)"
 
 **Flag dormant code:**
+
 - Feature toggles currently disabled
 - Experimental directories
 - Dead code (imports show it's unused)
@@ -296,16 +310,19 @@ Example:
 #### 3.4: Conventions & Standards
 
 **Code organization:**
+
 - File naming (camelCase, kebab-case, snake_case)
 - Directory patterns (feature-based, layer-based)
 - Module boundaries (what imports what)
 
 **Code style:**
+
 - Linter configuration (if found)
 - Formatter settings
 - Key conventions from codebase
 
 **Git workflow:**
+
 - Branching strategy (from branch names if visible)
 - Commit conventions (conventional commits, other patterns)
 
@@ -330,6 +347,7 @@ For each external integration found:
 - **Error handling:** How failures are handled
 
 Example:
+
 ```
 - **Stripe (Payment Processing):**
   - Usage: Charges, subscriptions, webhooks
@@ -384,6 +402,7 @@ Compare code analysis vs. documentation to find:
 Ask 3-5 targeted questions based on gaps found:
 
 Example:
+
 ```
 I found some gaps that need your input:
 
@@ -406,6 +425,7 @@ I found some gaps that need your input:
 **⛔ STOP - Wait for user answers**
 
 **Capture answers as direct quotes:**
+
 ```
 [User confirmed: 2025-01-21: "MongoDB was from an early experiment, it's safe to remove."]
 [User stated: "JWT chosen because we needed stateless auth for mobile clients."]
@@ -562,18 +582,22 @@ I found some gaps that need your input:
 
 **API → Services → Repositories → Database:**
 ```
+
 src/api/routes/users.ts:25 (HTTP endpoint)
   → UserService.createUser() (src/services/UserService.ts:67)
     → UserRepository.insert() (src/repositories/UserRepository.ts:45)
       → Database INSERT query
+
 ```
 
 **Event-Driven (Async):**
 ```
+
 PaymentService.processCharge() (src/services/PaymentService.ts:89)
   → EventBus.publish('payment.processed') (src/events/bus.ts:23)
     → EmailService listens (src/services/EmailService.ts:12)
       → Sends receipt email
+
 ```
 
 ### 4.3 Architectural Patterns
@@ -680,6 +704,7 @@ Priority files for anyone working on this codebase:
 ### Example 1: User Login
 
 ```
+
 1. User submits credentials via POST /api/auth/login
    Entry: src/api/routes/auth.ts:23
 
@@ -707,11 +732,13 @@ Priority files for anyone working on this codebase:
 7. Response sent to client
    Controller: src/api/routes/auth.ts:34
    Returns: { token, user }
+
 ```
 
 ### Example 2: Background Payment Processing
 
 ```
+
 1. Webhook received from Stripe
    Entry: src/api/routes/webhooks/stripe.ts:12
 
@@ -732,6 +759,7 @@ Priority files for anyone working on this codebase:
 
    c) UserService updates balance
       Subscriber: src/services/UserService.ts:123
+
 ```
 
 ---

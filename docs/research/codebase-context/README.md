@@ -20,11 +20,13 @@ This directory contains research and analysis conducted to improve our MCP spec-
 ## Research Documents
 
 ### 1. Claude Code Feature-Dev Comparison
+
 **File:** [`claude-code-feature-dev-comparison.md`](./claude-code-feature-dev-comparison.md)
 **Size:** 18,287 words
 **Purpose:** Comprehensive analysis of Claude Code's feature-dev plugin
 
 **Contents:**
+
 - Complete 7-phase workflow breakdown
 - Agent specifications (code-explorer, code-architect, code-reviewer)
 - Comparison with our current MCP prompts
@@ -34,6 +36,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - Detailed recommendations
 
 **Key Findings:**
+
 - ❌ Missing mandatory clarifying questions phase
 - ❌ No architecture options comparison
 - ❌ No quality review before completion
@@ -42,6 +45,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - ✅ Good: Comprehensive analysis
 
 **Use This For:**
+
 - Understanding Claude Code's proven workflow
 - Identifying gaps in our current approach
 - Planning future enhancements
@@ -50,11 +54,13 @@ This directory contains research and analysis conducted to improve our MCP spec-
 ---
 
 ### 2. Research Synthesis
+
 **File:** [`research-synthesis.md`](./research-synthesis.md)
 **Size:** 8,000+ words
 **Purpose:** Actionable integration plan combining all research sources
 
 **Contents:**
+
 - Core philosophy: Code (WHAT/HOW) vs Docs (WHY) vs User (Intent)
 - Two-agent specialization pattern (code-analyst + information-analyst)
 - Manager orchestration pattern (context_bootstrap)
@@ -65,6 +71,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - Success metrics
 
 **Key Recommendations:**
+
 - 🔴 HIGH: Evidence citation standards (file:line, path#heading)
 - 🔴 HIGH: Confidence assessment (High/Medium/Low)
 - 🔴 HIGH: Mandatory clarifying phase in spec generation
@@ -74,6 +81,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - 🟡 MEDIUM: ADR template creation
 
 **Use This For:**
+
 - Planning specific prompt enhancements
 - Understanding priority of improvements
 - Implementation guidance with examples
@@ -82,16 +90,19 @@ This directory contains research and analysis conducted to improve our MCP spec-
 ---
 
 ### 3. Code Analyst Pattern
+
 **File:** [`code-analyst.md`](./code-analyst.md)
 **Source:** Existing research file (cataloged)
 **Purpose:** Specialized agent for discovering WHAT and HOW from code
 
 **Responsibilities:**
+
 - Discover WHAT system does (features, workflows, business rules)
 - Discover HOW it's structured (architecture, patterns, communication)
 - Identify WHAT technologies are used
 
 **Key Principles:**
+
 - Code is ground truth - report what exists
 - Be specific - reference exact file:line
 - Distinguish fact from inference
@@ -99,6 +110,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - **Stay in lane** - don't infer WHY
 
 **What NOT to include:**
+
 - ❌ Internal data models (implementation detail)
 - ❌ Missing/planned features (belongs in roadmap)
 - ❌ Code quality judgments
@@ -110,6 +122,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 ---
 
 ### 4. Information Analyst Pattern
+
 **File:** [`information-analyst.md`](./information-analyst.md)
 **Source:** Existing research file (cataloged)
 **Purpose:** Specialized agent for extracting WHY from documentation
@@ -117,18 +130,21 @@ This directory contains research and analysis conducted to improve our MCP spec-
 **Primary Job:** Extract decision rationale from docs (not discoverable from code)
 
 **Responsibilities:**
+
 - Discover WHY system was built this way
 - Extract rationale from documentation
 - Find decision context and trade-offs
 - Capture historical evolution
 
 **What to Look For:**
+
 - Why was [technology X] chosen?
 - Why [pattern Y] over alternatives?
 - What constraints drove decisions?
 - What trade-offs were considered?
 
 **Key Principles:**
+
 - Direct quotes for "why"
 - Source everything (path#heading)
 - Attach metadata (timestamps)
@@ -141,6 +157,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 ---
 
 ### 5. Context Bootstrap Pattern
+
 **File:** [`context_bootstrap.md`](./context_bootstrap.md)
 **Source:** Existing research file (cataloged)
 **Purpose:** Manager orchestration pattern for coordinating specialized agents
@@ -149,6 +166,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 > "Code explains HOW the system currently behaves; the user supplies WHAT it is supposed to achieve and WHY choices were made."
 
 **Six-Phase Workflow:**
+
 1. Analyze repository structure
 2. Audit existing documentation
 3. Deep code analysis (subprocess: Code Analyst)
@@ -159,6 +177,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 **Key Pattern:** "Keep dialog interactive. Ask focused follow-up questions instead of long questionnaires."
 
 **Deliverables:**
+
 - PRDs (Product Requirements)
 - ADRs (Architecture Decision Records in MADR format)
 - SYSTEM-OVERVIEW.md
@@ -175,6 +194,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 **Enhanced `generate-codebase-context` Prompt:**
 
 From **code-analyst.md:**
+
 - ✅ File:line evidence citations for all code findings
 - ✅ Confidence levels (High/Needs Validation/Unknown)
 - ✅ "Stay in your lane" - don't infer WHY from code
@@ -183,6 +203,7 @@ From **code-analyst.md:**
 - ✅ Focus on working features, not missing ones
 
 From **information-analyst.md:**
+
 - ✅ Documentation audit phase (scan + timestamp + inventory)
 - ✅ Rationale extraction with direct quotes
 - ✅ Source references with path#heading format
@@ -190,11 +211,13 @@ From **information-analyst.md:**
 - ✅ Distinguish explicit vs implicit knowledge
 
 From **context_bootstrap.md:**
+
 - ✅ Repository structure detection (workspace/monorepo/single)
 - ✅ User collaboration phase (interactive, not batch)
 - ✅ Capture user answers as direct quotes for citation
 
 From **Claude Code feature-dev:**
+
 - ✅ Essential files list with line ranges (5-10 files)
 - ✅ Execution path traces (step-by-step flows)
 - ✅ Interactive short questions (not batch questionnaires)
@@ -227,6 +250,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ## Key Insights
 
 ### 1. Separation of Concerns
+
 **Discovery:** Code, docs, and users each provide different information
 
 - **Code → WHAT + HOW:** Features, architecture, patterns (observable facts)
@@ -238,6 +262,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ---
 
 ### 2. Evidence-Based Analysis
+
 **Discovery:** Every claim needs proof
 
 - Code findings: `file.ts:45-67` (line ranges)
@@ -249,6 +274,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ---
 
 ### 3. Confidence Assessment
+
 **Discovery:** Distinguish facts from inferences
 
 - High: Strong evidence from working code or explicit docs
@@ -260,6 +286,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ---
 
 ### 4. Interactive Collaboration
+
 **Discovery:** Short focused conversations > long questionnaires
 
 - Ask 3-5 questions, wait for answers
@@ -271,6 +298,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ---
 
 ### 5. Mandatory Checkpoints
+
 **Discovery:** Critical decisions need explicit user approval
 
 - ⛔ STOP after clarifying questions (don't proceed without answers)
@@ -284,6 +312,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ## Success Metrics
 
 ### Phase 1 Metrics ✅
+
 - ✅ 100% of code findings have file:line citations
 - ✅ 100% of findings categorized by confidence level
 - ✅ Documentation audit phase included
@@ -292,6 +321,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 - ✅ Execution path traces included in examples
 
 ### Phase 2 Metrics (Target)
+
 - [ ] Clarifying questions are mandatory (cannot proceed without)
 - [ ] Architecture options always present 2-3 approaches
 - [ ] User explicitly chooses architecture before tasks
@@ -303,6 +333,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 ## References
 
 ### External Sources
+
 - [Claude Code Repository](https://github.com/anthropics/claude-code)
 - [Feature-Dev Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev)
 - [Feature-Dev README](https://github.com/anthropics/claude-code/blob/main/plugins/feature-dev/README.md)
@@ -312,6 +343,7 @@ See [`../../PROGRESS.md`](../../PROGRESS.md) for detailed roadmap.
 - [MADR Format](https://adr.github.io/madr/)
 
 ### Internal Documents
+
 - [Progress Tracking](../../PROGRESS.md)
 - [Main README](../../../README.md)
 

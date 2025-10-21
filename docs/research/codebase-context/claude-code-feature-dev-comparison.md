@@ -8,6 +8,7 @@
 ## Executive Summary
 
 The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow that emphasizes:
+
 1. **Explicit clarifying questions** before design (prevents building wrong things)
 2. **Multi-approach architecture** with trade-off analysis (enables better decisions)
 3. **Agent-based parallel exploration** for efficiency
@@ -20,9 +21,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ## Claude Code Feature-Dev Workflow (7 Phases)
 
 ### Phase 1: Discovery
+
 **Goal:** Understand what needs to be built
 
 **Process:**
+
 - Create todo list with all phases
 - If feature unclear, ask user for problem, requirements, constraints
 - Summarize understanding and confirm with user
@@ -32,9 +35,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 2: Codebase Exploration
+
 **Goal:** Understand relevant existing code and patterns at both high and low levels
 
 **Process:**
+
 1. Launch 2-3 `code-explorer` agents in parallel
 2. Each agent targets different aspect (similar features, architecture, UX patterns)
 3. **Critical:** Each agent returns **list of 5-10 key files to read**
@@ -42,6 +47,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 5. Present comprehensive summary
 
 **Example Agent Prompts:**
+
 - "Find features similar to [feature] and trace through implementation comprehensively"
 - "Map the architecture and abstractions for [feature area]"
 - "Analyze current implementation of [existing feature/area]"
@@ -49,6 +55,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 **Key Pattern:** Agent-based parallel discovery + explicit file reading
 
 **Agent: code-explorer**
+
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
 - **Focus:** Trace execution paths from entry points to data storage
@@ -57,9 +64,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 3: Clarifying Questions ⭐ CRITICAL
+
 **Goal:** Fill in gaps and resolve ALL ambiguities before designing
 
 **Process:**
+
 1. Review codebase findings and original feature request
 2. Identify underspecified aspects:
    - Edge cases
@@ -79,9 +88,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 4: Architecture Design
+
 **Goal:** Design multiple implementation approaches with different trade-offs
 
 **Process:**
+
 1. Launch 2-3 `code-architect` agents in parallel with different focuses:
    - **Minimal changes:** Smallest change, maximum reuse
    - **Clean architecture:** Maintainability, elegant abstractions
@@ -97,6 +108,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 **Key Pattern:** Options with trade-offs + recommendation, not just one solution
 
 **Agent: code-architect**
+
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
 - **Focus:** Design complete architecture with confident decisions
@@ -112,9 +124,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 5: Implementation
+
 **Goal:** Build the feature
 
 **Process:**
+
 1. **DO NOT START WITHOUT USER APPROVAL**
 2. Wait for explicit user approval
 3. Read all relevant files identified in previous phases
@@ -128,9 +142,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 6: Quality Review
+
 **Goal:** Ensure code is simple, DRY, elegant, and functionally correct
 
 **Process:**
+
 1. Launch 3 `code-reviewer` agents in parallel with different focuses:
    - **Simplicity/DRY/Elegance:** Code quality and maintainability
    - **Bugs/Functional Correctness:** Logic errors and bugs
@@ -145,6 +161,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 **Key Pattern:** Parallel multi-focus review + user decision on fixes
 
 **Agent: code-reviewer**
+
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
 - **Focus:** Find bugs, quality issues, guideline violations
@@ -158,9 +175,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Phase 7: Summary
+
 **Goal:** Document what was accomplished
 
 **Process:**
+
 1. Mark all todos complete
 2. Summarize:
    - What was built
@@ -175,9 +194,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ## Our Current MCP Workflow
 
 ### Prompt 1: generate-codebase-context (NEW)
+
 **Goal:** Analyze codebase architecture, patterns, and conventions
 
 **Process:**
+
 - Conversational, iterative analysis
 - Ask user about repo structure, service architecture, priority areas
 - Automated discovery: tech stack, config files, directory structure
@@ -185,6 +206,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 - Generate comprehensive analysis document in `/tasks/[n]-analysis-[name].md`
 
 **Output Structure:**
+
 - Overview (project type, languages, frameworks)
 - Architecture (system design, directory structure)
 - Tech stack deep dive
@@ -202,11 +224,13 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 - Open questions
 
 **Strengths:**
+
 - Very comprehensive documentation
 - Persistent artifact (`.md` file)
 - Covers all architectural aspects
 
 **Gaps vs Claude Code:**
+
 - No explicit "return 5-10 key files to read" instruction
 - Less focused on execution path tracing
 - More documentation-oriented than action-oriented
@@ -214,9 +238,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Prompt 2: generate-spec
+
 **Goal:** Create detailed specification for a feature
 
 **Process:**
+
 1. Receive initial prompt
 2. Ask clarifying questions (examples provided)
 3. Generate spec using structured template
@@ -225,6 +251,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 6. Complete when user approves
 
 **Spec Structure:**
+
 - Introduction/Overview
 - Goals
 - User Stories
@@ -237,6 +264,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 - Open Questions
 
 **Clarifying Questions (Examples):**
+
 - Problem/Goal
 - Target User
 - Core Functionality
@@ -250,11 +278,13 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 - Demoability
 
 **Strengths:**
+
 - Comprehensive spec structure
 - Demoable units focus
 - Persistent documentation
 
 **Gaps vs Claude Code:**
+
 - Clarifying questions are examples, not a mandatory phase
 - No explicit "WAIT FOR ANSWERS" checkpoint
 - Happens before codebase exploration (should be after)
@@ -263,9 +293,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Prompt 3: generate-task-list-from-spec
+
 **Goal:** Create detailed task list from spec
 
 **Process:**
+
 1. Receive spec reference
 2. Analyze spec
 3. Define demoable units of work
@@ -278,17 +310,20 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 10. Save as `/tasks/tasks-[spec-file-name].md`
 
 **Output Structure:**
+
 - Relevant Files (with descriptions)
 - Notes (test conventions, commands)
 - Tasks (parent + sub-tasks with demo criteria and proof artifacts)
 
 **Strengths:**
+
 - Two-phase generation (parent tasks → sub-tasks)
 - Explicit user checkpoint
 - Demo criteria and proof artifacts for each parent task
 - Codebase-aware task generation
 
 **Gaps vs Claude Code:**
+
 - No architecture options to choose from
 - Codebase assessment is brief, not agent-based
 - No "key files to read" from prior analysis
@@ -296,9 +331,11 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ---
 
 ### Prompt 4: manage-tasks
+
 **Goal:** Execute and track task progress
 
 **Process:**
+
 - Three task states: `[ ]` not started, `[~]` in-progress, `[x]` completed
 - One sub-task at a time
 - Mark in-progress immediately
@@ -313,12 +350,14 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 - Update "Relevant Files" section as work progresses
 
 **Strengths:**
+
 - Clear state management
 - Test-driven completion
 - Demo criteria validation
 - Git integration with conventional commits
 
 **Gaps vs Claude Code:**
+
 - No quality review phase before completion
 - No parallel reviewer agents
 - No user checkpoint after implementation
@@ -355,6 +394,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ## Workflow Comparison
 
 ### Claude Code Flow
+
 ```
 1. Discovery           →  Understand feature request
                           ↓
@@ -382,6 +422,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ```
 
 ### Our Current Flow
+
 ```
 1. generate-          →  Comprehensive codebase analysis
    codebase-context      Generate analysis document
@@ -403,6 +444,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 ```
 
 **Key Differences:**
+
 - ❌ We have no dedicated clarifying phase with mandatory stop
 - ❌ We have no architecture options comparison
 - ❌ We have no quality review phase
@@ -418,12 +460,14 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 #### 1. Enhance `generate-spec` with Mandatory Clarifying Phase
 
 **Current State:**
+
 ```markdown
 ## Clarifying Questions (Examples)
 The AI should adapt its questions based on the prompt...
 ```
 
 **Recommended Change:**
+
 ```markdown
 ## Phase 1: Initial Understanding
 - Receive feature request
@@ -468,6 +512,7 @@ If user says "whatever you think is best", provide recommendation and get explic
 **Purpose:** Generate and compare multiple architectural approaches before task generation
 
 **Process:**
+
 1. Review spec and codebase context
 2. Generate 2-3 approaches:
    - **Minimal Changes:** Smallest change, maximum code reuse, fastest to ship
@@ -496,6 +541,7 @@ If user says "whatever you think is best", provide recommendation and get explic
 **Purpose:** Quality review of implemented code before considering feature complete
 
 **Process:**
+
 1. **Prerequisite:** Implementation tasks are complete
 2. Review all modified/created files
 3. Check for:
@@ -531,6 +577,7 @@ If user says "whatever you think is best", provide recommendation and get explic
 **Recommended Changes:**
 
 Add to the **Output** section:
+
 ```markdown
 ## Essential Files to Read
 
@@ -544,6 +591,7 @@ After completing this analysis, provide a prioritized list of 5-10 essential fil
 ```
 
 Add to **Phase 2: Deep Architectural Analysis**:
+
 ```markdown
 ### Execution Path Tracing
 
@@ -556,7 +604,9 @@ For key user flows, trace the execution path:
 
 **Example Flow:**
 ```
+
 User Login:
+
 1. POST /api/auth/login → routes/auth.ts:23
 2. AuthController.login() → controllers/AuthController.ts:45
 3. AuthService.validateCredentials() → services/AuthService.ts:67
@@ -564,6 +614,7 @@ User Login:
 5. Database query → models/User.ts:89
 6. JWT token generation → utils/jwt.ts:12
 7. Response with token → controllers/AuthController.ts:52
+
 ```
 ```
 
@@ -574,6 +625,7 @@ User Login:
 #### 5. Update `generate-task-list-from-spec` to Reference Architecture
 
 **Current State:**
+
 ```markdown
 ## Process
 ...
@@ -583,6 +635,7 @@ User Login:
 ```
 
 **Recommended Change:**
+
 ```markdown
 ## Process
 ...
@@ -606,6 +659,7 @@ User Login:
 #### 6. Add Explicit Checkpoints to All Prompts
 
 Add checkpoint markers:
+
 ```markdown
 ## Checkpoints
 
@@ -623,6 +677,7 @@ This prompt has the following user interaction checkpoints:
 #### 7. Document Complete Workflow
 
 Create `docs/workflow.md`:
+
 ```markdown
 # Spec-Driven Development Workflow
 
@@ -720,18 +775,21 @@ Create `docs/workflow.md`:
 ## Implementation Priority
 
 ### Sprint 1: Critical Gaps (Week 1)
+
 - [ ] Enhance `generate-spec` with mandatory clarifying phase
 - [ ] Create `generate-architecture-options` prompt
 - [ ] Create `review-implementation` prompt
 - [ ] Update workflow documentation
 
 ### Sprint 2: Important Improvements (Week 2)
+
 - [ ] Enhance `generate-codebase-context` with key files output
 - [ ] Add execution path tracing to context analysis
 - [ ] Update `generate-task-list-from-spec` to reference architecture
 - [ ] Add explicit checkpoints to all prompts
 
 ### Sprint 3: Polish (Week 3)
+
 - [ ] Test complete workflow end-to-end
 - [ ] Refine based on feedback
 - [ ] Document examples and best practices
@@ -760,6 +818,7 @@ Create `docs/workflow.md`:
 ## Appendix: Claude Code Agent Specifications
 
 ### code-explorer Agent
+
 ```yaml
 name: code-explorer
 description: Deeply analyzes existing codebase features by tracing execution paths
@@ -769,6 +828,7 @@ color: yellow
 ```
 
 **Output Requirements:**
+
 - Entry points with file:line references
 - Step-by-step execution flow with data transformations
 - Key components and their responsibilities
@@ -780,6 +840,7 @@ color: yellow
 ---
 
 ### code-architect Agent
+
 ```yaml
 name: code-architect
 description: Designs feature architectures by analyzing codebase patterns and providing implementation blueprints
@@ -789,6 +850,7 @@ color: green
 ```
 
 **Output Requirements:**
+
 - **Patterns & Conventions Found:** Existing patterns with file:line references
 - **Architecture Decision:** Chosen approach with rationale and trade-offs
 - **Component Design:** Each component with file path, responsibilities, dependencies, interfaces
@@ -802,6 +864,7 @@ color: green
 ---
 
 ### code-reviewer Agent
+
 ```yaml
 name: code-reviewer
 description: Reviews code for bugs, quality issues, and project conventions
@@ -811,12 +874,14 @@ color: blue
 ```
 
 **Focus Areas:**
+
 - Project guideline compliance (CLAUDE.md)
 - Bug detection
 - Code quality issues
 - Confidence-based filtering (only reports high-confidence issues ≥80)
 
 **Output Requirements:**
+
 - Critical issues (confidence 75-100)
 - Important issues (confidence 50-74)
 - Specific fixes with file:line references
