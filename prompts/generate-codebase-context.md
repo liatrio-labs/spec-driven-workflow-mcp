@@ -1,6 +1,6 @@
 ---
-name: reverse-engineer-codebase
-description: "Reverse engineer a codebase to understand its architecture, patterns, and context for spec-driven development"
+name: generate-codebase-context
+description: "Generate codebase context by analyzing architecture, patterns, and conventions for spec-driven development"
 tags:
   - analysis
   - architecture
@@ -11,7 +11,7 @@ meta:
   allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
-## Reverse Engineer Codebase
+## Generate Codebase Context
 
 ## Goal
 
