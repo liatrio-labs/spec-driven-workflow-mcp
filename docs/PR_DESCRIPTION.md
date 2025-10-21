@@ -1,8 +1,10 @@
-# PR: Add codebase context generation with evidence-based analysis
+# PR: Add codebase context generation prompt with evidence-based analysis
 
 ## Summary
 
-Creates a new `generate-codebase-context` prompt with comprehensive research-driven analysis capabilities. This prompt provides evidence-based codebase analysis with confidence assessment, supporting spec-driven feature development.
+**Creates a NEW `generate-codebase-context` prompt** with comprehensive research-driven analysis capabilities. This prompt provides evidence-based codebase analysis with confidence assessment, supporting spec-driven feature development.
+
+**What's New:** Before this PR, our workflow had no systematic codebase analysis step. This PR introduces a new prompt that fills that gap by analyzing codebases before feature development begins.
 
 ## What's New in This PR
 
