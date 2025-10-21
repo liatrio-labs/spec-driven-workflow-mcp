@@ -808,10 +808,12 @@ For each integration:
 
 **Example - Request Flow:**
 ```
+
 API endpoint (file.ts:line)
   → Service method (file.ts:line)
     → Repository method (file.ts:line)
       → Database query
+
 ```
 
 ### Architectural Patterns
@@ -864,6 +866,7 @@ List patterns with evidence and confidence:
 
 **Example - User Login:**
 ```
+
 1. POST /api/auth/login → src/api/routes/auth.ts:23
 2. Validation middleware → src/api/middleware/validator.ts:8
 3. AuthService.login() → src/services/AuthService.ts:45
@@ -871,6 +874,7 @@ List patterns with evidence and confidence:
 5. Password verify → src/utils/bcrypt.ts:15
 6. Generate JWT → src/utils/jwt.ts:12
 7. Return { token, user } → src/api/routes/auth.ts:34
+
 ```
 
 ---
