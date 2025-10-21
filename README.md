@@ -1,36 +1,42 @@
-# Spec Driven Development (SDD) MCP
+# Spec Driven Development Workflow
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-<img alt="Spec Driven Development MCP header" src="./misc/header.png" width="400">
+<img alt="Spec Driven Development header" src="./misc/header.png" width="400">
 
-## Why does this exist?
+## Why Spec Driven Development?
 
-This project provides a ubiquitous framework for spec driven development (SDD) that can be used anywhere an AI agent is used as a collaborator.
+Spec Driven Development (SDD) keeps AI collaborators and human developers aligned around a shared source of truth. This repository packages a lightweight, prompt-centric workflow that turns an idea into a reviewed specification, an actionable plan, and a disciplined execution loop. By centering on markdown artifacts instead of tooling, the workflow travels with you—across projects, models, and collaboration environments.
 
-MCP technology provides a standard way to represent and exchange information between AI agents, and this framework provides a way to use that information to guide the process of refining and implementing specifications of all kinds. Using MCP allows users to take advantage of the framework with whatever AI tool and AI model they choose, in whatever workflow they prefer.
+## Guiding Principles
 
-## Goals
+- **Clarify intent before delivery:** The spec prompt enforces clarifying questions so requirements are explicit and junior-friendly.
+- **Ship demoable slices:** Every stage pushes toward thin, end-to-end increments with clear demo criteria and proof artifacts.
+- **Make work transparent:** Tasks live in versioned markdown files so stakeholders can review, comment, and adjust scope anytime.
+- **Progress one slice at a time:** The management prompt enforces single-threaded execution to reduce churn and unfinished work-in-progress.
+- **Stay automation ready:** While SDD works with plain Markdown, the prompts are structured for MCP, IDE agents, or other AI integrations.
 
-- **Simple:** Easy to use and understand with transparent access to the underlying tools and processes.
-- **Ubiquitous:** Can be used anywhere an AI agent is used as a collaborator.
-- **Reliable:** Reliable and can be trusted to deliver consistent results.
-- **Flexible:** Can be used with any AI tool and AI model inside any workflow.
-- **Scalable:** Can be used with any size of project.
+## Workflow Overview
 
-Future functionality will include:
+Three prompts in `/prompts` define the full lifecycle. Use them sequentially to move from concept to completed work.
 
-- User-defined output formats (Markdown task list, Jira objects via Atlassian MCP, GitHub issues, etc.)
-- Ability to customize the prompts used to drive the SDD workflow
-- TBD
+### Stage 1 — Generate the Spec ([prompts/generate-spec.md](./prompts/generate-spec.md))
 
-## How does it work?
+- Directs the AI assistant to use clarifying questions with the user before writing a Markdown spec.
+- Produces `/tasks/000X-spec-<feature>.md` with goals, demoable units of work, functional/non-goals, metrics, and open questions.
 
-The MCP is driven by basic Markdown files that function as prompts for the AI agent. Users can reference the specific MCP tools in their prompts to use specific flows within the SDD workflow. Users can manage the context of the AI by using the tools of their existing workflows (GitHub CLI, Atlassian MCP, etc.). The AI agent can use the tools of the user's existing workflows to perform actions (e.g., create a new issue, update an existing issue, etc.)
+### Stage 2 — Generate the Task List ([prompts/generate-task-list-from-spec.md](./prompts/generate-task-list-from-spec.md))
 
-### SDD Workflow Overview
+- Reads the approved spec, inspects the repo for context, and drafts parent tasks first.
+- On confirmation from the user, expands each parent task into sequenced subtasks with demo criteria, proof artifacts, and relevant files.
+- Outputs `/tasks/tasks-000X-spec-<feature>.md` ready for implementation.
 
-Here is a detailed diagram of the SDD workflow:
+### Stage 3 — Manage Tasks ([prompts/manage-tasks.md](./prompts/manage-tasks.md))
+
+- Enforces disciplined execution: mark in-progress immediately, finish one subtask before starting the next, and log artifacts as you go.
+- Bakes in commit hygiene, validation steps, and communication rituals so handoffs stay tight.
+
+### Detailed SDD Workflow Diagram
 
 ```mermaid
 sequenceDiagram
@@ -69,24 +75,28 @@ sequenceDiagram
   MT->>CODE: Iterate changes
 ```
 
-### Available Prompts
+## Core Artifacts
 
-The server provides three core prompts for spec-driven development:
+- **Specs:** `000X-spec-<feature>.md` — canonical requirements, demo slices, and success metrics.
+- **Task Lists:** `tasks-000X-spec-<feature>.md` — parent/subtask checklist with relevant files and proof artifacts.
+- **Status Keys:** `[ ]` not started, `[~]` in progress, `[x]` complete, mirroring the manage-tasks guidance.
+- **Proof Artifacts:** URLs, CLI commands, screenshots, or tests captured per task to demonstrate working software.
 
-- `generate-spec`: Create a detailed specification from a feature description
-- `generate-task-list-from-spec`: Generate an actionable task list from a spec
-- `manage-tasks`: Manage and track progress on task lists
+## Hands-On Usage (No MCP Required)
 
-## Technologies Used
+1. **Kick off a spec:** Copy or reference `prompts/generate-spec.md` inside your preferred AI chat. Provide the feature idea, answer the clarifying questions, and review the generated spec before saving it under `/tasks`.
+2. **Plan the work:** Point the assistant to the new spec and walk through `prompts/generate-task-list-from-spec.md`. Approve parent tasks first, then request the detailed subtasks and relevant files. Commit the result to `/tasks`.
+3. **Execute with discipline:** Follow `prompts/manage-tasks.md` while implementing. Update statuses as you work, attach proof artifacts, and pause for reviews at each demoable slice.
 
-| Technology | Description | Link |
-| --- | --- | --- |
-| `uv` | Modern Python package and project manager | <https://docs.astral.sh/uv/> |
-| FastMCP | Tool for building MCP servers and clients | <https://github.com/jlowin/fastmcp> |
-| `pre-commit` | Git hooks for code quality and formatting | <https://pre-commit.com/> |
-| Semantic Release | Automated release process (via GitHub Actions) | <https://github.com/python-semantic-release/python-semantic-release> |
+### Slash Command Integration (TBD)
 
-## Quick Start
+Guides are coming for wiring these prompts as first-class slash commands in popular IDEs and AI tools (Windsurf, VS Code, Cursor, Claude Code, Codex, and more).
+
+## Optional: Automate with the MCP Server
+
+Prefer tighter tooling? This repository also ships an MCP server that exposes the same prompts programmatically. Treat it as an accelerator—everything above works without it.
+
+> Note: MCP prompt support is not uniformly supported across AI tools. See [docs/mcp-prompt-support.md](./docs/mcp-prompt-support.md) for details.
 
 ### Installation
 
@@ -97,41 +107,38 @@ cd spec-driven-workflow-mcp
 
 # Install dependencies
 uv sync
-
-# Run tests
-uv run pytest
 ```
 
-### Running the Server
+### Run the MCP Server
 
-**STDIO Transport (for local development):**
+**STDIO (local development):**
 
 ```bash
 uvx fastmcp run server.py
+```
 
-# Or start an MCP Inspector instance for local testing along with the app:
+**With MCP Inspector:**
+
+```bash
 uvx fastmcp dev server.py
 ```
 
-**HTTP Transport (for remote access):**
+**HTTP Transport:**
 
 ```bash
 uvx fastmcp run server.py --transport http --port 8000
 ```
 
-See [docs/operations.md](docs/operations.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for detailed configuration, contribution workflow, and deployment options.
+See `docs/operations.md` and `CONTRIBUTING.md` for advanced configuration, deployment, and contribution guidelines.
 
-## References
+## References & Further Reading
 
 | Reference | Description | Link |
 | --- | --- | --- |
-| MCP | MCP is a standard way to represent and exchange information between AI agents | <https://modelcontextprotocol.io/docs/getting-started/intro> |
-| FastMCP | The fast, Pythonic way to build MCP servers and clients. | <https://gofastmcp.com/getting-started/welcome> |
-| AI Dev Tasks | Example of a basic SDD workflow using only markdown files. | <https://github.com/snarktank/ai-dev-tasks> |
-| AI Dev Tasks (customized) | A customized version of AI Dev Tasks | <https://github.com/liatrio/read-me/tree/main/damien-storm/ai-stuff#feature-development-flow> |
-| Spec Driven Workflow | Liatrio app that provides a unified development workflow system | <https://github.com/liatrio-labs/spec-driven-workflow> |
+| AI Dev Tasks | Foundational example of an SDD workflow expressed entirely in Markdown. | <https://github.com/snarktank/ai-dev-tasks> |
+| MCP | Standard protocol for AI agent interoperability, used here as an optional integration layer. | <https://modelcontextprotocol.io/docs/getting-started/intro> |
+| FastMCP | Python tooling for building MCP servers and clients that power this repo's automation. | <https://github.com/jlowin/fastmcp> |
 
 ## License
 
-This project is licensed under the Apache License, Version 2.0. See the
-[LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for details.
