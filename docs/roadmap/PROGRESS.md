@@ -103,7 +103,7 @@ Explicitly flags items needing user validation.
 
 Step-by-step flow examples:
 
-```
+```text
 User Login Flow:
 1. POST /api/auth/login → src/api/routes/auth.ts:23
 2. AuthController.login() → src/controllers/AuthController.ts:45
@@ -149,7 +149,7 @@ Pre-completion verification:
 
 ### Files Added/Modified
 
-```
+```text
 ✅ prompts/generate-codebase-context.md (enhanced)
 ✅ docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md (new)
 ✅ docs/research/reverse-engineer-prompts/research-synthesis.md (new)

@@ -18,7 +18,7 @@
 
 ### 🎯 Core Philosophy from context_bootstrap.md
 
-**"Code explains HOW the system currently behaves; the user supplies WHAT it is supposed to achieve and WHY choices were made."**
+> "Code explains HOW the system currently behaves; the user supplies WHAT it is supposed to achieve and WHY choices were made."
 
 This is **critical** - it separates:
 
@@ -701,4 +701,4 @@ Ask targeted questions about:
 - **code-analyst.md:** Specialized agent for code analysis
 - **information-analyst.md:** Specialized agent for documentation analysis
 - **context_bootstrap.md:** Manager orchestration pattern
-- **MADR Format:** https://adr.github.io/madr/
+- **MADR Format:** [Architecture Decision Records (MADR)](https://adr.github.io/madr/)

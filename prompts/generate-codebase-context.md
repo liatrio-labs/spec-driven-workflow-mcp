@@ -222,7 +222,7 @@ Trace from entry points to understand:
 
 For key workflows, provide step-by-step execution trace:
 
-```
+```text
 User Login Flow:
 1. POST /api/auth/login → src/api/routes/auth.ts:23
 2. AuthController.login() → src/controllers/AuthController.ts:45
@@ -256,7 +256,7 @@ From dependency files and imports, catalog:
 
 **Evidence format:**
 
-```
+```text
 - **Framework:** React (package.json:15, imports in src/components/*.tsx)
 - **Database:** PostgreSQL (package.json:23 'pg', connection in src/db/pool.ts:8)
 - **Cache:** Redis (docker-compose.yml:34, client in src/cache/redis.ts:12)
@@ -285,7 +285,7 @@ From dependency files and imports, catalog:
 
 Example:
 
-```
+```text
 - **API Service → Database:**
   - Method: Direct ORM queries
   - Evidence: src/services/UserService.ts:45 calls UserRepository.findById()
@@ -348,7 +348,7 @@ For each external integration found:
 
 Example:
 
-```
+```text
 - **Stripe (Payment Processing):**
   - Usage: Charges, subscriptions, webhooks
   - Evidence: src/services/PaymentService.ts:23-156
@@ -403,7 +403,7 @@ Ask 3-5 targeted questions based on gaps found:
 
 Example:
 
-```
+```text
 I found some gaps that need your input:
 
 1. **PostgreSQL vs. MongoDB:**
@@ -426,7 +426,7 @@ I found some gaps that need your input:
 
 **Capture answers as direct quotes:**
 
-```
+```text
 [User confirmed: 2025-01-21: "MongoDB was from an early experiment, it's safe to remove."]
 [User stated: "JWT chosen because we needed stateless auth for mobile clients."]
 ```
@@ -581,7 +581,7 @@ I found some gaps that need your input:
 ### 4.2 Communication Patterns
 
 **API → Services → Repositories → Database:**
-```
+```text
 
 src/api/routes/users.ts:25 (HTTP endpoint)
   → UserService.createUser() (src/services/UserService.ts:67)
@@ -591,7 +591,7 @@ src/api/routes/users.ts:25 (HTTP endpoint)
 ```
 
 **Event-Driven (Async):**
-```
+```text
 
 PaymentService.processCharge() (src/services/PaymentService.ts:89)
   → EventBus.publish('payment.processed') (src/events/bus.ts:23)
@@ -703,7 +703,7 @@ Priority files for anyone working on this codebase:
 
 ### Example 1: User Login
 
-```
+```text
 
 1. User submits credentials via POST /api/auth/login
    Entry: src/api/routes/auth.ts:23
@@ -737,7 +737,7 @@ Priority files for anyone working on this codebase:
 
 ### Example 2: Background Payment Processing
 
-```
+```text
 
 1. Webhook received from Stripe
    Entry: src/api/routes/webhooks/stripe.ts:12
@@ -862,7 +862,6 @@ After this context analysis:
 **Analysis completed:** YYYY-MM-DD
 **Last validated with user:** YYYY-MM-DD
 **Status:** Ready for feature specification
-```
 
 ---
 
