@@ -2,6 +2,40 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-10-18)
+
+### Bug Fixes
+
+- Correct typo ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+### Features
+
+- Add opencode configuration ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+- **ci**: Enhance opencode workflow with comprehensive triggers
+  ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+- **ci**: Restrict opencode workflow to authorized users only
+  ([#11](https://github.com/liatrio-labs/spec-driven-workflow/pull/11),
+  [`cdb0bd9`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cdb0bd933c780afc8357db3aac78496f003f534c))
+
+
+## v1.3.1 (2025-10-18)
+
+### Bug Fixes
+
+- Remove title field from generate-spec prompt
+  ([#12](https://github.com/liatrio-labs/spec-driven-workflow/pull/12),
+  [`a58be56`](https://github.com/liatrio-labs/spec-driven-workflow/commit/a58be5602a2b9527758d581d57a299a1d33190e8))
+
+- Update repo name in chainguard config
+  ([#14](https://github.com/liatrio-labs/spec-driven-workflow/pull/14),
+  [`0696e5d`](https://github.com/liatrio-labs/spec-driven-workflow/commit/0696e5dd02871a86f3ccd0793ac509535473c3de))
+
+
 ## v1.3.0 (2025-10-16)
 
 ### Bug Fixes
