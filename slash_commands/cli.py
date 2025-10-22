@@ -8,6 +8,8 @@ from typing import Annotated
 
 import questionary
 import typer
+from rich.console import Console
+from rich.table import Table
 
 from slash_commands import SlashCommandWriter, detect_agents, get_agent_config, list_agent_keys
 
@@ -15,6 +17,8 @@ app = typer.Typer(
     name="sdd-generate-commands",
     help="Generate slash command files for AI code assistants",
 )
+
+console = Console()
 
 
 def _prompt_agent_selection(detected_agents: list) -> list:
@@ -108,13 +112,34 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     """Generate slash command files for AI code assistants."""
     # Handle --list-agents
     if list_agents_flag:
-        print("Supported agents:")
+        # Create Rich table
+        table = Table(title="Supported Agents")
+        table.add_column("Agent Key", style="cyan", no_wrap=True)
+        table.add_column("Display Name", style="magenta")
+        table.add_column("Target Path", style="blue")
+        table.add_column("Detected", style="green", justify="center")
+
+        # Get home directory for checking paths
+        home_dir = Path.home()
+
         for agent_key in list_agent_keys():
             try:
                 agent = get_agent_config(agent_key)
-                print(f"  {agent_key:20} - {agent.display_name}")
+                # Check if any detection directory exists
+                detection_dirs = [home_dir / d for d in agent.detection_dirs]
+                exists = any(d.exists() for d in detection_dirs)
+                detected = "✓" if exists else "✗"
+
+                table.add_row(
+                    agent_key,
+                    agent.display_name,
+                    agent.command_dir,
+                    detected,
+                )
             except KeyError:
-                print(f"  {agent_key:20} - Unknown")
+                table.add_row(agent_key, "Unknown", "N/A", "✗")
+
+        console.print(table)
         return
 
     # Detect agents if not specified
