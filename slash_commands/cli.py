@@ -81,13 +81,12 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
             help="Skip confirmation prompts",
         ),
     ] = False,
-    base_path: Annotated[
+    target_path: Annotated[
         Path | None,
         typer.Option(
-            "--base-path",
-            "-b",
-            "--target-dir",
-            help="Base directory for output paths",
+            "--target-path",
+            "-t",
+            help="Target directory for output paths (defaults to home directory)",
         ),
     ] = None,
     detection_path: Annotated[
@@ -95,7 +94,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         typer.Option(
             "--detection-path",
             "-d",
-            help="Directory to search for agent configurations (defaults to current directory)",
+            help="Directory to search for agent configurations (defaults to home directory)",
         ),
     ] = None,
     list_agents_flag: Annotated[
@@ -120,11 +119,11 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
 
     # Detect agents if not specified
     if agents is None or len(agents) == 0:
-        # Use detection_path if specified, otherwise base_path, otherwise current directory
+        # Use detection_path if specified, otherwise target_path, otherwise home directory
         detection_dir = (
             detection_path
             if detection_path is not None
-            else (base_path if base_path is not None else Path.cwd())
+            else (target_path if target_path is not None else Path.home())
         )
         detected = detect_agents(detection_dir)
         if not detected:
@@ -158,13 +157,16 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     else:
         print(f"Selected agents: {', '.join(agents)}")
 
+    # Determine target path (default to home directory)
+    actual_target_path = target_path if target_path is not None else Path.home()
+
     # Create writer
     overwrite_action = "overwrite" if yes else None
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
         agents=agents,
         dry_run=dry_run,
-        base_path=base_path,
+        base_path=actual_target_path,
         overwrite_action=overwrite_action,
     )
 
@@ -202,7 +204,8 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         print("  - Check that the output directory is writable", file=sys.stderr)
         print("  - Ensure there's sufficient disk space", file=sys.stderr)
         print(
-            f"  - Verify the path exists: {base_path if base_path else Path.cwd()}", file=sys.stderr
+            f"  - Verify the path exists: {actual_target_path}",
+            file=sys.stderr,
         )
         sys.exit(3)  # I/O error (file system errors)
     except RuntimeError as e:

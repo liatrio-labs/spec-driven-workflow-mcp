@@ -31,11 +31,18 @@ uv run sdd-generate-commands [OPTIONS]
 
 ### Basic Usage
 
-Generate commands for all auto-detected agents:
+Generate commands for all auto-detected agents in your home directory:
 
 ```bash
 uv run sdd-generate-commands
 ```
+
+**Note**: By default, the generator:
+
+- Detects agents in your home directory (`~`)
+- Generates command files in your home directory
+- Use `--detection-path` to search in a different directory
+- Use `--target-path` to generate files in a different location
 
 ### Agent Selection
 
@@ -68,6 +75,16 @@ Specify a custom prompts directory:
 ```bash
 uv run sdd-generate-commands --prompts-dir ./my-prompts
 ```
+
+### Detection Path
+
+Specify a custom directory to search for agents:
+
+```bash
+uv run sdd-generate-commands --detection-path /path/to/project
+```
+
+**Note**: By default, the generator searches for agents in your home directory. Use `--detection-path` to search in a different location (e.g., current directory for project-specific detection).
 
 ### Overwrite Handling
 
@@ -362,17 +379,15 @@ Files:
 
 ## Configuration
 
-### Base Path
+### Target Path
 
-Specify a custom base directory for output:
+Specify a custom target directory for output:
 
 ```bash
-uv run sdd-generate-commands --base-path /path/to/project
-# or
-uv run sdd-generate-commands --target-dir /path/to/project
+uv run sdd-generate-commands --target-path /path/to/project
 ```
 
-**Note**: `--base-path` and `--target-dir` are aliases for the same option.
+**Note**: By default, commands are generated in your home directory. Use `--target-path` to specify a different location.
 
 ### Environment Variables
 
@@ -456,7 +471,7 @@ Configuration can be set via environment variables:
 3. **Use different base path**: Specify a writable directory:
 
    ```bash
-   uv run sdd-generate-commands --base-path /tmp/test-output
+   uv run sdd-generate-commands --target-path /tmp/test-output
    ```
 
 4. **Run with elevated permissions**: If appropriate, use `sudo`:
@@ -490,7 +505,7 @@ Configuration can be set via environment variables:
 4. **Try different location**: Use a different base path:
 
    ```bash
-   uv run sdd-generate-commands --base-path /tmp/test-output
+   uv run sdd-generate-commands --target-path /tmp/test-output
    ```
 
 ### Prompts Directory Not Found

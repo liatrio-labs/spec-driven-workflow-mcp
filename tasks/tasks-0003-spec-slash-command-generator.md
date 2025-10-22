@@ -91,12 +91,12 @@
   - [x] 7.5 Add note about backup file cleanup in docs (no automatic cleanup; users should periodically clean `.bak` files).
   - [x] 7.6 Consider adding `--target-dir` alias for `--base-path` if spec requires it, or document the deviation.
 
-- [ ] 8.0 Fix detection default location: change default to home directory
+- [x] 8.0 Fix detection default location: change default to home directory
   - Demo Criteria: "Running `sdd-generate-commands` without flags detects agents in home directory and generates commands there; `--detection-path` allows override for project-specific use cases."
   - Proof Artifact(s): "CLI: run without flags showing detection in home directory; CLI: run with `--detection-path .` showing project-specific detection; Diff: updated CLI code and tests."
-  - [ ] 8.1 Update detection logic in `slash_commands/cli.py` to default to `Path.home()` instead of `Path.cwd()` for agent detection.
-  - [ ] 8.2 Update tests in `tests/test_cli.py` to verify default detection uses home directory.
-  - [ ] 8.3 Add integration test demonstrating detection in home directory vs current directory.
-  - [ ] 8.4 Update documentation in `docs/slash-command-generator.md` to explain default behavior and when to use `--detection-path`.
-  - [ ] 8.5 Update examples in documentation to show home directory usage as primary use case.
-  - [ ] 8.6 Update CLI help text to clarify default detection location.
+  - [x] 8.1 Update detection logic in `slash_commands/cli.py` to default to `Path.home()` instead of `Path.cwd()` for agent detection.
+  - [x] 8.2 Update tests in `tests/test_cli.py` to verify default detection uses home directory.
+  - [x] 8.3 Add integration test demonstrating detection in home directory vs current directory.
+  - [x] 8.4 Update documentation in `docs/slash-command-generator.md` to explain default behavior and when to use `--detection-path`.
+  - [x] 8.5 Update examples in documentation to show home directory usage as primary use case.
+  - [x] 8.6 Update CLI help text to clarify default detection location.
