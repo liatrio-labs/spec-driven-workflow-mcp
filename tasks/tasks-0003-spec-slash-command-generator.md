@@ -8,6 +8,7 @@
 - `slash_commands/cli.py` - Typer CLI entry point handling argument parsing and interactive flows.
 - `tests/test_config.py` - Unit tests validating agent configuration data models.
 - `tests/test_detection.py` - Unit tests covering auto-detection behaviour.
+- `tests/conftest.py` - Shared pytest fixtures for prompt samples and overrides.
 - `tests/test_generators.py` - Unit tests for Markdown and TOML command generators.
 - `tests/test_writer.py` - Unit tests ensuring writer orchestrates generation and dry-runs correctly.
 - `tests/test_cli.py` - Unit tests covering CLI option parsing and exit codes.
@@ -32,13 +33,13 @@
   - [x] 1.4 Draft failing detection tests in `tests/test_detection.py` covering positive, negative, and mixed directory scenarios using `tmp_path` fixtures.
   - [x] 1.5 Implement `detect_agents` (and supporting utilities) in `slash_commands/detection.py` so detection tests pass with deterministic ordering.
 
-- [ ] 2.0 Implement Markdown and TOML command generators with override support
+- [~] 2.0 Implement Markdown and TOML command generators with override support
   - Demo Criteria: "Generators transform `MarkdownPrompt` objects into .md/.toml command files that honor placeholders and agent-specific metadata overrides."
   - Proof Artifact(s): "CLI: `pytest tests/test_generators.py -v`; Snapshot diff: expected vs actual generated command files."
-  - [ ] 2.1 Add fixtures in `tests/conftest.py` for sample prompts, including agent override metadata and argument definitions.
-  - [ ] 2.2 Write failing tests in `tests/test_generators.py` that assert Markdown output includes frontmatter, body, and `$ARGUMENTS` placeholder handling.
-  - [ ] 2.3 Extend generator tests to cover TOML formatting, `{{args}}` substitution, and override application across multiple agents.
-  - [ ] 2.4 Implement `CommandGenerator` base class plus Markdown and TOML subclasses in `slash_commands/generators.py`, including helper factory selection logic.
+  - [x] 2.1 Add fixtures in `tests/conftest.py` for sample prompts, including agent override metadata and argument definitions.
+  - [x] 2.2 Write failing tests in `tests/test_generators.py` that assert Markdown output includes frontmatter, body, and `$ARGUMENTS` placeholder handling.
+  - [x] 2.3 Extend generator tests to cover TOML formatting, `{{args}}` substitution, and override application across multiple agents.
+  - [x] 2.4 Implement `CommandGenerator` base class plus Markdown and TOML subclasses in `slash_commands/generators.py`, including helper factory selection logic.
   - [ ] 2.5 Refine generators to normalize whitespace and encoding, updating tests to use snapshot-style comparisons for regression safety.
 
 - [ ] 3.0 Build slash command writer orchestrating multi-agent generation and dry runs

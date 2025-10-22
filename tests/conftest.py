@@ -2,9 +2,12 @@
 
 import tempfile
 from pathlib import Path
+from textwrap import dedent
 
 import pytest
 from fastmcp import FastMCP
+
+from mcp_server.prompt_utils import MarkdownPrompt, load_markdown_prompt
 
 
 @pytest.fixture
@@ -91,3 +94,91 @@ def mcp_server():
         FastMCP server instance
     """
     return FastMCP(name="test-server")
+
+
+@pytest.fixture
+def sample_prompt(tmp_path) -> MarkdownPrompt:
+    """Return a sample Markdown prompt with arguments and overrides."""
+
+    prompt_path = tmp_path / "sample-prompt.md"
+    prompt_path.write_text(
+        dedent(
+            """\
+            ---
+            name: sample-prompt
+            description: Sample prompt showcasing arguments and overrides
+            tags:
+              - testing
+              - generators
+            arguments:
+              - name: primary_input
+                description: Main instruction for the command
+                required: true
+              - name: secondary_flag
+                description: Toggle additional behaviour
+                required: false
+            meta:
+              category: generator-tests
+              command_prefix: sdd-
+            agent_overrides:
+              gemini-cli:
+                description: Sample prompt tailored for Gemini CLI
+                arguments:
+                  - name: gemini_flag
+                    description: Toggle for Gemini specific behaviour
+                    required: false
+              claude-code:
+                description: Sample prompt tailored for Claude Code
+            enabled: true
+            ---
+
+            # Sample Prompt
+
+            Use the provided instructions to perform the desired action.
+            """
+        )
+    )
+
+    return load_markdown_prompt(prompt_path)
+
+
+@pytest.fixture
+def prompt_with_placeholder_body(tmp_path) -> MarkdownPrompt:
+    """Return a prompt containing explicit argument placeholders in the body."""
+
+    prompt_path = tmp_path / "prompt-with-placeholders.md"
+    prompt_path.write_text(
+        dedent(
+            """\
+            ---
+            name: prompt-with-placeholders
+            description: Prompt for validating placeholder substitution
+            tags:
+              - testing
+            arguments:
+              - name: query
+                description: Search query to send to the agent
+                required: true
+              - name: format
+                description: Preferred response format
+                required: false
+            meta:
+              category: generator-tests
+              command_prefix: sdd-
+            agent_overrides:
+              qwen-code:
+                description: Prompt with TOML specific placeholder
+            ---
+
+            # Prompt With Placeholders
+
+            Provide guidance for
+
+            $ARGUMENTS
+
+            and ensure `{{args}}` are handled correctly.
+            """
+        )
+    )
+
+    return load_markdown_prompt(prompt_path)
