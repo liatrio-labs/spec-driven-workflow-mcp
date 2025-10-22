@@ -21,12 +21,20 @@ uv sync
 
 ## Usage
 
+### Running Commands
+
+After installation, use `uv run` to execute the command:
+
+```bash
+uv run sdd-generate-commands [OPTIONS]
+```
+
 ### Basic Usage
 
 Generate commands for all auto-detected agents:
 
 ```bash
-sdd-generate-commands
+uv run sdd-generate-commands
 ```
 
 ### Agent Selection
@@ -34,7 +42,7 @@ sdd-generate-commands
 Generate commands for specific agents:
 
 ```bash
-sdd-generate-commands --agents claude-code --agents cursor
+uv run sdd-generate-commands --agents claude-code --agents cursor
 ```
 
 ### Dry Run
@@ -42,7 +50,7 @@ sdd-generate-commands --agents claude-code --agents cursor
 Preview changes without writing files:
 
 ```bash
-sdd-generate-commands --dry-run
+uv run sdd-generate-commands --dry-run
 ```
 
 ### List Supported Agents
@@ -50,7 +58,7 @@ sdd-generate-commands --dry-run
 View all available agents:
 
 ```bash
-sdd-generate-commands --list-agents
+uv run sdd-generate-commands --list-agents
 ```
 
 ### Custom Prompts Directory
@@ -58,7 +66,7 @@ sdd-generate-commands --list-agents
 Specify a custom prompts directory:
 
 ```bash
-sdd-generate-commands --prompts-dir ./my-prompts
+uv run sdd-generate-commands --prompts-dir ./my-prompts
 ```
 
 ### Overwrite Handling
@@ -73,7 +81,7 @@ When existing command files are detected, the generator will prompt you for acti
 To skip prompts and auto-overwrite:
 
 ```bash
-sdd-generate-commands --yes
+uv run sdd-generate-commands --yes
 ```
 
 ## Supported Agents
@@ -183,7 +191,7 @@ Generated files are placed in agent-specific directories:
 
 ```bash
 # Auto-detect agents
-sdd-generate-commands
+uv run sdd-generate-commands
 
 # Output:
 # Detected agents: claude-code, cursor
@@ -197,7 +205,7 @@ sdd-generate-commands
 
 ```bash
 # See what would be generated
-sdd-generate-commands --dry-run
+uv run sdd-generate-commands --dry-run
 
 # Output:
 # DRY RUN complete:
@@ -209,7 +217,7 @@ sdd-generate-commands --dry-run
 
 ```bash
 # Prompt for overwrite action
-sdd-generate-commands
+uv run sdd-generate-commands
 
 # When prompted:
 # > File exists: .claude/commands/my-command.md
@@ -231,7 +239,7 @@ sdd-generate-commands
 Specify a custom base directory for output:
 
 ```bash
-sdd-generate-commands --base-path /path/to/project
+uv run sdd-generate-commands --base-path /path/to/project
 ```
 
 ### Environment Variables
@@ -248,7 +256,7 @@ Configuration can be set via environment variables:
 If no agents are detected, manually specify agents:
 
 ```bash
-sdd-generate-commands --agents claude-code
+uv run sdd-generate-commands --agents claude-code
 ```
 
 ### Existing Files Not Prompting
@@ -257,7 +265,7 @@ The generator only prompts when files exist and `--yes` is not set. To prompt fo
 
 ```bash
 # Don't use --yes flag
-sdd-generate-commands
+uv run sdd-generate-commands
 ```
 
 ### Backup Files Not Created
@@ -274,7 +282,7 @@ The Slash Command Generator complements the Spec-Driven Development workflow:
 
 1. **Generate prompts** using the SDD workflow
 2. **Place prompts** in the `prompts/` directory
-3. **Generate commands** using `sdd-generate-commands`
+3. **Generate commands** using `uv run sdd-generate-commands`
 4. **Test commands** in your AI assistant
 5. **Iterate** based on feedback
 
