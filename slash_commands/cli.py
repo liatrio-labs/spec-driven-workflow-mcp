@@ -117,7 +117,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         table.add_column("Agent Key", style="cyan", no_wrap=True)
         table.add_column("Display Name", style="magenta")
         table.add_column("Target Path", style="blue")
-        table.add_column("Detected", style="green", justify="center")
+        table.add_column("Detected", justify="center")
 
         # Get home directory for checking paths
         home_dir = Path.home()
@@ -128,16 +128,16 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
                 # Check if any detection directory exists
                 detection_dirs = [home_dir / d for d in agent.detection_dirs]
                 exists = any(d.exists() for d in detection_dirs)
-                detected = "✓" if exists else "✗"
+                detected = "[green]✓[/green]" if exists else "[red]✗[/red]"
 
                 table.add_row(
                     agent_key,
                     agent.display_name,
-                    agent.command_dir,
+                    f"~/{agent.command_dir}",
                     detected,
                 )
             except KeyError:
-                table.add_row(agent_key, "Unknown", "N/A", "✗")
+                table.add_row(agent_key, "Unknown", "N/A", "[red]✗[/red]")
 
         console.print(table)
         return
