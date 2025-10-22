@@ -11,6 +11,7 @@ dependencies = [
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.0",
+    "typer>=0.20.0",
 ]
 
 [dependency-groups]
@@ -29,6 +30,7 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 spec-driven-development-mcp = "server:main"
+sdd-generate-commands = "slash_commands.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["mcp_server", "prompts"]

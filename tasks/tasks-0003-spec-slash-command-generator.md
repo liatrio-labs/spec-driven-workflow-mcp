@@ -51,14 +51,14 @@
   - [x] 3.4 Ensure writer creates parent directories, respects dry-run flag, and returns structured results; update tests to validate filesystem effects with `tmp_path`.
   - [x] 3.5 Export writer interfaces from `slash_commands/__init__.py` for reuse by CLI and future modules.
 
-- [ ] 4.0 Deliver Typer CLI with auto-detection and selection flows
+- [x] 4.0 Deliver Typer CLI with auto-detection and selection flows
   - Demo Criteria: "Running `sdd-generate-commands` auto-detects configured agents, supports interactive confirmation and `--agents`, `--list-agents`, `--dry-run`, `--yes` flags, and exits with correct status codes."
   - Proof Artifact(s): "CLI: `pytest tests/test_cli.py -v`; CLI: `sdd-generate-commands --list-agents`; Recording: interactive agent selection session."
-  - [ ] 4.1 Define CLI tests using Typer's `CliRunner` to cover happy paths, invalid agent input, and exit codes.
-  - [ ] 4.2 Implement Typer app in `slash_commands/cli.py`, wiring options via `Annotated` syntax and delegating to writer/detection modules.
-  - [ ] 4.3 Add interactive selection logic leveraging detection results, opt-out confirmations, and `--yes` short-circuit coverage.
-  - [ ] 4.4 Support `--agents`, `--list-agents`, `--dry-run`, and `--prompts-dir` options with clear messaging; extend tests accordingly.
-  - [ ] 4.5 Register entry point in `pyproject.toml` and expose CLI in `slash_commands/__init__.py`; update CLI tests to assert console summary formatting.
+  - [x] 4.1 Define CLI tests using Typer's `CliRunner` to cover happy paths, invalid agent input, and exit codes.
+  - [x] 4.2 Implement Typer app in `slash_commands/cli.py`, wiring options via `Annotated` syntax and delegating to writer/detection modules.
+  - [x] 4.3 Add interactive selection logic leveraging detection results, opt-out confirmations, and `--yes` short-circuit coverage.
+  - [x] 4.4 Support `--agents`, `--list-agents`, `--dry-run`, and `--prompts-dir` options with clear messaging; extend tests accordingly.
+  - [x] 4.5 Register entry point in `pyproject.toml` and expose CLI in `slash_commands/__init__.py`; update CLI tests to assert console summary formatting.
 
 - [ ] 5.0 Implement safe overwrite handling and finalize packaging & docs
   - Demo Criteria: "CLI prompts on existing files with cancel/overwrite/backup choices, creates timestamped `.bak` copies when selected, and project docs/scripts describe the workflow."
