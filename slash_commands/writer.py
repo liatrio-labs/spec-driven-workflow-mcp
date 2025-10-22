@@ -2,12 +2,49 @@
 
 from __future__ import annotations
 
+import shutil
+from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from mcp_server.prompt_utils import MarkdownPrompt, load_markdown_prompt
 from slash_commands.config import AgentConfig, get_agent_config
 from slash_commands.generators import CommandGenerator
+
+OverwriteAction = Literal["cancel", "overwrite", "backup", "overwrite-all"]
+
+
+def prompt_overwrite_action(file_path: Path) -> OverwriteAction:
+    """Prompt user for what to do with an existing file.
+
+    Args:
+        file_path: Path to the existing file
+
+    Returns:
+        One of: "cancel", "overwrite", "backup", "overwrite-all"
+    """
+    # This is a placeholder - in actual implementation, this would use
+    # a proper prompt library like questionary or typer's prompt
+    # For now, we'll raise NotImplementedError to fail tests
+    raise NotImplementedError("Overwrite prompt not yet implemented")
+
+
+def create_backup(file_path: Path) -> Path:
+    """Create a timestamped backup of an existing file.
+
+    Args:
+        file_path: Path to the file to backup
+
+    Returns:
+        Path to the backup file
+    """
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_path = file_path.with_suffix(f"{file_path.suffix}.{timestamp}.bak")
+
+    # Copy file with metadata preserved
+    shutil.copy2(file_path, backup_path)
+
+    return backup_path
 
 
 class SlashCommandWriter:
@@ -19,6 +56,7 @@ class SlashCommandWriter:
         agents: list[str] | None = None,
         dry_run: bool = False,
         base_path: Path | None = None,
+        overwrite_action: OverwriteAction | None = None,
     ):
         """Initialize the writer.
 
@@ -27,11 +65,15 @@ class SlashCommandWriter:
             agents: List of agent keys to generate commands for. If None, uses all supported agents.
             dry_run: If True, don't write files but report what would be written
             base_path: Base directory for output paths. If None, uses current directory.
+            overwrite_action: Global overwrite action to apply. If None, will prompt per file.
         """
         self.prompts_dir = prompts_dir
         self.agents = agents or []
         self.dry_run = dry_run
         self.base_path = base_path or Path.cwd()
+        self.overwrite_action = overwrite_action
+        self._global_overwrite = False  # Track if user chose "overwrite-all"
+        self._backups_created = []  # Track backup files created
 
     def generate(self) -> dict[str, Any]:
         """Generate command files for all configured agents.
@@ -62,6 +104,7 @@ class SlashCommandWriter:
             "files_written": sum(1 for f in files if not self.dry_run),
             "files": files,
             "prompts": [{"name": p.name, "path": str(p.path)} for p in prompts],
+            "backups_created": self._backups_created,
         }
 
     def _load_prompts(self) -> list[MarkdownPrompt]:
@@ -101,6 +144,15 @@ class SlashCommandWriter:
             self.base_path / agent.command_dir / f"{prompt.name}{agent.command_file_extension}"
         )
 
+        # Handle existing files
+        if output_path.exists() and not self.dry_run:
+            action = self._handle_existing_file(output_path)
+            if action == "cancel":
+                raise RuntimeError("Cancelled by user")
+            elif action == "backup":
+                backup_path = create_backup(output_path)
+                self._backups_created.append(str(backup_path))
+
         # Create parent directories if needed
         if not self.dry_run:
             output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -115,3 +167,32 @@ class SlashCommandWriter:
             "agent_display_name": agent.display_name,
             "format": agent.command_format.value,
         }
+
+    def _handle_existing_file(self, file_path: Path) -> OverwriteAction:
+        """Handle an existing file by determining what action to take.
+
+        Args:
+            file_path: Path to the existing file
+
+        Returns:
+            OverwriteAction to apply
+        """
+        # If global overwrite was already set, use it
+        if self._global_overwrite:
+            return "overwrite"
+
+        # Use global action if set
+        if self.overwrite_action == "overwrite-all":
+            return "overwrite"
+        elif self.overwrite_action:
+            return self.overwrite_action
+
+        # Otherwise prompt for action
+        action = prompt_overwrite_action(file_path)
+
+        # If user chose "overwrite-all", set the flag
+        if action == "overwrite-all":
+            self._global_overwrite = True
+            return "overwrite"
+
+        return action

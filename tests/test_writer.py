@@ -215,3 +215,135 @@ def test_writer_handles_invalid_agent_key(mock_prompt_load, tmp_path):
 
     with pytest.raises(KeyError, match="Unsupported agent"):
         writer.generate()
+
+
+def test_writer_detects_existing_files(mock_prompt_load, tmp_path):
+    """Test that writer detects existing command files."""
+    prompts_dir, _load_prompts = mock_prompt_load
+
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("existing content")
+
+    writer = SlashCommandWriter(
+        prompts_dir=prompts_dir,
+        agents=["claude-code"],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    # OverwriteAction should be queried
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        mock_prompt.return_value = "overwrite"
+        writer.generate()
+
+        # Verify prompt was called
+        mock_prompt.assert_called_once()
+        # Verify file was overwritten
+        assert "Test Prompt" in output_path.read_text()
+
+
+def test_writer_cancels_on_existing_files(mock_prompt_load, tmp_path):
+    """Test that writer cancels when user chooses not to overwrite."""
+    prompts_dir, _load_prompts = mock_prompt_load
+
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    original_content = "existing content"
+    output_path.write_text(original_content)
+
+    writer = SlashCommandWriter(
+        prompts_dir=prompts_dir,
+        agents=["claude-code"],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        mock_prompt.return_value = "cancel"
+        with pytest.raises(RuntimeError, match="Cancelled"):
+            writer.generate()
+
+        # Verify file was not modified
+        assert output_path.read_text() == original_content
+
+
+def test_writer_backs_up_existing_files(mock_prompt_load, tmp_path):
+    """Test that writer creates backup files when requested."""
+    prompts_dir, _load_prompts = mock_prompt_load
+
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    original_content = "existing content"
+    output_path.write_text(original_content)
+
+    writer = SlashCommandWriter(
+        prompts_dir=prompts_dir,
+        agents=["claude-code"],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    with (
+        patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt,
+        patch("slash_commands.writer.create_backup") as mock_backup,
+    ):
+        mock_prompt.return_value = "backup"
+        mock_backup.return_value = output_path.with_suffix(".md.bak")
+
+        writer.generate()
+
+        # Verify backup was created
+        mock_backup.assert_called_once_with(output_path)
+        # Verify file was overwritten
+        assert "Test Prompt" in output_path.read_text()
+
+
+def test_writer_applies_overwrite_globally(mock_prompt_load, tmp_path):
+    """Test that writer can apply overwrite decision globally."""
+    prompts_dir, _load_prompts = mock_prompt_load
+
+    # Create multiple existing files
+    output_path1 = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path1.parent.mkdir(parents=True, exist_ok=True)
+    output_path1.write_text("existing content 1")
+
+    # Create a second prompt
+    prompt_file2 = prompts_dir / "test-prompt-2.md"
+    prompt_file2.write_text("""---
+name: test-prompt-2
+description: Second test prompt
+tags:
+  - testing
+arguments: []
+enabled: true
+---
+# Test Prompt 2
+
+This is another test prompt.
+""")
+
+    output_path2 = tmp_path / ".claude" / "commands" / "test-prompt-2.md"
+    output_path2.write_text("existing content 2")
+
+    writer = SlashCommandWriter(
+        prompts_dir=prompts_dir,
+        agents=["claude-code"],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        # First call returns "overwrite-all", subsequent calls should not be made
+        mock_prompt.return_value = "overwrite-all"
+
+        writer.generate()
+
+        # Should only prompt once with overwrite-all option
+        assert mock_prompt.call_count == 1
+        # Both files should be overwritten
+        assert "Test Prompt" in output_path1.read_text()
+        assert "Test Prompt 2" in output_path2.read_text()

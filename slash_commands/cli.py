@@ -48,7 +48,7 @@ def generate(  # noqa: PLR0913
             "-y",
             help="Skip confirmation prompts",
         ),
-    ] = True,
+    ] = False,
     base_path: Annotated[
         Path | None,
         typer.Option(
@@ -87,11 +87,13 @@ def generate(  # noqa: PLR0913
         print(f"Detected agents: {', '.join(agents)}")
 
     # Create writer
+    overwrite_action = "overwrite" if yes else None
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
         agents=agents,
         dry_run=dry_run,
         base_path=base_path,
+        overwrite_action=overwrite_action,
     )
 
     # Generate commands
@@ -103,12 +105,21 @@ def generate(  # noqa: PLR0913
     except KeyError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
+    except RuntimeError as e:
+        if "Cancelled" in str(e):
+            print("Operation cancelled by user.", file=sys.stderr)
+            sys.exit(1)
+        raise
 
     # Print summary
     mode = "DRY RUN" if dry_run else "Generation"
     print(f"\n{mode} complete:")
     print(f"  Prompts loaded: {result['prompts_loaded']}")
     print(f"  Files {'would be' if dry_run else ''} written: {result['files_written']}")
+    if result.get("backups_created"):
+        print(f"  Backups created: {len(result['backups_created'])}")
+        for backup in result["backups_created"]:
+            print(f"    - {backup}")
     print("\nFiles:")
     for file_info in result["files"]:
         print(f"  - {file_info['path']}")

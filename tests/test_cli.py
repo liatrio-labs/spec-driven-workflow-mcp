@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import pytest
 from typer.testing import CliRunner
 
@@ -184,3 +186,95 @@ def test_cli_respects_prompts_dir_option(mock_prompts_dir, tmp_path):
     assert result.exit_code == 0
     # Should have found the test prompt
     assert "test-prompt" in result.stdout.lower() or result.exit_code == 0
+
+
+def test_cli_prompts_for_overwrite_without_yes(mock_prompts_dir, tmp_path):
+    """Test that CLI prompts for overwrite when files exist and --yes is not set."""
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("existing content")
+
+    runner = CliRunner()
+    # Don't pass --yes flag to test prompting
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        mock_prompt.return_value = "overwrite"
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--agents",
+                "claude-code",
+                "--base-path",
+                str(tmp_path),
+            ],
+            input="overwrite\n",
+        )
+
+        # Should prompt for overwrite action
+        assert (
+            "overwrite" in result.stdout.lower()
+            or "existing" in result.stdout.lower()
+            or mock_prompt.called
+        )
+
+
+def test_cli_honors_yes_flag_for_overwrite(mock_prompts_dir, tmp_path):
+    """Test that CLI honors --yes flag and auto-overwrites existing files."""
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("existing content")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "--prompts-dir",
+            str(mock_prompts_dir),
+            "--agents",
+            "claude-code",
+            "--base-path",
+            str(tmp_path),
+            "--yes",
+        ],
+    )
+
+    assert result.exit_code == 0
+    # File should be overwritten
+    assert "Test Prompt" in output_path.read_text()
+
+
+def test_cli_reports_backup_creation(mock_prompts_dir, tmp_path):
+    """Test that CLI reports when backup files are created."""
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("existing content")
+
+    runner = CliRunner()
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        mock_prompt.return_value = "backup"
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--agents",
+                "claude-code",
+                "--base-path",
+                str(tmp_path),
+            ],
+            input="backup\n",
+        )
+
+        # Should report backup creation
+        assert (
+            "backup" in result.stdout.lower()
+            or ".bak" in result.stdout.lower()
+            or mock_prompt.called
+        )
+        # Backup file should exist with timestamp pattern
+        backup_files = list(output_path.parent.glob("test-prompt.md.*.bak"))
+        assert len(backup_files) > 0
