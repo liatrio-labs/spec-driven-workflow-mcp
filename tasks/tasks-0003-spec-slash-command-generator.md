@@ -33,7 +33,7 @@
   - [x] 1.4 Draft failing detection tests in `tests/test_detection.py` covering positive, negative, and mixed directory scenarios using `tmp_path` fixtures.
   - [x] 1.5 Implement `detect_agents` (and supporting utilities) in `slash_commands/detection.py` so detection tests pass with deterministic ordering.
 
-- [~] 2.0 Implement Markdown and TOML command generators with override support
+- [x] 2.0 Implement Markdown and TOML command generators with override support
   - Demo Criteria: "Generators transform `MarkdownPrompt` objects into .md/.toml command files that honor placeholders and agent-specific metadata overrides."
   - Proof Artifact(s): "CLI: `pytest tests/test_generators.py -v`; Snapshot diff: expected vs actual generated command files."
   - [x] 2.1 Add fixtures in `tests/conftest.py` for sample prompts, including agent override metadata and argument definitions.
