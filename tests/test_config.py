@@ -20,7 +20,7 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
     },
     "cursor": {
         "display_name": "Cursor",
-        "command_dir": ".cursorrules/commands",
+        "command_dir": ".cursor/commands",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
         "detection_dirs": (".cursor", ".cursorrules"),
@@ -48,10 +48,10 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
     },
     "opencode": {
         "display_name": "opencode",
-        "command_dir": ".opencode/commands",
+        "command_dir": ".config/opencode/commands",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".opencode",),
+        "detection_dirs": (".config/opencode", ".opencode"),
     },
     "codex-cli": {
         "display_name": "Codex CLI",
@@ -62,17 +62,17 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
     },
     "kilo-code": {
         "display_name": "Kilo Code",
-        "command_dir": ".kilo/commands",
+        "command_dir": ".kilocode/rules",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".kilo",),
+        "detection_dirs": (".kilocode",),
     },
     "auggie-cli": {
         "display_name": "Auggie CLI",
-        "command_dir": ".auggie/commands",
+        "command_dir": ".augment/commands",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".auggie",),
+        "detection_dirs": (".augment",),
     },
     "roo-code": {
         "display_name": "Roo Code",
@@ -97,10 +97,10 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
     },
     "amp": {
         "display_name": "Amp",
-        "command_dir": ".amp/commands",
+        "command_dir": ".agents/commands",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".amp",),
+        "detection_dirs": (".agents",),
     },
     "qwen-code": {
         "display_name": "Qwen Code",
@@ -160,7 +160,7 @@ def test_supported_agents_match_expected_configuration(
         agent = supported_agents_by_key[key]
         for attribute, value in expected.items():
             assert getattr(agent, attribute) == value, f"Unexpected {attribute} for {key}"
-        assert agent.command_dir.endswith("/commands")
+        assert agent.command_dir.endswith("/commands") or agent.command_dir.endswith("/rules")
         assert agent.command_file_extension.startswith(".")
         assert isinstance(agent.detection_dirs, tuple)
         assert all(dir_.startswith(".") for dir_ in agent.detection_dirs)
@@ -187,6 +187,19 @@ def test_detection_dirs_cover_command_directory_roots(
     supported_agents_by_key: dict[str, AgentConfig],
 ):
     for agent in supported_agents_by_key.values():
-        command_root = agent.command_dir.split("/", 1)[0]
-        assert command_root in agent.detection_dirs
+        # For nested paths like .config/opencode/commands, check parent directories
+        if "/" in agent.command_dir:
+            path_parts = agent.command_dir.split("/")
+            # Check first directory component
+            command_root = path_parts[0]
+            # For opencode, check if .config exists in detection_dirs
+            if agent.key == "opencode":
+                assert (
+                    ".config" in agent.detection_dirs or ".config/opencode" in agent.detection_dirs
+                )
+            else:
+                assert command_root in agent.detection_dirs
+        else:
+            command_root = agent.command_dir.split("/", 1)[0]
+            assert command_root in agent.detection_dirs
         assert isinstance(agent.detection_dirs, Iterable)
