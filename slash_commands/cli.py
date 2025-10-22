@@ -125,9 +125,9 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         for agent_key in list_agent_keys():
             try:
                 agent = get_agent_config(agent_key)
-                # Check if any detection directory exists
-                detection_dirs = [home_dir / d for d in agent.detection_dirs]
-                exists = any(d.exists() for d in detection_dirs)
+                # Check if command directory exists
+                command_path = home_dir / agent.command_dir
+                exists = command_path.exists()
                 detected = "[green]✓[/green]" if exists else "[red]✗[/red]"
 
                 table.add_row(
