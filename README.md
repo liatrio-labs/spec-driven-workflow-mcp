@@ -125,6 +125,8 @@ sequenceDiagram
 
 Guides are coming for wiring these prompts as first-class slash commands in popular IDEs and AI tools (Windsurf, VS Code, Cursor, Claude Code, Codex, and more).
 
+See [docs/slash-command-generator.md](./docs/slash-command-generator.md) for details on generating command files for AI assistants.
+
 ## Optional: Automate with the MCP Server
 
 Prefer tighter tooling? This repository also ships an MCP server that exposes the same prompts programmatically. Treat it as an accelerator—everything above works without it.
