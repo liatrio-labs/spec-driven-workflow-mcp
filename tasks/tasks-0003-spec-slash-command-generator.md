@@ -23,14 +23,14 @@
 
 ## Tasks
 
-- [ ] 1.0 Establish slash command configuration and agent detection foundations
+- [x] 1.0 Establish slash command configuration and agent detection foundations
   - Demo Criteria: "Config data models enumerate all 14 agents with accurate directories/formats and detection flags configured tools under pytest validation."
   - Proof Artifact(s): "CLI: `pytest tests/test_config.py tests/test_detection.py -v`; Log: detection fixture output listing detected agents."
-  - [ ] 1.1 Author failing tests in `tests/test_config.py` that assert required fields and format values for every agent entry.
-  - [ ] 1.2 Implement `CommandFormat` enum, `AgentConfig` dataclass, and helper accessors in `slash_commands/config.py` to satisfy the tests.
-  - [ ] 1.3 Populate `SUPPORTED_AGENTS` with all 14 tools, including directory paths, file extensions, and format metadata.
-  - [ ] 1.4 Draft failing detection tests in `tests/test_detection.py` covering positive, negative, and mixed directory scenarios using `tmp_path` fixtures.
-  - [ ] 1.5 Implement `detect_agents` (and supporting utilities) in `slash_commands/detection.py` so detection tests pass with deterministic ordering.
+  - [x] 1.1 Author failing tests in `tests/test_config.py` that assert required fields and format values for every agent entry.
+  - [x] 1.2 Implement `CommandFormat` enum, `AgentConfig` dataclass, and helper accessors in `slash_commands/config.py` to satisfy the tests.
+  - [x] 1.3 Populate `SUPPORTED_AGENTS` with all 14 tools, including directory paths, file extensions, and format metadata.
+  - [x] 1.4 Draft failing detection tests in `tests/test_detection.py` covering positive, negative, and mixed directory scenarios using `tmp_path` fixtures.
+  - [x] 1.5 Implement `detect_agents` (and supporting utilities) in `slash_commands/detection.py` so detection tests pass with deterministic ordering.
 
 - [ ] 2.0 Implement Markdown and TOML command generators with override support
   - Demo Criteria: "Generators transform `MarkdownPrompt` objects into .md/.toml command files that honor placeholders and agent-specific metadata overrides."
