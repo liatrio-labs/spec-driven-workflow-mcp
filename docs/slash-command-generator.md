@@ -84,6 +84,20 @@ To skip prompts and auto-overwrite:
 uv run sdd-generate-commands --yes
 ```
 
+#### Backup File Management
+
+Backup files are created with the format `filename.ext.YYYYMMDD-HHMMSS.bak` (e.g., `manage-tasks.md.20250122-143059.bak`).
+
+**Important**: Backup files are **not automatically cleaned up**. Periodically review and remove old backup files to keep your workspace clean:
+
+```bash
+# Find all backup files
+find . -name "*.bak" -type f
+
+# Remove backup files older than 30 days
+find . -name "*.bak" -type f -mtime +30 -delete
+```
+
 ## Supported Agents
 
 The following agents are supported:
@@ -194,49 +208,156 @@ Generated files are placed in agent-specific directories:
 
 ## Examples
 
+### List Supported Agents
+
+```bash
+uv run sdd-generate-commands --list-agents
+```
+
+**Output**:
+
+```text
+Supported agents:
+  amazon-q-developer   - Amazon Q Developer
+  amp                  - Amp
+  auggie-cli           - Auggie CLI
+  claude-code          - Claude Code
+  cursor               - Cursor
+  gemini-cli           - Gemini CLI
+  github-copilot       - GitHub Copilot
+  kilo-code            - Kilo Code
+  opencode             - opencode
+  qwen-code            - Qwen Code
+  roo-code             - Roo Code
+  windsurf             - Windsurf
+```
+
 ### Generate for Detected Agents
 
 ```bash
 # Auto-detect agents
-uv run sdd-generate-commands
+uv run sdd-generate-commands --yes
+```
 
-# Output:
-# Detected agents: claude-code, cursor
-#
-# Generation complete:
-#   Prompts loaded: 3
-#   Files written: 6
+**Output**:
+
+```text
+Detected agents: claude-code, cursor
+
+Generation complete:
+  Prompts loaded: 3
+  Files written: 6
+
+Files:
+  - .claude/commands/manage-tasks.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-spec.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-task-list-from-spec.md
+    Agent: Claude Code (claude-code)
+  - .cursorrules/commands/manage-tasks.md
+    Agent: Cursor (cursor)
+  - .cursorrules/commands/generate-spec.md
+    Agent: Cursor (cursor)
+  - .cursorrules/commands/generate-task-list-from-spec.md
+    Agent: Cursor (cursor)
 ```
 
 ### Preview Changes
 
 ```bash
 # See what would be generated
-uv run sdd-generate-commands --dry-run
+uv run sdd-generate-commands --dry-run --yes
+```
 
-# Output:
-# DRY RUN complete:
-#   Prompts loaded: 3
-#   Files would be written: 6
+**Output**:
+
+```text
+Detected agents: claude-code, cursor
+
+DRY RUN complete:
+  Prompts loaded: 3
+  Files would be written: 6
+
+Files:
+  - .claude/commands/manage-tasks.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-spec.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-task-list-from-spec.md
+    Agent: Claude Code (claude-code)
+  - .cursorrules/commands/manage-tasks.md
+    Agent: Cursor (cursor)
+  - .cursorrules/commands/generate-spec.md
+    Agent: Cursor (cursor)
+  - .cursorrules/commands/generate-task-list-from-spec.md
+    Agent: Cursor (cursor)
 ```
 
 ### Safe Overwrite with Backup
 
 ```bash
-# Prompt for overwrite action
+# Prompt for overwrite action (without --yes)
 uv run sdd-generate-commands
+```
 
-# When prompted:
-# > File exists: .claude/commands/my-command.md
-# > [c]ancel, [o]verwrite, [b]ackup, [a]ll overwrite: b
-#
-# Output:
-# Generation complete:
-#   Prompts loaded: 3
-#   Files written: 6
-#   Backups created: 2
-#     - .claude/commands/my-command.md.20251022_180812.bak
-#     - .cursor/commands/my-command.md.20251022_180812.bak
+**Interactive prompt**:
+
+```text
+File already exists: .claude/commands/manage-tasks.md
+What would you like to do?
+  > Cancel
+    Overwrite this file
+    Create backup and overwrite
+    Overwrite all existing files
+```
+
+**Output after selecting "Create backup and overwrite"**:
+
+```text
+Generation complete:
+  Prompts loaded: 3
+  Files written: 6
+  Backups created: 2
+    - .claude/commands/manage-tasks.md.20250122-143059.bak
+    - .cursorrules/commands/manage-tasks.md.20250122-143059.bak
+
+Files:
+  - .claude/commands/manage-tasks.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-spec.md
+    Agent: Claude Code (claude-code)
+  - ...
+```
+
+### Generate for Specific Agents
+
+```bash
+uv run sdd-generate-commands --agents claude-code --agents gemini-cli --yes
+```
+
+**Output**:
+
+```text
+Selected agents: claude-code, gemini-cli
+
+Generation complete:
+  Prompts loaded: 3
+  Files written: 6
+
+Files:
+  - .claude/commands/manage-tasks.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-spec.md
+    Agent: Claude Code (claude-code)
+  - .claude/commands/generate-task-list-from-spec.md
+    Agent: Claude Code (claude-code)
+  - .gemini/commands/manage-tasks.toml
+    Agent: Gemini CLI (gemini-cli)
+  - .gemini/commands/generate-spec.toml
+    Agent: Gemini CLI (gemini-cli)
+  - .gemini/commands/generate-task-list-from-spec.toml
+    Agent: Gemini CLI (gemini-cli)
 ```
 
 ## Configuration
@@ -247,7 +368,11 @@ Specify a custom base directory for output:
 
 ```bash
 uv run sdd-generate-commands --base-path /path/to/project
+# or
+uv run sdd-generate-commands --target-dir /path/to/project
 ```
+
+**Note**: `--base-path` and `--target-dir` are aliases for the same option.
 
 ### Environment Variables
 
@@ -260,11 +385,169 @@ Configuration can be set via environment variables:
 
 ### No Agents Detected
 
-If no agents are detected, manually specify agents:
+**Error**: `Error: No agents detected.`
 
-```bash
-uv run sdd-generate-commands --agents claude-code
-```
+**Cause**: No agent directories (e.g., `.claude`, `.cursor`, `.gemini`) were found in the detection path.
+
+**Solutions**:
+
+1. **Create agent directories**: Ensure at least one agent directory exists in your workspace:
+
+   ```bash
+   mkdir -p .claude
+   ```
+
+2. **Specify agents manually**: Use `--agents` to explicitly select agents:
+
+   ```bash
+   uv run sdd-generate-commands --agents claude-code
+   ```
+
+3. **Use detection path**: Specify a different directory to search:
+
+   ```bash
+   uv run sdd-generate-commands --detection-path /path/to/home
+   ```
+
+4. **List supported agents**: See all available agents:
+
+   ```bash
+   uv run sdd-generate-commands --list-agents
+   ```
+
+### Invalid Agent Key
+
+**Error**: `Error: Invalid agent key: <key>`
+
+**Cause**: The specified agent key doesn't match any supported agent.
+
+**Solutions**:
+
+1. **Check agent keys**: Use `--list-agents` to see all valid agent keys:
+
+   ```bash
+   uv run sdd-generate-commands --list-agents
+   ```
+
+2. **Verify spelling**: Ensure agent keys are spelled correctly (e.g., `claude-code` not `claude_code`)
+
+3. **Check documentation**: See the [Supported Agents](#supported-agents) section above for valid keys
+
+### Permission Denied
+
+**Error**: `Error: Permission denied: <path>`
+
+**Cause**: Insufficient permissions to write to the output directory.
+
+**Solutions**:
+
+1. **Check permissions**: Verify write access to the output directory:
+
+   ```bash
+   ls -la .claude/
+   ```
+
+2. **Fix permissions**: Grant write access to the directory:
+
+   ```bash
+   chmod u+w .claude/
+   ```
+
+3. **Use different base path**: Specify a writable directory:
+
+   ```bash
+   uv run sdd-generate-commands --base-path /tmp/test-output
+   ```
+
+4. **Run with elevated permissions**: If appropriate, use `sudo`:
+
+   ```bash
+   sudo uv run sdd-generate-commands
+   ```
+
+### I/O Error
+
+**Error**: `Error: I/O error: <details>`
+
+**Cause**: File system or disk-related issues.
+
+**Solutions**:
+
+1. **Check disk space**: Ensure sufficient disk space is available:
+
+   ```bash
+   df -h .
+   ```
+
+2. **Verify path exists**: Ensure the output directory exists:
+
+   ```bash
+   mkdir -p .claude/commands
+   ```
+
+3. **Check for file locks**: Ensure no other process is accessing the files
+
+4. **Try different location**: Use a different base path:
+
+   ```bash
+   uv run sdd-generate-commands --base-path /tmp/test-output
+   ```
+
+### Prompts Directory Not Found
+
+**Error**: `Error: Prompts directory does not exist: <path>`
+
+**Cause**: The specified prompts directory doesn't exist or is inaccessible.
+
+**Solutions**:
+
+1. **Verify prompts directory**: Check that the directory exists:
+
+   ```bash
+   ls -la prompts/
+   ```
+
+2. **Specify correct path**: Use `--prompts-dir` to point to the correct location:
+
+   ```bash
+   uv run sdd-generate-commands --prompts-dir /path/to/prompts
+   ```
+
+3. **Create prompts directory**: If missing, create it:
+
+   ```bash
+   mkdir -p prompts
+   ```
+
+### User Cancellation
+
+**Error**: `Cancelled: Operation cancelled by user.`
+
+**Exit Code**: 1
+
+**Cause**: User cancelled the operation (e.g., Ctrl+C or selected "Cancel" in prompt).
+
+**Note**: This is not an error but a normal cancellation. Simply re-run the command to try again.
+
+### Format Errors
+
+**Issue**: Generated files don't match expected format
+
+**Cause**: Prompt structure or metadata doesn't match agent requirements.
+
+**Solutions**:
+
+1. **Check prompt format**: Ensure prompts follow the correct structure (see [Prompt Structure](#prompt-structure))
+
+2. **Verify agent-specific overrides**: Check that `agent_overrides` in prompt metadata match agent requirements
+
+3. **Review generated files**: Inspect the generated files to identify format issues:
+
+   ```bash
+   cat .claude/commands/command-name.md
+   ```
+
+4. **Test with dry-run**: Use `--dry-run` to preview output before writing
 
 ### Existing Files Not Prompting
 
@@ -281,6 +564,21 @@ Ensure you select "backup" when prompted, or use `--yes` with a custom overwrite
 
 ```bash
 # Backups are created automatically when selecting 'backup' option
+```
+
+### Exit Codes
+
+The CLI uses consistent exit codes:
+
+- **0**: Success
+- **1**: User cancellation (e.g., Ctrl+C, cancelled prompts)
+- **2**: Validation error (invalid agent key, no agents detected)
+- **3**: I/O error (permission denied, missing directory, disk full)
+
+Use these codes to script error handling:
+
+```bash
+uv run sdd-generate-commands && echo "Success" || echo "Failed with exit code $?"
 ```
 
 ## Integration with SDD Workflow

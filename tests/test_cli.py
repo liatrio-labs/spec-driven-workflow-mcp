@@ -111,7 +111,7 @@ def test_cli_generates_files_for_multiple_agents(mock_prompts_dir, tmp_path):
 
 
 def test_cli_handles_invalid_agent_key(mock_prompts_dir):
-    """Test that CLI handles invalid agent keys gracefully."""
+    """Test that CLI handles invalid agent keys gracefully with exit code 2."""
     runner = CliRunner()
     result = runner.invoke(
         app,
@@ -124,12 +124,12 @@ def test_cli_handles_invalid_agent_key(mock_prompts_dir):
         ],
     )
 
-    assert result.exit_code != 0
+    assert result.exit_code == 2  # Validation error
     assert "unsupported agent" in result.stdout.lower() or "error" in result.stdout.lower()
 
 
 def test_cli_handles_missing_prompts_directory(tmp_path):
-    """Test that CLI handles missing prompts directory gracefully."""
+    """Test that CLI handles missing prompts directory gracefully with exit code 3."""
     prompts_dir = tmp_path / "nonexistent"
 
     runner = CliRunner()
@@ -144,7 +144,7 @@ def test_cli_handles_missing_prompts_directory(tmp_path):
         ],
     )
 
-    assert result.exit_code != 0
+    assert result.exit_code == 3  # I/O error
     assert "does not exist" in result.stdout.lower() or "error" in result.stdout.lower()
 
 
@@ -364,7 +364,7 @@ def test_cli_interactive_agent_selection_partial_selection(mock_prompts_dir, tmp
 
 
 def test_cli_interactive_agent_selection_cancels_on_no_selection(mock_prompts_dir, tmp_path):
-    """Test that interactive agent selection cancels when no agents are selected."""
+    """Test that interactive agent selection cancels with exit code 1."""
     # Create agent directories
     (tmp_path / ".claude").mkdir()
 
@@ -384,7 +384,7 @@ def test_cli_interactive_agent_selection_cancels_on_no_selection(mock_prompts_di
             ],
         )
 
-        # Should exit with error message
+        # Should exit with exit code 1 (user cancellation)
         assert result.exit_code == 1
         assert "no agents selected" in result.stdout.lower()
 
@@ -413,3 +413,49 @@ def test_cli_interactive_agent_selection_bypassed_with_yes_flag(mock_prompts_dir
         # Should generate files automatically
         assert result.exit_code == 0
         assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()
+
+
+def test_cli_no_agents_detected_exit_code(tmp_path):
+    """Test that no agents detected exits with code 2 (validation error)."""
+    # Don't create any agent directories
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "--prompts-dir",
+            str(tmp_path / "prompts"),
+            "--base-path",
+            str(tmp_path),
+            "--yes",
+        ],
+    )
+
+    assert result.exit_code == 2  # Validation error
+    assert "no agents detected" in result.stdout.lower()
+
+
+def test_cli_exit_code_user_cancellation(mock_prompts_dir, tmp_path):
+    """Test that user cancellation during overwrite prompt exits with code 1."""
+    # Create an existing file
+    output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("existing content")
+
+    runner = CliRunner()
+    # Mock overwrite prompt to return "cancel"
+    with patch("slash_commands.writer.prompt_overwrite_action") as mock_prompt:
+        mock_prompt.return_value = "cancel"
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--agents",
+                "claude-code",
+                "--base-path",
+                str(tmp_path),
+            ],
+        )
+
+        assert result.exit_code == 1  # User cancellation
+        assert "cancelled" in result.stdout.lower() or "cancel" in result.stdout.lower()

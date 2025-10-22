@@ -86,6 +86,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         typer.Option(
             "--base-path",
             "-b",
+            "--target-dir",
             help="Base directory for output paths",
         ),
     ] = None,
@@ -127,16 +128,28 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         )
         detected = detect_agents(detection_dir)
         if not detected:
-            print("No agents detected. Use --agents to specify agents manually.")
-            print(f"Detection path: {detection_dir}")
-            sys.exit(1)
+            print("Error: No agents detected.", file=sys.stderr)
+            print(f"Detection path: {detection_dir}", file=sys.stderr)
+            print("\nTo fix this:", file=sys.stderr)
+            print(
+                "  1. Ensure at least one agent directory exists (e.g., .claude, .cursor, .gemini)",
+                file=sys.stderr,
+            )
+            print(
+                "  2. Or use --agents to specify agents manually: --agents claude-code",
+                file=sys.stderr,
+            )
+            print(
+                "  3. Or use --detection-path to search in a different directory", file=sys.stderr
+            )
+            sys.exit(2)  # Validation error
 
         # Interactive selection: all detected agents pre-selected
         if not yes:
             selected_agents = _prompt_agent_selection(detected)
             if not selected_agents:
-                print("No agents selected. Exiting.")
-                sys.exit(1)
+                print("Cancelled: No agents selected.", file=sys.stderr)
+                sys.exit(1)  # User cancellation
             agents = [agent.key for agent in selected_agents]
         else:
             # If --yes is used, auto-select all detected agents
@@ -160,14 +173,42 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         result = writer.generate()
     except ValueError as e:
         print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        print("\nTo fix this:", file=sys.stderr)
+        print("  - Ensure the prompts directory exists", file=sys.stderr)
+        print(
+            f"  - Check that --prompts-dir points to a valid directory (current: {prompts_dir})",
+            file=sys.stderr,
+        )
+        sys.exit(3)  # I/O error (e.g., prompts directory doesn't exist)
     except KeyError as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        print(f"Error: Invalid agent key: {e}", file=sys.stderr)
+        print("\nTo fix this:", file=sys.stderr)
+        print("  - Use --list-agents to see all supported agents", file=sys.stderr)
+        print("  - Ensure agent keys are spelled correctly", file=sys.stderr)
+        print(
+            "  - Valid agent keys include: claude-code, cursor, gemini-cli, etc.", file=sys.stderr
+        )
+        sys.exit(2)  # Validation error (invalid agent key)
+    except PermissionError as e:
+        print(f"Error: Permission denied: {e}", file=sys.stderr)
+        print("\nTo fix this:", file=sys.stderr)
+        print("  - Check file and directory permissions", file=sys.stderr)
+        print("  - Ensure you have write access to the output directory", file=sys.stderr)
+        print("  - Try running with elevated permissions if needed", file=sys.stderr)
+        sys.exit(3)  # I/O error (permission denied)
+    except OSError as e:
+        print(f"Error: I/O error: {e}", file=sys.stderr)
+        print("\nTo fix this:", file=sys.stderr)
+        print("  - Check that the output directory is writable", file=sys.stderr)
+        print("  - Ensure there's sufficient disk space", file=sys.stderr)
+        print(
+            f"  - Verify the path exists: {base_path if base_path else Path.cwd()}", file=sys.stderr
+        )
+        sys.exit(3)  # I/O error (file system errors)
     except RuntimeError as e:
         if "Cancelled" in str(e):
-            print("Operation cancelled by user.", file=sys.stderr)
-            sys.exit(1)
+            print("Cancelled: Operation cancelled by user.", file=sys.stderr)
+            sys.exit(1)  # User cancellation
         raise
 
     # Print summary

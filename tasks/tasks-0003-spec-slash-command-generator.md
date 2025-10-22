@@ -81,15 +81,15 @@
   - [x] 6.7 Verify backup timestamp format matches spec requirement (`YYYYMMDD-HHMMSS` format) and update if needed.
   - [x] 6.8 Review and update TOML format example in docs to match actual generator output structure.
 
-- [ ] 7.0 Polish and improvements: exit codes, error handling, and documentation
+- [x] 7.0 Polish and improvements: exit codes, error handling, and documentation
   - Demo Criteria: "CLI uses consistent exit codes matching spec (0=success, 1=user cancel, 2=validation error, 3=I/O error); improved error messages throughout; comprehensive documentation with troubleshooting."
   - Proof Artifact(s): "CLI: test run showing exit codes; CLI: `sdd-generate-commands --help` showing complete options; Diff: updated docs with troubleshooting section."
-  - [ ] 7.1 Implement consistent exit codes in `slash_commands/cli.py`: exit(0) for success, exit(1) for user cancellation, exit(2) for validation errors (invalid agent keys), exit(3) for I/O errors (permission denied, etc.).
-  - [ ] 7.2 Add comprehensive error messages with clear guidance for common failure scenarios (missing prompts dir, invalid agent key, permission errors).
-  - [ ] 7.3 Add troubleshooting section to `docs/slash-command-generator.md` covering common issues (agent not detected, permission denied, format errors).
-  - [ ] 7.4 Update examples in docs to show actual command output and file structures.
-  - [ ] 7.5 Add note about backup file cleanup in docs (no automatic cleanup; users should periodically clean `.bak` files).
-  - [ ] 7.6 Consider adding `--target-dir` alias for `--base-path` if spec requires it, or document the deviation.
+  - [x] 7.1 Implement consistent exit codes in `slash_commands/cli.py`: exit(0) for success, exit(1) for user cancellation, exit(2) for validation errors (invalid agent keys), exit(3) for I/O errors (permission denied, etc.).
+  - [x] 7.2 Add comprehensive error messages with clear guidance for common failure scenarios (missing prompts dir, invalid agent key, permission errors).
+  - [x] 7.3 Add troubleshooting section to `docs/slash-command-generator.md` covering common issues (agent not detected, permission denied, format errors).
+  - [x] 7.4 Update examples in docs to show actual command output and file structures.
+  - [x] 7.5 Add note about backup file cleanup in docs (no automatic cleanup; users should periodically clean `.bak` files).
+  - [x] 7.6 Consider adding `--target-dir` alias for `--base-path` if spec requires it, or document the deviation.
 
 - [ ] 8.0 Fix detection default location: change default to home directory
   - Demo Criteria: "Running `sdd-generate-commands` without flags detects agents in home directory and generates commands there; `--detection-path` allows override for project-specific use cases."
