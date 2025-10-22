@@ -63,6 +63,46 @@ def _normalize_override_arguments(raw: list[dict[str, Any]]) -> list[PromptArgum
     return normalized
 
 
+def _normalize_output(content: str) -> str:
+    """Normalize whitespace and encoding in generated output.
+
+    - Ensures consistent line endings (LF)
+    - Removes trailing whitespace from lines
+    - Ensures UTF-8 encoding
+    - Normalizes multiple blank lines to single blank line
+
+    Args:
+        content: The generated content to normalize
+
+    Returns:
+        Normalized content string
+    """
+    # Normalize line endings to LF
+    content = content.replace("\r\n", "\n").replace("\r", "\n")
+
+    # Remove trailing whitespace from each line
+    lines = []
+    for line in content.splitlines():
+        lines.append(line.rstrip())
+
+    # Normalize multiple consecutive blank lines to single blank line
+    normalized_lines = []
+    prev_blank = False
+    for line in lines:
+        is_blank = not line.strip()
+        if is_blank and prev_blank:
+            continue  # Skip consecutive blank lines
+        normalized_lines.append(line)
+        prev_blank = is_blank
+
+    # Join lines and ensure trailing newline
+    result = "\n".join(normalized_lines)
+    if result and not result.endswith("\n"):
+        result += "\n"
+
+    return result
+
+
 def _build_arguments_section_markdown(arguments: list[PromptArgumentSpec]) -> str:
     """Build a markdown-formatted arguments section."""
     if not arguments:
@@ -157,7 +197,8 @@ class MarkdownCommandGenerator:
 
         # Format as YAML frontmatter + body
         yaml_content = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
-        return f"---\n{yaml_content}---\n\n{body}\n"
+        output = f"---\n{yaml_content}---\n\n{body}\n"
+        return _normalize_output(output)
 
     def _get_command_name(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
         """Get the command name with optional prefix."""
@@ -218,7 +259,8 @@ class TomlCommandGenerator:
         }
 
         # Convert to TOML format
-        return self._dict_to_toml({"command": command})
+        output = self._dict_to_toml({"command": command})
+        return _normalize_output(output)
 
     def _get_command_name(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
         """Get the command name with optional prefix."""

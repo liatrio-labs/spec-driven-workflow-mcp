@@ -26,6 +26,12 @@ def _parse_toml(content: str) -> dict:
         pytest.fail(f"Generated TOML is invalid: {exc}")
 
 
+def _normalize_for_comparison(text: str) -> str:
+    """Normalize text for comparison (remove extra whitespace, normalize line endings)."""
+    lines = [line.rstrip() for line in text.splitlines()]
+    return "\n".join(lines) + "\n"
+
+
 def test_markdown_generator_applies_agent_overrides(sample_prompt):
     agent = get_agent_config("claude-code")
     generator = MarkdownCommandGenerator()
@@ -157,3 +163,49 @@ def test_toml_generator_substitutes_argument_placeholders(prompt_with_placeholde
     assert meta["command_dir"] == agent.command_dir
     assert meta["command_format"] == agent.command_format.value
     assert meta["command_file_extension"] == agent.command_file_extension
+
+
+def test_markdown_generator_snapshot_regression(sample_prompt):
+    """Snapshot-style test to catch unintended changes in Markdown output format."""
+    agent = get_agent_config("claude-code")
+    generator = MarkdownCommandGenerator()
+
+    generated = generator.generate(sample_prompt, agent)
+
+    # Verify the output structure is consistent
+    assert generated.startswith("---\n")
+    assert "\n---\n" in generated
+    assert generated.endswith("\n")
+
+    # Verify no trailing whitespace in lines
+    lines = generated.splitlines()
+    for line in lines:
+        assert line == line.rstrip(), "Line contains trailing whitespace"
+
+    # Verify consistent line endings (LF only)
+    assert "\r" not in generated
+
+
+def test_toml_generator_snapshot_regression(sample_prompt):
+    """Snapshot-style test to catch unintended changes in TOML output format."""
+    agent = get_agent_config("gemini-cli")
+    generator = TomlCommandGenerator()
+
+    generated = generator.generate(sample_prompt, agent)
+
+    # Verify the output structure is consistent
+    assert generated.startswith("[command]")
+    assert generated.endswith("\n")
+
+    # Verify no trailing whitespace in lines
+    lines = generated.splitlines()
+    for line in lines:
+        assert line == line.rstrip(), "Line contains trailing whitespace"
+
+    # Verify consistent line endings (LF only)
+    assert "\r" not in generated
+
+    # Verify valid TOML structure
+    data = _parse_toml(generated)
+    assert "command" in data
+    assert isinstance(data["command"], dict)

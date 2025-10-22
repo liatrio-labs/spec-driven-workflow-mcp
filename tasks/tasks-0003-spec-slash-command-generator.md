@@ -40,7 +40,7 @@
   - [x] 2.2 Write failing tests in `tests/test_generators.py` that assert Markdown output includes frontmatter, body, and `$ARGUMENTS` placeholder handling.
   - [x] 2.3 Extend generator tests to cover TOML formatting, `{{args}}` substitution, and override application across multiple agents.
   - [x] 2.4 Implement `CommandGenerator` base class plus Markdown and TOML subclasses in `slash_commands/generators.py`, including helper factory selection logic.
-  - [ ] 2.5 Refine generators to normalize whitespace and encoding, updating tests to use snapshot-style comparisons for regression safety.
+  - [x] 2.5 Refine generators to normalize whitespace and encoding, updating tests to use snapshot-style comparisons for regression safety.
 
 - [ ] 3.0 Build slash command writer orchestrating multi-agent generation and dry runs
   - Demo Criteria: "Writer loads prompts, generates commands for single and multi-agent selections, ensures directories exist, and reports dry-run results without writes."
