@@ -15,9 +15,17 @@
     <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
 </p>
 
+## Highlights
+
+- **Prompt-first workflow:** Use curated prompts to go from idea → spec → task list → implementation-ready backlog.
+- **Predictable delivery:** Every step emphasizes demoable slices, proof artifacts, and collaboration with junior developers in mind.
+- **Bonus MCP tooling:** Optionally pair the workflow with an MCP server for automation inside modern AI clients.
+
 ## Why Spec Driven Development?
 
 Spec Driven Development (SDD) keeps AI collaborators and human developers aligned around a shared source of truth. This repository packages a lightweight, prompt-centric workflow that turns an idea into a reviewed specification, an actionable plan, and a disciplined execution loop. By centering on markdown artifacts instead of tooling, the workflow travels with you—across projects, models, and collaboration environments.
+
+MCP technology remains available as an optional integration, but the heart of the project is the trio of prompts that guide teams from idea to demoable outcomes with consistent artifacts.
 
 ## Guiding Principles
 
@@ -26,6 +34,20 @@ Spec Driven Development (SDD) keeps AI collaborators and human developers aligne
 - **Make work transparent:** Tasks live in versioned markdown files so stakeholders can review, comment, and adjust scope anytime.
 - **Progress one slice at a time:** The management prompt enforces single-threaded execution to reduce churn and unfinished work-in-progress.
 - **Stay automation ready:** While SDD works with plain Markdown, the prompts are structured for MCP, IDE agents, or other AI integrations.
+
+## Prompt Workflow
+
+All prompts live in `prompts/` and are designed for use inside your preferred AI assistant.
+
+1. **`generate-spec`** (`prompts/generate-spec.md`): Ask clarifying questions, then author a junior-friendly spec with demoable slices.
+2. **`generate-task-list-from-spec`** (`prompts/generate-task-list-from-spec.md`): Transform the approved spec into actionable parent tasks and sub-tasks with proof artifacts.
+3. **`manage-tasks`** (`prompts/manage-tasks.md`): Coordinate execution, update task status, and record outcomes as you deliver value.
+
+Each prompt writes Markdown outputs into `tasks/`, giving you a lightweight backlog that is easy to review, share, and implement.
+
+## How does it work?
+
+The workflow is driven by Markdown prompts that function as reusable playbooks for the AI agent. Reference the prompts directly, or invoke them via supported tooling, to keep the AI focused on structured outcomes. Users can manage context with their existing workflows (GitHub CLI, Atlassian MCP, etc.), and optionally let the MCP server automate portions of the process.
 
 ## Workflow Overview
 
@@ -109,6 +131,12 @@ Prefer tighter tooling? This repository also ships an MCP server that exposes th
 
 > Note: MCP prompt support is not uniformly supported across AI tools. See [docs/mcp-prompt-support.md](./docs/mcp-prompt-support.md) for details.
 
+### Workflow Essentials
+
+1. Open `prompts/generate-spec.md` inside your AI assistant and follow the instructions to produce a new spec in `tasks/`.
+2. Point the assistant at the generated spec and run `prompts/generate-task-list-from-spec.md` to create the implementation backlog.
+3. Use `prompts/manage-tasks.md` while executing work to keep status, demo criteria, and proof artifacts up to date.
+
 ### Installation
 
 ```bash
@@ -140,9 +168,9 @@ uvx fastmcp dev server.py
 uvx fastmcp run server.py --transport http --port 8000
 ```
 
-See `docs/operations.md` and `CONTRIBUTING.md` for advanced configuration, deployment, and contribution guidelines.
+See [docs/operations.md](docs/operations.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for advanced configuration, deployment, and contribution guidelines.
 
-## References & Further Reading
+## References
 
 | Reference | Description | Link |
 | --- | --- | --- |
