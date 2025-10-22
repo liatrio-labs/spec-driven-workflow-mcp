@@ -1,3 +1,18 @@
+<!--
+📋 PR Title Format: <type>(<optional scope>): <description>
+
+Valid types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+
+Examples:
+  ✅ feat(auth): add login button to navigation
+  ✅ fix: resolve race condition in async handler
+  ✅ docs: update installation instructions
+  ❌ Add new feature (missing type)
+  ❌ Feat: Add feature (uppercase description)
+
+The PR title will be validated automatically.
+-->
+
 ## Why?
 
 <!-- Summarize the motivation for this change. Reference specs/tasks/issues as needed. -->

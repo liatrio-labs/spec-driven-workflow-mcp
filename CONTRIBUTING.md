@@ -101,7 +101,7 @@ Semantic versioning and releases are automated in CI (e.g., `python-semantic-rel
 ## Pull Requests
 
 - Keep PRs focused and well scoped.
-- Use a conventional title (e.g., `feat: add new feature`).
+- **PR titles must follow Conventional Commits format** (e.g., `feat: add new feature`). This is enforced by an automated check.
 - PR description template:
 
 ```markdown
@@ -114,6 +114,31 @@ Semantic versioning and releases are automated in CI (e.g., `python-semantic-rel
 
 - Ensure all checks pass (tests and pre-commit) before requesting review.
 - Reference related issues and task IDs where applicable.
+
+### PR Title Format
+
+PR titles are validated automatically and must follow this format:
+
+```
+<type>(<optional scope>): <description>
+```
+
+**Valid types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+**Examples:**
+- `feat(auth): add login button to navigation`
+- `fix: resolve race condition in async handler`
+- `docs: update installation instructions`
+- `chore: bump dependencies and run pre-commit`
+
+The description should:
+- Start with a lowercase letter
+- Be concise and descriptive
+- Use imperative mood (e.g., "add" not "added" or "adds")
+
+**Breaking changes:** Add `!` after the type (e.g., `feat!: drop Python 3.10 support`)
+
+If the automated check fails, update your PR title and it will re-run automatically.
 
 ## Issue Templates
 
