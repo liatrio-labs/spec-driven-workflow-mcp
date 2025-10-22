@@ -90,20 +90,20 @@ The following agents are supported:
 
 | Agent | Display Name | Format | Extension |
 |-------|--------------|--------|-----------|
+| `amazon-q-developer` | Amazon Q Developer | Markdown | `.md` |
+| `amp` | Amp | Markdown | `.md` |
+| `auggie-cli` | Auggie CLI | Markdown | `.md` |
 | `claude-code` | Claude Code | Markdown | `.md` |
-| `claude-desktop` | Claude Desktop | Markdown | `.md` |
+| `codebuddy-cli` | CodeBuddy CLI | Markdown | `.md` |
+| `codex-cli` | Codex CLI | Markdown | `.md` |
 | `cursor` | Cursor | Markdown | `.md` |
-| `cody` | Cody | Markdown | `.md` |
-| `continue` | Continue | Markdown | `.md` |
-| `bloop` | Bloop | Markdown | `.md` |
-| `cursor-context` | Cursor Context | Markdown | `.md` |
 | `gemini-cli` | Gemini CLI | TOML | `.toml` |
-| `gemini-app` | Gemini App | TOML | `.toml` |
-| `gemini-chat` | Gemini Chat | TOML | `.toml` |
-| `gemini-emacs` | Gemini Emacs | TOML | `.toml` |
-| `gemini-neovim` | Gemini Neovim | TOML | `.toml` |
-| `gemini-jupyter` | Gemini Jupyter | TOML | `.toml` |
-| `gemini-fleet` | Gemini Fleet | TOML | `.toml` |
+| `github-copilot` | GitHub Copilot | Markdown | `.md` |
+| `kilo-code` | Kilo Code | Markdown | `.md` |
+| `opencode` | opencode | Markdown | `.md` |
+| `qwen-code` | Qwen Code | TOML | `.toml` |
+| `roo-code` | Roo Code | Markdown | `.md` |
+| `windsurf` | Windsurf | Markdown | `.md` |
 
 ## Command File Formats
 
@@ -134,28 +134,35 @@ $ARGUMENTS
 
 ### TOML Format
 
-TOML-based agents (Gemini variants) use TOML syntax:
+TOML-based agents (Gemini CLI, Qwen Code) use TOML syntax:
 
 ```toml
+[command]
 name = "command-name"
 description = "Command description"
 tags = ["tag1", "tag2"]
-
-[[arguments]]
-name = "arg1"
-description = "Argument description"
-required = true
-
 enabled = true
 
-[body]
-content = """
+[command.arguments]
+required = { "arg1" = "Argument description" }
+optional = {}
+
+[command.body]
+text = """
 # Command Name
 
 Command body content.
 
 {{args}}
 """
+
+[command.meta]
+category = "example"
+agent = "gemini-cli"
+agent_display_name = "Gemini CLI"
+command_dir = ".gemini/commands"
+command_format = "toml"
+command_file_extension = ".toml"
 ```
 
 ## Prompt Structure
@@ -177,12 +184,12 @@ See `prompts/` directory for examples.
 Generated files are placed in agent-specific directories:
 
 ```text
-.claude/commands/        # Claude Code, Claude Desktop
-.cursor/commands/        # Cursor
-.cody/commands/          # Cody
-.continue/commands/      # Continue
-.bloop/commands/        # Bloop
-.gemini/commands/       # Gemini variants
+.claude/commands/        # Claude Code
+.cursorrules/commands/  # Cursor
+.gemini/commands/       # Gemini CLI
+.github/copilot/commands/  # GitHub Copilot
+.qwen/commands/        # Qwen Code
+.windsurfrules/commands/  # Windurf
 ```
 
 ## Examples

@@ -10,6 +10,7 @@ dependencies = [
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "questionary>=2.0.0",
     "ruff>=0.14.0",
     "tomli-w>=1.0.0",
     "typer>=0.20.0",

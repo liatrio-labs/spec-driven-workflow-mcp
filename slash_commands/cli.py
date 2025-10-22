@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Annotated
 
+import questionary
 import typer
 
 from slash_commands import SlashCommandWriter, detect_agents, get_agent_config, list_agent_keys
@@ -16,8 +17,39 @@ app = typer.Typer(
 )
 
 
+def _prompt_agent_selection(detected_agents: list) -> list:
+    """Prompt user to select which agents to generate commands for.
+
+    Args:
+        detected_agents: List of detected agent configurations
+
+    Returns:
+        List of selected agent configurations (empty if cancelled)
+    """
+
+    choices = [
+        questionary.Choice(
+            f"{agent.display_name} ({agent.key})",
+            agent,
+            checked=True,  # Pre-check all detected agents
+        )
+        for agent in detected_agents
+    ]
+
+    selected = questionary.checkbox(
+        "Select agents to generate commands for (use space to select/deselect, enter to confirm):",
+        choices=choices,
+    ).ask()
+
+    if selected is None:
+        # User pressed Ctrl+C
+        return []
+
+    return selected
+
+
 @app.command()
-def generate(  # noqa: PLR0913
+def generate(  # noqa: PLR0913 PLR0912 PLR0915
     prompts_dir: Annotated[
         Path,
         typer.Option(
@@ -57,6 +89,14 @@ def generate(  # noqa: PLR0913
             help="Base directory for output paths",
         ),
     ] = None,
+    detection_path: Annotated[
+        Path | None,
+        typer.Option(
+            "--detection-path",
+            "-d",
+            help="Directory to search for agent configurations (defaults to current directory)",
+        ),
+    ] = None,
     list_agents_flag: Annotated[
         bool,
         typer.Option(
@@ -79,12 +119,31 @@ def generate(  # noqa: PLR0913
 
     # Detect agents if not specified
     if agents is None or len(agents) == 0:
-        detected = detect_agents(base_path or Path.cwd())
+        # Use detection_path if specified, otherwise base_path, otherwise current directory
+        detection_dir = (
+            detection_path
+            if detection_path is not None
+            else (base_path if base_path is not None else Path.cwd())
+        )
+        detected = detect_agents(detection_dir)
         if not detected:
             print("No agents detected. Use --agents to specify agents manually.")
+            print(f"Detection path: {detection_dir}")
             sys.exit(1)
-        agents = [agent.key for agent in detected]
-        print(f"Detected agents: {', '.join(agents)}")
+
+        # Interactive selection: all detected agents pre-selected
+        if not yes:
+            selected_agents = _prompt_agent_selection(detected)
+            if not selected_agents:
+                print("No agents selected. Exiting.")
+                sys.exit(1)
+            agents = [agent.key for agent in selected_agents]
+        else:
+            # If --yes is used, auto-select all detected agents
+            agents = [agent.key for agent in detected]
+            print(f"Detected agents: {', '.join(agents)}")
+    else:
+        print(f"Selected agents: {', '.join(agents)}")
 
     # Create writer
     overwrite_action = "overwrite" if yes else None

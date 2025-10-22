@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
 
+import questionary
+
 from mcp_server.prompt_utils import MarkdownPrompt, load_markdown_prompt
 from slash_commands.config import AgentConfig, get_agent_config
 from slash_commands.generators import CommandGenerator
@@ -23,10 +25,21 @@ def prompt_overwrite_action(file_path: Path) -> OverwriteAction:
     Returns:
         One of: "cancel", "overwrite", "backup", "overwrite-all"
     """
-    # This is a placeholder - in actual implementation, this would use
-    # a proper prompt library like questionary or typer's prompt
-    # For now, we'll raise NotImplementedError to fail tests
-    raise NotImplementedError("Overwrite prompt not yet implemented")
+    response = questionary.select(
+        f"File already exists: {file_path}\nWhat would you like to do?",
+        choices=[
+            questionary.Choice("Cancel", "cancel"),
+            questionary.Choice("Overwrite this file", "overwrite"),
+            questionary.Choice("Create backup and overwrite", "backup"),
+            questionary.Choice("Overwrite all existing files", "overwrite-all"),
+        ],
+    ).ask()
+
+    if response is None:
+        # User pressed Ctrl+C or similar
+        return "cancel"
+
+    return response  # type: ignore[return-value]
 
 
 def create_backup(file_path: Path) -> Path:
@@ -38,7 +51,7 @@ def create_backup(file_path: Path) -> Path:
     Returns:
         Path to the backup file
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     backup_path = file_path.with_suffix(f"{file_path.suffix}.{timestamp}.bak")
 
     # Copy file with metadata preserved

@@ -8,6 +8,7 @@ import pytest
 from typer.testing import CliRunner
 
 from slash_commands.cli import app
+from slash_commands.config import AgentConfig, CommandFormat
 
 
 @pytest.fixture
@@ -278,3 +279,137 @@ def test_cli_reports_backup_creation(mock_prompts_dir, tmp_path):
         # Backup file should exist with timestamp pattern
         backup_files = list(output_path.parent.glob("test-prompt.md.*.bak"))
         assert len(backup_files) > 0
+
+
+def test_cli_interactive_agent_selection_selects_all(mock_prompts_dir, tmp_path):
+    """Test that interactive agent selection allows selecting all detected agents."""
+    # Create agent directories
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".cursor").mkdir()
+
+    runner = CliRunner()
+    # Mock questionary.checkbox to return all agents
+    with patch("slash_commands.cli.questionary.checkbox") as mock_checkbox:
+        # Simulate selecting all agents
+        mock_checkbox.return_value.ask.return_value = [
+            AgentConfig(
+                key="claude-code",
+                display_name="Claude Code",
+                command_dir=".claude/commands",
+                command_format=CommandFormat.MARKDOWN,
+                command_file_extension=".md",
+                detection_dirs=(".claude",),
+            ),
+            AgentConfig(
+                key="cursor",
+                display_name="Cursor",
+                command_dir=".cursorrules/commands",
+                command_format=CommandFormat.MARKDOWN,
+                command_file_extension=".md",
+                detection_dirs=(".cursor", ".cursorrules"),
+            ),
+        ]
+
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--base-path",
+                str(tmp_path),
+            ],
+        )
+
+        # Should generate files for both agents
+        assert result.exit_code == 0
+        assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()
+        assert (tmp_path / ".cursorrules" / "commands" / "test-prompt.md").exists()
+
+
+def test_cli_interactive_agent_selection_partial_selection(mock_prompts_dir, tmp_path):
+    """Test that interactive agent selection allows selecting subset of agents."""
+    # Create agent directories
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".cursor").mkdir()
+
+    runner = CliRunner()
+    # Mock questionary.checkbox to return only one agent
+    with patch("slash_commands.cli.questionary.checkbox") as mock_checkbox:
+        # Simulate selecting only claude-code
+        mock_checkbox.return_value.ask.return_value = [
+            AgentConfig(
+                key="claude-code",
+                display_name="Claude Code",
+                command_dir=".claude/commands",
+                command_format=CommandFormat.MARKDOWN,
+                command_file_extension=".md",
+                detection_dirs=(".claude",),
+            ),
+        ]
+
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--base-path",
+                str(tmp_path),
+            ],
+        )
+
+        # Should only generate files for claude-code
+        assert result.exit_code == 0
+        assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()
+        assert not (tmp_path / ".cursorrules" / "commands" / "test-prompt.md").exists()
+
+
+def test_cli_interactive_agent_selection_cancels_on_no_selection(mock_prompts_dir, tmp_path):
+    """Test that interactive agent selection cancels when no agents are selected."""
+    # Create agent directories
+    (tmp_path / ".claude").mkdir()
+
+    runner = CliRunner()
+    # Mock questionary.checkbox to return empty list
+    with patch("slash_commands.cli.questionary.checkbox") as mock_checkbox:
+        # Simulate selecting no agents
+        mock_checkbox.return_value.ask.return_value = []
+
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--base-path",
+                str(tmp_path),
+            ],
+        )
+
+        # Should exit with error message
+        assert result.exit_code == 1
+        assert "no agents selected" in result.stdout.lower()
+
+
+def test_cli_interactive_agent_selection_bypassed_with_yes_flag(mock_prompts_dir, tmp_path):
+    """Test that --yes flag bypasses interactive agent selection."""
+    # Create agent directories
+    (tmp_path / ".claude").mkdir()
+
+    runner = CliRunner()
+    # Should not call questionary.checkbox when --yes is used
+    with patch("slash_commands.cli.questionary.checkbox") as mock_checkbox:
+        result = runner.invoke(
+            app,
+            [
+                "--prompts-dir",
+                str(mock_prompts_dir),
+                "--base-path",
+                str(tmp_path),
+                "--yes",
+            ],
+        )
+
+        # Should not call checkbox
+        mock_checkbox.assert_not_called()
+        # Should generate files automatically
+        assert result.exit_code == 0
+        assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()

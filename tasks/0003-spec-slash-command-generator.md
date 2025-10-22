@@ -521,3 +521,39 @@ This specification will be saved as:
 ```bash
 /tasks/0003-spec-slash-command-generator.md
 ```
+
+## Addendum: Detection Default Location Oversight
+
+**Issue**: Specification oversight regarding default detection location
+
+### Problem Statement
+
+The original specification (FR6, FR18) implicitly assumed that slash commands would be generated per-project (in the current working directory). However, this conflicts with the intended use case where slash commands should be installed globally at the user's home directory level for universal access across all AI tools.
+
+### Root Cause
+
+FR6 states: "The system must auto-detect configured AI tools by checking for the presence of their configuration directories in the target project (e.g., `.claude/`, `.cursor/`, `.windsurf/`)."
+
+FR18 states: "The CLI must default to generating commands in the current working directory."
+
+This per-project approach makes sense for project-specific configurations but not for global slash commands that should be available across all projects.
+
+### Intended Behavior
+
+Slash commands should be installed globally by default at the user's home directory level because:
+
+1. **Universal Access**: AI coding tools typically read slash commands from the user's home directory (e.g., `~/.claude/commands/`, `~/.gemini/commands/`)
+2. **Consistency**: Users expect slash commands to work across all their projects, not just the current one
+3. **Configuration Management**: Agent configurations (`.claude/`, `.gemini/`, etc.) are typically stored at the user level, not per-project
+
+### Corrected Behavior
+
+The CLI should default to detecting agents in the user's home directory (`~` or `$HOME`), not the current working directory. This allows:
+
+- Auto-detection of agents configured globally
+- Generation of slash commands in the correct location for universal access
+- Optional override via `--detection-path` flag for project-specific use cases
+
+### Implementation Impact
+
+This oversight requires changing the default detection path from `Path.cwd()` to `Path.home()` while maintaining backward compatibility through CLI flags.

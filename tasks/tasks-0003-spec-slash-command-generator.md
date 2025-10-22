@@ -68,3 +68,35 @@
   - [x] 5.3 Extend CLI to surface overwrite prompts, honor `--yes`, and emit summary of backups created.
   - [x] 5.4 Document new workflow in `docs/slash-command-generator.md` and add concise overview/link in `README.md`.
   - [x] 5.5 Update `pyproject.toml` dependencies (Typer, Questionary if used) and regenerate `uv.lock`; note release considerations in `CHANGELOG.md` if required.
+
+- [x] 6.0 Fix critical audit issues: implement interactive prompts and fix documentation
+  - Demo Criteria: "CLI provides interactive prompts for overwrite handling and agent selection; documentation accurately reflects all 14 supported agents; all tests pass without mocking interactive functions."
+  - Proof Artifact(s): "CLI: run without `--yes` showing interactive prompts; CLI: `pytest tests/test_writer.py tests/test_cli.py -v` without mocks; Diff: corrected agent list in docs."
+  - [x] 6.1 Add `questionary` dependency to `pyproject.toml` for interactive prompts and regenerate `uv.lock`.
+  - [x] 6.2 Implement `prompt_overwrite_action()` in `slash_commands/writer.py` using `questionary.select()` with options: Cancel, Overwrite, Backup, Overwrite All; update tests to use real prompts instead of mocks.
+  - [x] 6.3 Add interactive agent selection UI in `slash_commands/cli.py` that presents detected agents with checkboxes (`questionary.checkbox`) allowing users to enable/disable specific agents before generation; maintain opt-out model (all detected agents pre-selected).
+  - [x] 6.4 Fix documentation agent list in `docs/slash-command-generator.md` to match actual 14 agents from `config.py` (remove non-existent agents: claude-desktop, cody, continue, bloop, cursor-context, gemini-app, gemini-chat, gemini-emacs, gemini-neovim, gemini-jupyter, gemini-fleet; ensure correct list matches implementation).
+  - [x] 6.5 Update directory structure examples in docs to reflect actual agent directories (remove references to `.cody/`, `.continue/`, `.bloop/`).
+  - [x] 6.6 Add integration tests for interactive flows (overwrite prompts and agent selection) using `CliRunner` with `input` parameter to simulate user responses.
+  - [x] 6.7 Verify backup timestamp format matches spec requirement (`YYYYMMDD-HHMMSS` format) and update if needed.
+  - [x] 6.8 Review and update TOML format example in docs to match actual generator output structure.
+
+- [ ] 7.0 Polish and improvements: exit codes, error handling, and documentation
+  - Demo Criteria: "CLI uses consistent exit codes matching spec (0=success, 1=user cancel, 2=validation error, 3=I/O error); improved error messages throughout; comprehensive documentation with troubleshooting."
+  - Proof Artifact(s): "CLI: test run showing exit codes; CLI: `sdd-generate-commands --help` showing complete options; Diff: updated docs with troubleshooting section."
+  - [ ] 7.1 Implement consistent exit codes in `slash_commands/cli.py`: exit(0) for success, exit(1) for user cancellation, exit(2) for validation errors (invalid agent keys), exit(3) for I/O errors (permission denied, etc.).
+  - [ ] 7.2 Add comprehensive error messages with clear guidance for common failure scenarios (missing prompts dir, invalid agent key, permission errors).
+  - [ ] 7.3 Add troubleshooting section to `docs/slash-command-generator.md` covering common issues (agent not detected, permission denied, format errors).
+  - [ ] 7.4 Update examples in docs to show actual command output and file structures.
+  - [ ] 7.5 Add note about backup file cleanup in docs (no automatic cleanup; users should periodically clean `.bak` files).
+  - [ ] 7.6 Consider adding `--target-dir` alias for `--base-path` if spec requires it, or document the deviation.
+
+- [ ] 8.0 Fix detection default location: change default to home directory
+  - Demo Criteria: "Running `sdd-generate-commands` without flags detects agents in home directory and generates commands there; `--detection-path` allows override for project-specific use cases."
+  - Proof Artifact(s): "CLI: run without flags showing detection in home directory; CLI: run with `--detection-path .` showing project-specific detection; Diff: updated CLI code and tests."
+  - [ ] 8.1 Update detection logic in `slash_commands/cli.py` to default to `Path.home()` instead of `Path.cwd()` for agent detection.
+  - [ ] 8.2 Update tests in `tests/test_cli.py` to verify default detection uses home directory.
+  - [ ] 8.3 Add integration test demonstrating detection in home directory vs current directory.
+  - [ ] 8.4 Update documentation in `docs/slash-command-generator.md` to explain default behavior and when to use `--detection-path`.
+  - [ ] 8.5 Update examples in documentation to show home directory usage as primary use case.
+  - [ ] 8.6 Update CLI help text to clarify default detection location.
