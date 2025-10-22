@@ -88,22 +88,22 @@ uv run sdd-generate-commands --yes
 
 The following agents are supported:
 
-| Agent | Display Name | Format | Extension |
-|-------|--------------|--------|-----------|
-| `amazon-q-developer` | Amazon Q Developer | Markdown | `.md` |
-| `amp` | Amp | Markdown | `.md` |
-| `auggie-cli` | Auggie CLI | Markdown | `.md` |
-| `claude-code` | Claude Code | Markdown | `.md` |
-| `codebuddy-cli` | CodeBuddy CLI | Markdown | `.md` |
-| `codex-cli` | Codex CLI | Markdown | `.md` |
-| `cursor` | Cursor | Markdown | `.md` |
-| `gemini-cli` | Gemini CLI | TOML | `.toml` |
-| `github-copilot` | GitHub Copilot | Markdown | `.md` |
-| `kilo-code` | Kilo Code | Markdown | `.md` |
-| `opencode` | opencode | Markdown | `.md` |
-| `qwen-code` | Qwen Code | TOML | `.toml` |
-| `roo-code` | Roo Code | Markdown | `.md` |
-| `windsurf` | Windsurf | Markdown | `.md` |
+| Agent | Display Name | Format | Extension | Reference |
+|-------|--------------|--------|-----------|-----------|
+| `amazon-q-developer` | Amazon Q Developer | Markdown | `.md` | [Home](https://aws.amazon.com/q/developer/) · [Docs](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html) |
+| `amp` | Amp | Markdown | `.md` | [Home](https://ampcode.com/) · [Docs](https://ampcode.com/manual) |
+| `auggie-cli` | Auggie CLI | Markdown | `.md` | [Home](https://www.augmentcode.com/product/CLI) · [Docs](https://docs.augmentcode.com/cli/overview) |
+| `claude-code` | Claude Code | Markdown | `.md` | [Home](https://docs.claude.com/) · [Docs](https://docs.claude.com/en/docs/claude-code/overview) |
+| `codebuddy-cli` | CodeBuddy CLI | Markdown | `.md` | [Home](https://www.codebuddy.ai/) · [Docs](https://docs.codebuddy.com/) |
+| `codex-cli` | Codex CLI | Markdown | `.md` | [Home](https://developers.openai.com/codex) · [Docs](https://developers.openai.com/codex/cli/) |
+| `cursor` | Cursor | Markdown | `.md` | [Home](https://cursor.com/) · [Docs](https://cursor.com/docs) |
+| `gemini-cli` | Gemini CLI | TOML | `.toml` | [Home](https://github.com/google-gemini/gemini-cli) · [Docs](https://geminicli.com/docs/) |
+| `github-copilot` | GitHub Copilot | Markdown | `.md` | [Home](https://github.com/features/copilot/cli) · [Docs](https://docs.github.com/en/copilot) |
+| `kilo-code` | Kilo Code | Markdown | `.md` | [Home](https://kilocode.ai/) · [Docs](https://kilocode.ai/docs/) |
+| `opencode` | opencode | Markdown | `.md` | [Home](https://opencode.ai/) · [Docs](https://opencode.ai/docs/) |
+| `qwen-code` | Qwen Code | TOML | `.toml` | [Home](https://github.com/QwenLM/qwen-code) · [Docs](https://qwenlm.github.io/qwen-code-docs/) |
+| `roo-code` | Roo Code | Markdown | `.md` | [Home](https://github.com/RooCodeInc/Roo-Code) · [Docs](https://docs.roocode.com/) |
+| `windsurf` | Windsurf | Markdown | `.md` | [Home](https://windsurf.com/editor) · [Docs](https://docs.windsurf.com/) |
 
 ## Command File Formats
 
