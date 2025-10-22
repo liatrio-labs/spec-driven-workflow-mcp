@@ -119,7 +119,7 @@ Semantic versioning and releases are automated in CI (e.g., `python-semantic-rel
 
 PR titles are validated automatically and must follow this format:
 
-```
+```text
 <type>(<optional scope>): <description>
 ```
 
