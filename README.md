@@ -1,8 +1,9 @@
 <div align="center">
     <img src="./misc/header.png" alt="Spec Driven Development header" width="400"/>
-    <h1>🧭 Spec Driven Development Workflow</h1>
+    <h1>🧭 Spec-Driven Development Workflow</h1>
     <h3><em>Build predictable software with a repeatable AI-guided workflow.</em></h3>
 </div>
+
 
 <p align="center">
     <strong>Spec-driven development tools for collaborating with AI agents to deliver reliable outcomes.</strong>
@@ -21,9 +22,9 @@
 - **Predictable delivery:** Every step emphasizes demoable slices, proof artifacts, and collaboration with junior developers in mind.
 - **Bonus MCP tooling:** Optionally pair the workflow with an MCP server for automation inside modern AI clients.
 
-## Why Spec Driven Development?
+## Why Spec-Driven Development?
 
-Spec Driven Development (SDD) keeps AI collaborators and human developers aligned around a shared source of truth. This repository packages a lightweight, prompt-centric workflow that turns an idea into a reviewed specification, an actionable plan, and a disciplined execution loop. By centering on markdown artifacts instead of tooling, the workflow travels with you—across projects, models, and collaboration environments.
+Spec-Driven Development (SDD) keeps AI collaborators and human developers aligned around a shared source of truth. This repository packages a lightweight, prompt-centric workflow that turns an idea into a reviewed specification, an actionable plan, and a disciplined execution loop. By centering on markdown artifacts instead of tooling, the workflow travels with you—across projects, models, and collaboration environments.
 
 MCP technology remains available as an optional integration, but the heart of the project is the trio of prompts that guide teams from idea to demoable outcomes with consistent artifacts.
 
