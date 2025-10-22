@@ -60,11 +60,11 @@
   - [x] 4.4 Support `--agents`, `--list-agents`, `--dry-run`, and `--prompts-dir` options with clear messaging; extend tests accordingly.
   - [x] 4.5 Register entry point in `pyproject.toml` and expose CLI in `slash_commands/__init__.py`; update CLI tests to assert console summary formatting.
 
-- [~] 5.0 Implement safe overwrite handling and finalize packaging & docs
+- [x] 5.0 Implement safe overwrite handling and finalize packaging & docs
   - Demo Criteria: "CLI prompts on existing files with cancel/overwrite/backup choices, creates timestamped `.bak` copies when selected, and project docs/scripts describe the workflow."
   - Proof Artifact(s): "CLI: fixture run showing overwrite prompt and `.bak` files; CLI: `ls -la .claude/commands/*.bak`; Diff: updates to `README.md` and `docs/slash-command-generator.md`."
   - [x] 5.1 Craft failing writer/CLI tests that simulate existing command files and assert prompt branches for cancel, overwrite, and backup choices.
   - [x] 5.2 Implement overwrite handling utilities that create timestamped backups via `shutil.copy2`, configurable for per-file vs global decisions.
   - [x] 5.3 Extend CLI to surface overwrite prompts, honor `--yes`, and emit summary of backups created.
-  - [ ] 5.4 Document new workflow in `docs/slash-command-generator.md` and add concise overview/link in `README.md`.
-  - [ ] 5.5 Update `pyproject.toml` dependencies (Typer, Questionary if used) and regenerate `uv.lock`; note release considerations in `CHANGELOG.md` if required.
+  - [x] 5.4 Document new workflow in `docs/slash-command-generator.md` and add concise overview/link in `README.md`.
+  - [x] 5.5 Update `pyproject.toml` dependencies (Typer, Questionary if used) and regenerate `uv.lock`; note release considerations in `CHANGELOG.md` if required.
