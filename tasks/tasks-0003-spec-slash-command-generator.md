@@ -42,14 +42,14 @@
   - [x] 2.4 Implement `CommandGenerator` base class plus Markdown and TOML subclasses in `slash_commands/generators.py`, including helper factory selection logic.
   - [x] 2.5 Refine generators to normalize whitespace and encoding, updating tests to use snapshot-style comparisons for regression safety.
 
-- [ ] 3.0 Build slash command writer orchestrating multi-agent generation and dry runs
+- [x] 3.0 Build slash command writer orchestrating multi-agent generation and dry runs
   - Demo Criteria: "Writer loads prompts, generates commands for single and multi-agent selections, ensures directories exist, and reports dry-run results without writes."
   - Proof Artifact(s): "CLI: `pytest tests/test_writer.py -v`; Log: dry-run test output showing file paths and counts."
-  - [ ] 3.1 Introduce failing writer tests that mock prompt loading and assert correct call sequences for single and multi-agent runs.
-  - [ ] 3.2 Add dry-run focused tests ensuring no files are created while summaries report planned outputs.
-  - [ ] 3.3 Implement `SlashCommandWriter` in `slash_commands/writer.py`, wiring config, generators, and prompt utilities with dependency injection-friendly design.
-  - [ ] 3.4 Ensure writer creates parent directories, respects dry-run flag, and returns structured results; update tests to validate filesystem effects with `tmp_path`.
-  - [ ] 3.5 Export writer interfaces from `slash_commands/__init__.py` for reuse by CLI and future modules.
+  - [x] 3.1 Introduce failing writer tests that mock prompt loading and assert correct call sequences for single and multi-agent runs.
+  - [x] 3.2 Add dry-run focused tests ensuring no files are created while summaries report planned outputs.
+  - [x] 3.3 Implement `SlashCommandWriter` in `slash_commands/writer.py`, wiring config, generators, and prompt utilities with dependency injection-friendly design.
+  - [x] 3.4 Ensure writer creates parent directories, respects dry-run flag, and returns structured results; update tests to validate filesystem effects with `tmp_path`.
+  - [x] 3.5 Export writer interfaces from `slash_commands/__init__.py` for reuse by CLI and future modules.
 
 - [ ] 4.0 Deliver Typer CLI with auto-detection and selection flows
   - Demo Criteria: "Running `sdd-generate-commands` auto-detects configured agents, supports interactive confirmation and `--agents`, `--list-agents`, `--dry-run`, `--yes` flags, and exits with correct status codes."
