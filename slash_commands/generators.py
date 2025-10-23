@@ -225,10 +225,15 @@ class MarkdownCommandGenerator:
 
 
 class TomlCommandGenerator:
-    """Generator for TOML-format slash command files."""
+    """Generator for TOML-format slash command files (Gemini CLI spec)."""
 
     def generate(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
-        """Generate a TOML-formatted command file.
+        """Generate a TOML-formatted command file following Gemini CLI spec.
+
+        According to https://geminicli.com/docs/cli/custom-commands/:
+        - Required field: `prompt` (String)
+        - Optional field: `description` (String)
+        - {{args}} placeholder is preserved (not replaced)
 
         Args:
             prompt: The source prompt to generate from
@@ -237,58 +242,33 @@ class TomlCommandGenerator:
         Returns:
             Complete TOML file content
         """
-        description, arguments, enabled = _apply_agent_overrides(prompt, agent)
+        description, arguments, _enabled = _apply_agent_overrides(prompt, agent)
 
-        # Build arguments dict
-        required_args = {}
-        optional_args = {}
-        for arg in arguments:
-            if arg.required:
-                required_args[arg.name] = arg.description or ""
-            else:
-                optional_args[arg.name] = arg.description or ""
+        # Replace $ARGUMENTS with markdown-formatted arguments
+        # But preserve {{args}} placeholder for Gemini CLI context-aware injection
+        prompt_text = _replace_placeholders(prompt.body, arguments, replace_double_braces=False)
 
-        # Replace placeholders in body
-        body = _replace_placeholders(prompt.body, arguments)
+        # Build TOML structure following official Gemini CLI spec
+        # Only include 'description' if it exists, 'prompt' is always required
+        toml_data = {"prompt": prompt_text}
+        if description:
+            toml_data["description"] = description
 
-        # Build TOML structure
-        command = {
-            "name": self._get_command_name(prompt, agent),
-            "description": description,
-            "enabled": enabled,
-            "tags": sorted(prompt.tags) if prompt.tags else [],
-            "arguments": {"required": required_args, "optional": optional_args},
-            "body": {"text": body},
-            "meta": self._build_meta(prompt, agent),
+        # Add metadata fields (version tracking for our tooling)
+        # These are ignored by Gemini CLI but preserved for bookkeeping
+        toml_data["meta"] = {
+            "version": __version__,
+            "updated_at": datetime.now().isoformat(),
+            "source_prompt": prompt.name,
+            "agent": agent.key,
         }
 
         # Convert to TOML format
-        output = self._dict_to_toml({"command": command})
+        output = self._dict_to_toml(toml_data)
         return _normalize_output(output)
 
-    def _get_command_name(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
-        """Get the command name with optional prefix."""
-        prefix = prompt.meta.get("command_prefix", "") if prompt.meta else ""
-        return f"{prefix}{prompt.name}"
-
-    def _build_meta(self, prompt: MarkdownPrompt, agent: AgentConfig) -> dict:
-        """Build metadata section for the command."""
-        meta = prompt.meta.copy() if prompt.meta else {}
-        meta.update({
-            "agent": agent.key,
-            "agent_display_name": agent.display_name,
-            "command_dir": agent.command_dir,
-            "command_format": agent.command_format.value,
-            "command_file_extension": agent.command_file_extension,
-            "source_prompt": prompt.name,
-            "source_path": str(prompt.path),
-            "version": __version__,
-            "updated_at": datetime.now().isoformat(),
-        })
-        return meta
-
     def _dict_to_toml(self, data: dict) -> str:
-        """Convert a dict to TOML format (simplified implementation)."""
+        """Convert a dict to TOML format."""
         return tomli_w.dumps(data)
 
 

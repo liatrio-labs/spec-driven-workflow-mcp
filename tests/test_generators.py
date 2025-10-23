@@ -102,40 +102,26 @@ def test_toml_generator_applies_agent_overrides(sample_prompt):
     generated = generator.generate(sample_prompt, agent)
     data = _parse_toml(generated)
 
-    command = data["command"]
-    assert command["name"] == "sdd-sample-prompt"
-    assert command["description"] == "Sample prompt tailored for Gemini CLI"
-    assert command["enabled"] is True
-    assert command["tags"] == ["generators", "testing"]
+    # Gemini CLI spec has 'prompt' (required) and 'description' (optional)
+    # We also add 'meta' for version tracking
+    assert "prompt" in data
+    assert data["description"] == "Sample prompt tailored for Gemini CLI"
+    assert "meta" in data
 
-    meta = command["meta"]
-    assert meta["category"] == "generator-tests"
-    assert meta["agent"] == "gemini-cli"
-    assert meta["agent_display_name"] == agent.display_name
-    assert meta["command_dir"] == agent.command_dir
-    assert meta["command_format"] == agent.command_format.value
-    assert meta["command_file_extension"] == agent.command_file_extension
-    assert meta["source_prompt"] == "sample-prompt"
-    assert meta["source_path"].endswith("sample-prompt.md")
+    # Check meta fields
+    meta = data["meta"]
     assert "version" in meta
-    assert isinstance(meta["version"], str)
     assert "updated_at" in meta
-    assert isinstance(meta["updated_at"], str)
+    assert meta["source_prompt"] == "sample-prompt"
+    assert meta["agent"] == "gemini-cli"
 
-    arguments = command["arguments"]
-    assert arguments["required"] == {
-        "primary_input": "Main instruction for the command",
-    }
-    assert arguments["optional"] == {
-        "secondary_flag": "Toggle additional behaviour",
-        "gemini_flag": "Toggle for Gemini specific behaviour",
-    }
+    prompt_text = data["prompt"]
+    assert prompt_text.startswith("# Sample Prompt")
+    assert "Use the provided instructions" in prompt_text
 
-    body_text = command["body"]["text"]
-    assert body_text.startswith("# Sample Prompt")
-    assert "Use the provided instructions" in body_text
-    assert "{{args}}" not in body_text
-    assert "$ARGUMENTS" not in body_text
+    # Gemini CLI expects {{args}} to be preserved, not replaced
+    # Check that it's still present if we have a placeholder
+    assert "$ARGUMENTS" not in prompt_text
 
 
 def test_toml_generator_substitutes_argument_placeholders(prompt_with_placeholder_body):
@@ -145,32 +131,22 @@ def test_toml_generator_substitutes_argument_placeholders(prompt_with_placeholde
     generated = generator.generate(prompt_with_placeholder_body, agent)
     data = _parse_toml(generated)
 
-    command = data["command"]
-    assert command["name"] == "sdd-prompt-with-placeholders"
-    assert command["description"] == "Prompt with TOML specific placeholder"
-    assert command["tags"] == ["testing"]
+    # Gemini CLI spec has 'prompt' (required) and 'description' (optional)
+    # We also add 'meta' for version tracking
+    assert "prompt" in data
+    assert data["description"] == "Prompt with TOML specific placeholder"
+    assert "meta" in data
 
-    arguments = command["arguments"]
-    assert arguments["required"] == {
-        "query": "Search query to send to the agent",
-    }
-    assert arguments["optional"] == {
-        "format": "Preferred response format",
-    }
+    prompt_text = data["prompt"]
 
-    body_text = command["body"]["text"]
-    assert "{{args}}" not in body_text
-    assert "$ARGUMENTS" not in body_text
-    assert "primary_input" not in body_text
-    assert "query" in body_text
-    assert "[format]" in body_text
+    # Gemini CLI expects {{args}} to be preserved for context-aware injection
+    # Check that $ARGUMENTS was replaced but {{args}} is preserved
+    assert "{{args}}" in prompt_text
+    assert "$ARGUMENTS" not in prompt_text
 
-    meta = command["meta"]
-    assert meta["agent"] == "gemini-cli"
-    assert meta["agent_display_name"] == agent.display_name
-    assert meta["command_dir"] == agent.command_dir
-    assert meta["command_format"] == agent.command_format.value
-    assert meta["command_file_extension"] == agent.command_file_extension
+    # The body should contain the argument documentation replacement
+    assert "query" in prompt_text
+    assert "[format]" in prompt_text
 
 
 def test_markdown_generator_snapshot_regression(sample_prompt):
@@ -201,8 +177,10 @@ def test_toml_generator_snapshot_regression(sample_prompt):
 
     generated = generator.generate(sample_prompt, agent)
 
-    # Verify the output structure is consistent
-    assert generated.startswith("[command]")
+    # Verify the output structure follows Gemini CLI spec
+    assert "prompt = " in generated
+    assert "description = " in generated
+    assert "[meta]" in generated
     assert generated.endswith("\n")
 
     # Verify no trailing whitespace in lines
@@ -215,5 +193,7 @@ def test_toml_generator_snapshot_regression(sample_prompt):
 
     # Verify valid TOML structure
     data = _parse_toml(generated)
-    assert "command" in data
-    assert isinstance(data["command"], dict)
+    assert "prompt" in data
+    assert isinstance(data["prompt"], str)
+    assert "meta" in data
+    assert isinstance(data["meta"], dict)
