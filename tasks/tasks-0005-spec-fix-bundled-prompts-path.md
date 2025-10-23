@@ -48,11 +48,11 @@
   - [x] 4.3 Show the actual paths that were checked
   - [x] 4.4 Update existing error handling in CLI to use new messages
 
-- [~] 5.0 Ensure backward compatibility and verify existing tests pass
+- [x] 5.0 Ensure backward compatibility and verify existing tests pass
   - Demo Criteria: "All existing tests pass; development workflow still works; custom prompts paths still work"
   - Proof Artifact(s): "Test suite: All tests pass; Manual: Run from project root works; Manual: Custom --prompts-dir works"
   - [x] 5.1 Run full test suite to ensure no regressions
   - [x] 5.2 Update or remove tests that expected old behavior
   - [x] 5.3 Test development workflow (running from project root with local prompts)
   - [x] 5.4 Test custom prompts directory still works when explicitly specified
-  - [ ] 5.5 Manual test with uvx installation from GitHub to verify remote install works
+  - [x] 5.5 Manual test with uvx installation from GitHub to verify remote install works
