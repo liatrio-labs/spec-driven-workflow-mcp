@@ -23,13 +23,13 @@ Based on: `0004-spec-review-fixes.md`
 
 ## Tasks
 
-- [ ] 1.0 Fix Package Discovery Configuration
+- [~] 1.0 Fix Package Discovery Configuration
   - Demo Criteria: "Run `uv pip install -e .` successfully; execute `uv run sdd-generate-commands --list-agents` without import errors; verify installed package includes `slash_commands` directory"
   - Proof Artifact(s): "Updated `pyproject.toml` with packages configuration; terminal output showing successful installation; terminal output showing successful CLI execution"
-  - [ ] 1.1 Update `pyproject.toml` line 39 to include `"slash_commands"` in the packages list: `packages = ["mcp_server", "prompts", "slash_commands"]`
-  - [ ] 1.2 Run `uv pip install -e .` to verify package installs successfully without errors
-  - [ ] 1.3 Execute `uv run sdd-generate-commands --list-agents` to verify CLI works without import errors
-  - [ ] 1.4 Verify that the installed package includes the `slash_commands` directory using: `python -c "import slash_commands; print(slash_commands.__file__)"`
+  - [x] 1.1 Update `pyproject.toml` line 39 to include `"slash_commands"` in the packages list: `packages = ["mcp_server", "prompts", "slash_commands"]`
+  - [x] 1.2 Run `uv pip install -e .` to verify package installs successfully without errors
+  - [x] 1.3 Execute `uv run sdd-generate-commands --list-agents` to verify CLI works without import errors
+  - [x] 1.4 Verify that the installed package includes the `slash_commands` directory using: `python -c "import slash_commands; print(slash_commands.__file__)"`
 
 - [ ] 2.0 Document TOML Reading Approach
   - Demo Criteria: "Verify `tomllib` import works in `slash_commands/writer.py`; documentation clearly states Python 3.12+ requirement; no runtime errors from TOML reading"
