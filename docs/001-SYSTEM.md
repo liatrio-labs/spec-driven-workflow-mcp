@@ -25,8 +25,8 @@
 
 - **Languages:** Python 3.12+ (pyproject.toml:7)
 - **Frameworks:**
-  - FastMCP 2.12.4+ (pyproject.toml:9, mcp_server/__init__.py:7)
-  - Starlette (implicit via FastMCP - mcp_server/__init__.py:8-9)
+  - FastMCP 2.12.4+ (pyproject.toml:9, mcp_server/**init**.py:7)
+  - Starlette (implicit via FastMCP - mcp_server/**init**.py:8-9)
 - **Databases:** None (file-based prompts)
 - **Infrastructure:**
   - Transport: STDIO (default) or HTTP (configurable)
@@ -103,6 +103,7 @@ graph TB
 - **v1.5.0 (Oct 2024 - current):** Health check endpoint, README restructure
 
 **Current Branch:** `add-reverse-engineer-codebase-prompt` (feature branch)
+
 - Adding `generate-context` prompt (enhanced codebase analysis)
 - Research-driven improvements documented in docs/roadmap/PROGRESS.md
 
@@ -113,6 +114,7 @@ graph TB
 ### 2.1 Found Documentation
 
 **Core Documentation:**
+
 - `README.md` — Project overview, workflow guide, installation (Last updated: 2025-01-23)
 - `CONTRIBUTING.md` — Development setup, commit conventions, PR guidelines
 - `CHANGELOG.md` — Version history with semantic versioning
@@ -121,12 +123,14 @@ graph TB
 - `docs/roadmap/PROGRESS.md` — Implementation progress tracking (681 lines, very detailed)
 
 **Prompt Files (Product Core):**
+
 - `prompts/generate-spec.md` — Specification generation workflow
 - `prompts/generate-task-list-from-spec.md` — Task list generation workflow
 - `prompts/manage-tasks.md` — Task execution workflow
 - `prompts/generate-context.md` — Codebase context analysis (in progress)
 
 **Research Documentation:**
+
 - `docs/research/codebase-context/README.md` — Research synthesis
 - `docs/research/codebase-context/code-analyst.md` — Code analysis patterns
 - `docs/research/codebase-context/information-analyst.md` — Documentation analysis patterns
@@ -139,30 +143,35 @@ graph TB
 #### 🟢 High Confidence - Explicitly Documented
 
 **Decision 1: FastMCP Framework Choice**
+
 - **Rationale:** Official Python framework for MCP protocol implementation (README.md:179, pyproject.toml:9)
 - **Evidence:** Listed as primary dependency, core to architecture
 - **Source:** README references FastMCP as "Python tooling for building MCP servers"
 - **Confidence:** 🟢 High (explicit framework choice)
 
 **Decision 2: uv Package Manager**
+
 - **Rationale:** Modern Python package and project manager (CONTRIBUTING.md:18, README.md:148)
 - **Evidence:** All documentation uses `uv sync`, `uv run` commands
 - **Trade-offs:** Faster than pip, better dependency resolution
 - **Confidence:** 🟢 High (consistent tooling choice)
 
 **Decision 3: Ruff for Linting/Formatting**
+
 - **Rationale:** Fast Python linter and formatter (pyproject.toml:40-64, CONTRIBUTING.md:52)
 - **Configuration:** Line length 100, Python 3.12 target, comprehensive rule set
 - **Evidence:** Configured in pyproject.toml with specific rules
 - **Confidence:** 🟢 High (explicit configuration)
 
 **Decision 4: Conventional Commits**
+
 - **Rationale:** Enables automated semantic versioning (CONTRIBUTING.md:84-94)
 - **Evidence:** Used with python-semantic-release for automated releases
 - **Trade-offs:** Stricter commit format vs. automated versioning benefits
 - **Confidence:** 🟢 High (documented in contributing guide)
 
 **Decision 5: Phased Implementation Strategy**
+
 - **Decision:** Split improvements across multiple PRs (docs/roadmap/PROGRESS.md:631-635)
 - **Rationale:** "Keeps PRs focused and reviewable, allows incremental adoption"
 - **Source:** Team decision for maintainability
@@ -170,24 +179,28 @@ graph TB
 - **Confidence:** 🟢 High (explicit ADR-style documentation)
 
 **Decision 6: Evidence Citation Standards**
+
 - **Decision:** Require file:line for code, path#heading for docs (docs/roadmap/PROGRESS.md:619-623)
 - **Rationale:** "Provides traceability and accountability for all findings"
 - **Source:** Research synthesis from Claude Code analysis
 - **Confidence:** 🟢 High (documented design principle)
 
 **Decision 7: Confidence Levels**
+
 - **Decision:** Categorize findings as High/Medium/Low (docs/roadmap/PROGRESS.md:625-629)
 - **Rationale:** "Distinguishes facts from inferences, flags items needing validation"
 - **Source:** Research synthesis
 - **Confidence:** 🟢 High (documented pattern)
 
 **Decision 8: Interactive Questioning**
+
 - **Decision:** Replace batch questionnaires with short focused rounds (docs/roadmap/PROGRESS.md:637-641)
 - **Rationale:** "Better user engagement, more thoughtful answers"
 - **Source:** context_bootstrap.md + Claude Code Phase 3 pattern
 - **Confidence:** 🟢 High (research-driven decision)
 
 **Decision 9: Prompt-First Workflow**
+
 - **Decision:** Prompts are Markdown files, not Python code (README.md:20-28)
 - **Rationale:** "Markdown artifacts instead of tooling, travels with you across projects, models, and collaboration environments"
 - **Benefits:** Non-developers can edit prompts, no code deployment to update workflows
@@ -196,18 +209,21 @@ graph TB
 #### 🟡 Medium Confidence - Implied or Partial Documentation
 
 **Decision 10: Python 3.12+ Requirement**
+
 - **Documented:** pyproject.toml:7 requires Python 3.12+
 - **Rationale (inferred):** Modern type hints (PEP 695), improved error messages, long-term support (until 2028)
 - **Evidence:** Project started in 2025, using recent stable Python
 - **Confidence:** 🟡 Medium (technical choice, rationale inferred)
 
 **Decision 11: /workspace Default**
+
 - **Documented:** config.py:22 defaults to `/workspace`
 - **Rationale (inferred):** Container-oriented design (common in Docker environments)
 - **Evidence:** Configurable via SDD_WORKSPACE_ROOT
 - **Confidence:** 🟡 Medium (standard container practice)
 
 **Decision 12: Pre-commit Hooks**
+
 - **Documented:** CONTRIBUTING.md:23 mentions pre-commit
 - **Rationale:** Quality enforcement before commits
 - **Gap:** No documentation of specific hooks chosen
@@ -218,6 +234,7 @@ graph TB
 **No conflicts found** - Documentation is consistent with code.
 
 **Gaps identified:**
+
 - ❌ **Gap:** PyYAML dependency not explicit in pyproject.toml (used in prompt_utils.py:8)
   - **Recommendation:** Add `pyyaml>=6.0.1` to dependencies
 - ❌ **Gap:** FastMCP version pinning strategy (uses `>=2.12.4` open-ended)
@@ -240,15 +257,15 @@ graph TB
 - **Entry point:** server.py:11 - Creates `mcp` instance via `create_app()`
 - **Flow:**
   1. Import create_app → server.py:7
-  2. Call create_app() → mcp_server/__init__.py:17-45
-  3. Initialize FastMCP(name="spec-driven-development-mcp") → mcp_server/__init__.py:24
-  4. Register health check endpoint → mcp_server/__init__.py:26-28
-  5. Load and register prompts → mcp_server/__init__.py:31
-  6. Return configured FastMCP app → mcp_server/__init__.py:45
+  2. Call create_app() → mcp_server/**init**.py:17-45
+  3. Initialize FastMCP(name="spec-driven-development-mcp") → mcp_server/**init**.py:24
+  4. Register health check endpoint → mcp_server/**init**.py:26-28
+  5. Load and register prompts → mcp_server/**init**.py:31
+  6. Return configured FastMCP app → mcp_server/**init**.py:45
 - **Business rules:**
   - GET /health returns PlainTextResponse("OK")
   - Health check always returns 200 OK (no validation logic)
-- **Evidence:** Working code path with custom route handler (mcp_server/__init__.py:26-28), added in v1.5.0 (CHANGELOG.md:36)
+- **Evidence:** Working code path with custom route handler (mcp_server/**init**.py:26-28), added in v1.5.0 (CHANGELOG.md:36)
 - **Confidence:** 🟢 High (active production code)
 
 #### 🟢 Feature 2: Dynamic Prompt Loading from Markdown Files
@@ -275,6 +292,7 @@ graph TB
 #### 🟢 Feature 3: Four Workflow Prompts for Spec-Driven Development
 
 **Prompt 1: generate-spec**
+
 - **File:** prompts/generate-spec.md:1-50
 - **Purpose:** Creates detailed feature specifications
 - **Process:**
@@ -290,6 +308,7 @@ graph TB
 - **Confidence:** 🟢 High (active prompt, tested)
 
 **Prompt 2: generate-task-list-from-spec**
+
 - **File:** prompts/generate-task-list-from-spec.md:1-50
 - **Purpose:** Converts specs into actionable task lists
 - **Process:**
@@ -306,6 +325,7 @@ graph TB
 - **Confidence:** 🟢 High (active prompt, tested)
 
 **Prompt 3: manage-tasks**
+
 - **File:** prompts/manage-tasks.md:1-50
 - **Purpose:** Task execution workflow management
 - **Process:**
@@ -322,6 +342,7 @@ graph TB
 - **Confidence:** 🟢 High (active prompt, tested)
 
 **Prompt 4: generate-context**
+
 - **File:** prompts/generate-context.md (in current branch)
 - **Purpose:** Generates codebase context analysis
 - **Process:**
@@ -361,41 +382,46 @@ graph TB
 
 #### 🟢 Feature 5: Basic Example Tool (Placeholder)
 
-- **Entry point:** basic_example_tool() → mcp_server/__init__.py:33-37
+- **Entry point:** basic_example_tool() → mcp_server/**init**.py:33-37
 - **Purpose:** Verify MCP tool registration works
 - **Returns:** "Basic example tool invoked successfully."
-- **Evidence:** Working code with TODO comment indicating future tools planned (mcp_server/__init__.py:39-43)
+- **Evidence:** Working code with TODO comment indicating future tools planned (mcp_server/**init**.py:39-43)
 - **Confidence:** 🟢 High (working placeholder, documented as temporary)
 
 ### 3.2 Planned But Not Yet Implemented
 
-**From TODO comments in mcp_server/__init__.py:39-43:**
+**From TODO comments in mcp_server/**init**.py:39-43:**
 
 #### 🔴 Resources (Task 2.1)
+
 - **Status:** Planned, not implemented
 - **Purpose:** Provide MCP resources (likely task/spec file access)
 - **Priority:** Medium (after Tools)
 - **Evidence:** TODO comment line 39
 
 #### 🔴 Tools (Task 5.1)
+
 - **Status:** Planned, not implemented
 - **Purpose:** Spec manipulation tools beyond basic-example
 - **Priority:** High (needed for workflow automation)
 - **Evidence:** TODO comment line 40
 
 #### 🔴 Notifications (Task 5.2)
+
 - **Status:** Planned, not implemented
 - **Purpose:** MCP notification support
 - **Priority:** Low (nice to have)
 - **Evidence:** TODO comment line 41
 
 #### 🔴 Sampling (Task 5.3)
+
 - **Status:** Planned, not implemented
 - **Purpose:** MCP sampling support (prompt/completion tracking)
 - **Priority:** Low (nice to have)
 - **Evidence:** TODO comment line 42
 
 #### 🔴 Logging (Task 5.4)
+
 - **Status:** Planned, not implemented
 - **Purpose:** Structured logging infrastructure
 - **Note:** Config exists (SDD_LOG_LEVEL, SDD_LOG_FORMAT in config.py:38-40) but not wired up
@@ -405,6 +431,7 @@ graph TB
 **From docs/roadmap/PROGRESS.md:**
 
 #### 🔴 Phase 2 Enhancements (Future PR)
+
 - Enhanced generate-spec with mandatory clarifying phase
 - New generate-architecture-options prompt (3 approaches with trade-offs)
 - New review-implementation prompt (quality review before PR)
@@ -421,6 +448,7 @@ graph TB
 ### 4.1 Components
 
 #### Entry Point Component
+
 - **Location:** server.py
 - **Responsibilities:**
   - Expose `mcp` instance for FastMCP CLI discovery
@@ -431,21 +459,23 @@ graph TB
 - **Confidence:** 🟢 High (clear single-purpose module)
 
 #### Application Factory Component
-- **Location:** mcp_server/__init__.py
+
+- **Location:** mcp_server/**init**.py
 - **Responsibilities:**
   - Initialize FastMCP server
   - Register custom routes (health check)
   - Load and register prompts from directory
   - Register tools
 - **Key files:**
-  - mcp_server/__init__.py:17-45 - create_app() factory function
-  - mcp_server/__init__.py:24 - FastMCP initialization
-  - mcp_server/__init__.py:26-28 - Health check route
-  - mcp_server/__init__.py:31 - Prompt registration
-  - mcp_server/__init__.py:33-37 - Basic tool registration
+  - mcp_server/**init**.py:17-45 - create_app() factory function
+  - mcp_server/**init**.py:24 - FastMCP initialization
+  - mcp_server/**init**.py:26-28 - Health check route
+  - mcp_server/**init**.py:31 - Prompt registration
+  - mcp_server/**init**.py:33-37 - Basic tool registration
 - **Confidence:** 🟢 High (standard factory pattern)
 
 #### Configuration Component
+
 - **Location:** mcp_server/config.py
 - **Responsibilities:**
   - Load environment variables with defaults
@@ -459,6 +489,7 @@ graph TB
 - **Confidence:** 🟢 High (well-defined boundaries)
 
 #### Prompt Loading Component
+
 - **Location:** mcp_server/prompts_loader.py, mcp_server/prompt_utils.py
 - **Responsibilities:**
   - Scan prompts directory for .md files
@@ -475,6 +506,7 @@ graph TB
 - **Confidence:** 🟢 High (two-module separation: orchestration + utilities)
 
 #### Content/Domain Component
+
 - **Location:** prompts/ directory
 - **Responsibilities:**
   - Define workflow prompts with metadata
@@ -535,8 +567,9 @@ MCP Client → STDIO/HTTP Transport
 ### 4.3 Architectural Patterns
 
 #### 🟢 Factory Pattern
+
 - **Pattern name:** Application Factory
-- **Evidence:** create_app() function (mcp_server/__init__.py:17-45)
+- **Evidence:** create_app() function (mcp_server/**init**.py:17-45)
 - **Purpose:** Create configured FastMCP instance
 - **Benefits:**
   - Testability (can create multiple instances)
@@ -545,13 +578,15 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (standard FastMCP pattern, 3+ references)
 
 #### 🟢 Singleton Pattern
+
 - **Pattern name:** Configuration Singleton
 - **Evidence:** Global `config` instance (mcp_server/config.py:69)
 - **Purpose:** Single source of configuration truth
-- **Usage:** Imported by mcp_server/__init__.py:11
+- **Usage:** Imported by mcp_server/**init**.py:11
 - **Confidence:** 🟢 High (explicit global instance)
 
 #### 🟢 Data Transfer Object (DTO) Pattern
+
 - **Pattern name:** Immutable DTOs
 - **Evidence:**
   - MarkdownPrompt dataclass (prompt_utils.py:18-39)
@@ -561,6 +596,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (Python dataclass best practice)
 
 #### 🟢 Strategy Pattern
+
 - **Pattern name:** Transport Strategy
 - **Evidence:** TransportType = Literal["stdio", "http"] (config.py:13)
 - **Purpose:** Switch between STDIO and HTTP transports
@@ -569,6 +605,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (FastMCP framework feature)
 
 #### 🟢 Decorator Pattern
+
 - **Pattern name:** Prompt Registration Decorator
 - **Evidence:** @mcp.prompt decorator (prompts_loader.py:16)
 - **Purpose:** Declarative prompt registration
@@ -579,6 +616,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (FastMCP core pattern, 4+ usages)
 
 #### 🟢 Template Method Pattern
+
 - **Pattern name:** Frontmatter + Markdown Template
 - **Evidence:** All prompts follow YAML frontmatter → Markdown body structure
 - **Template:** parse_frontmatter() (prompt_utils.py:84-98)
@@ -586,6 +624,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (4 prompts follow pattern)
 
 #### 🟢 Plugin/Extension Pattern
+
 - **Pattern name:** Dynamic Prompt Discovery
 - **Evidence:** register_prompts() scans directory (prompts_loader.py:28-36)
 - **Characteristics:** Auto-discovery, no code changes to add prompts
@@ -595,6 +634,7 @@ MCP Client → STDIO/HTTP Transport
 ### 4.4 Architectural Philosophy
 
 **🟢 Minimalist MCP Server:**
+
 - **Evidence:** 312 lines of Python code, 4 modules, focused scope
 - **Philosophy:** "Do one thing well" - serve spec-driven development prompts via MCP
 - **Characteristics:**
@@ -605,6 +645,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (README.md:20-28 emphasizes prompt-first approach)
 
 **🟢 Configuration Over Code:**
+
 - **Evidence:** 11 environment variables for all settings (config.py:19-48)
 - **Philosophy:** 12-factor app principles
 - **Examples:**
@@ -614,6 +655,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (docs/operations.md:59-83)
 
 **🟢 Content-Driven Architecture:**
+
 - **Evidence:** Prompts are Markdown files, not Python code
 - **Philosophy:** Separation of content (prompts) from code (server)
 - **Benefits:**
@@ -623,6 +665,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (README.md:26-28: "Markdown artifacts instead of tooling")
 
 **🟢 Testability First:**
+
 - **Evidence:**
   - Factory pattern for app creation (testable)
   - Fixtures for test setup (conftest.py:10-93)
@@ -631,12 +674,14 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (tests written alongside features)
 
 **🟢 Extensibility Through Convention:**
+
 - **Evidence:** Auto-discovery of .md files in prompts/ directory
 - **Philosophy:** Convention over configuration
 - **Pattern:** Add file → automatically registered
 - **Confidence:** 🟢 High (core design principle)
 
 **🟢 Type Safety with Runtime Validation:**
+
 - **Evidence:**
   - Type hints throughout (config.py, prompt_utils.py)
   - Runtime port validation (config.py:32-36)
@@ -645,6 +690,7 @@ MCP Client → STDIO/HTTP Transport
 - **Confidence:** 🟢 High (Python 3.12+ typing features used)
 
 **🟢 Dependency Minimalism:**
+
 - **Evidence:** Only 4 core dependencies (fastmcp, pre-commit, pytest, ruff)
 - **Philosophy:** Avoid dependency bloat
 - **PyYAML:** Implicit (likely bundled with FastMCP)
@@ -687,7 +733,7 @@ MCP Client → STDIO/HTTP Transport
 ### 5.3 File Organization
 
 - **Pattern:** Flat module structure under mcp_server/
-- **Modules:** 4 total (__init__, config, prompts_loader, prompt_utils)
+- **Modules:** 4 total (**init**, config, prompts_loader, prompt_utils)
 - **No deep nesting:** Clear separation of concerns
 - **Tests:** Parallel to source (tests/ mirrors mcp_server/)
 - **Fixtures:** Centralized in conftest.py
@@ -696,12 +742,14 @@ MCP Client → STDIO/HTTP Transport
 ### 5.4 Git Workflow
 
 **Branching:**
+
 - **Naming:** `<type>/<short-topic>` (CONTRIBUTING.md:69-82)
 - **Types:** feat, fix, docs, chore, refactor
 - **Examples:** feat/issue-templates, docs/contributing-guide
 - **Current branch:** add-reverse-engineer-codebase-prompt
 
 **Commits:**
+
 - **Convention:** Conventional Commits (CONTRIBUTING.md:84-94)
 - **Format:** `<type>: <description>`
 - **Types:** feat, fix, docs, chore, refactor, build
@@ -712,6 +760,7 @@ MCP Client → STDIO/HTTP Transport
   - `docs: clarify HTTP transport usage`
 
 **Versioning:**
+
 - **Automated:** python-semantic-release (pyproject.toml:72-96)
 - **Tag format:** `v{version}` (e.g., v1.5.0)
 - **Changelog:** Auto-generated CHANGELOG.md
@@ -719,13 +768,16 @@ MCP Client → STDIO/HTTP Transport
 - **Build command:** Runs `uv lock` and stages uv.lock for commit
 
 **Pull Requests:**
+
 - **Title:** Conventional commit format
 - **Template:**
+
   ```markdown
   ## Why?
   ## What Changed?
   ## Additional Notes
   ```
+
 - **Checks:** Tests + pre-commit must pass
 - **Scope:** Keep PRs focused and well-scoped
 
@@ -750,6 +802,7 @@ MCP Client → STDIO/HTTP Transport
 ### 6.3 Patterns
 
 **Test Organization:**
+
 - **Location:** tests/ directory (parallel to mcp_server/)
 - **Naming:** test_*.py (e.g., test_prompts.py)
 - **Structure:** Class-based organization
@@ -761,6 +814,7 @@ MCP Client → STDIO/HTTP Transport
   - mcp_server (conftest.py:86-93)
 
 **Test Coverage:**
+
 - **Frontmatter parsing:** 100% coverage (3 tests)
   - Valid YAML
   - No frontmatter
@@ -773,6 +827,7 @@ MCP Client → STDIO/HTTP Transport
   - Decorator kwargs serialization
 
 **Run Commands:**
+
 - Basic: `uv run pytest` (CONTRIBUTING.md:36)
 - With coverage: `uv run pytest --cov=mcp_server --cov-report=html`
 - Verbose: `uv run pytest -v`
@@ -795,16 +850,19 @@ MCP Client → STDIO/HTTP Transport
 ### 7.2 Installation
 
 **Via uv (development):**
+
 ```bash
 uv sync  # Install dependencies
 ```
 
 **Via uvx (end-user):**
+
 ```bash
 uvx spec-driven-development-mcp  # Run directly
 ```
 
 **Via pip (published package):**
+
 ```bash
 pip install spec-driven-development-mcp
 ```
@@ -812,21 +870,25 @@ pip install spec-driven-development-mcp
 ### 7.3 Running the Server
 
 **STDIO Transport (Default):**
+
 ```bash
 uvx fastmcp run server.py
 ```
 
 **With MCP Inspector:**
+
 ```bash
 uvx fastmcp dev server.py
 ```
 
 **HTTP Transport:**
+
 ```bash
 uvx fastmcp run server.py --transport http --port 8000
 ```
 
 **Console Script (after installation):**
+
 ```bash
 spec-driven-development-mcp  # Calls server:main
 ```
@@ -834,18 +896,21 @@ spec-driven-development-mcp  # Calls server:main
 ### 7.4 Deployment Environments
 
 **Development:**
+
 - **Transport:** STDIO
 - **Prompts:** Local ./prompts directory
 - **Workspace:** Local filesystem
 - **Tools:** MCP Inspector for debugging
 
 **Production (HTTP):**
+
 - **Transport:** HTTP on configurable port
 - **CORS:** Configurable origins
 - **Workspace:** Configurable via SDD_WORKSPACE_ROOT
 - **Logging:** JSON format (SDD_LOG_FORMAT=json)
 
 **MCP Client Integration:**
+
 - **Claude Desktop:** STDIO via config (docs/operations.md:94-107)
 - **VS Code MCP Plugin:** STDIO via workspace settings (docs/operations.md:109-123)
 - **FastMCP Inspector:** HTTP proxy mode (docs/operations.md:125-138)
@@ -853,6 +918,7 @@ spec-driven-development-mcp  # Calls server:main
 ### 7.5 CI/CD
 
 **Automated via GitHub Actions:**
+
 - **Semantic Release:** python-semantic-release
 - **Workflow:**
   1. Conventional commit detection
@@ -874,6 +940,7 @@ spec-driven-development-mcp  # Calls server:main
 ### 8.2 Transport Mechanisms
 
 **🟢 STDIO Transport (Default):**
+
 - **Usage:** Local development, IDE integration
 - **Configuration:** SDD_TRANSPORT=stdio
 - **Clients:** Claude Desktop, Claude Code, VS Code, Cursor
@@ -882,6 +949,7 @@ spec-driven-development-mcp  # Calls server:main
 - **Confidence:** 🟢 High
 
 **🟢 HTTP Transport (Optional):**
+
 - **Usage:** Remote access, web-based clients
 - **Configuration:**
   - SDD_TRANSPORT=http
@@ -899,35 +967,40 @@ spec-driven-development-mcp  # Calls server:main
 **Core Dependencies (pyproject.toml:8-14):**
 
 **🟢 FastMCP (>=2.12.4):**
+
 - **Purpose:** MCP server framework
 - **Usage:** Core framework for MCP protocol implementation
 - **Features used:**
-  - FastMCP() initialization (mcp_server/__init__.py:24)
+  - FastMCP() initialization (mcp_server/**init**.py:24)
   - @mcp.prompt() decorator (prompts_loader.py:16)
-  - @mcp.tool() decorator (mcp_server/__init__.py:33)
-  - @mcp.custom_route() decorator (mcp_server/__init__.py:26)
+  - @mcp.tool() decorator (mcp_server/**init**.py:33)
+  - @mcp.custom_route() decorator (mcp_server/**init**.py:26)
 - **Recommendation:** Pin to minor version: `>=2.12.4,<3.0.0` [User confirmed: 2025-01-23]
 - **Confidence:** 🟢 High
 
 **🟢 pre-commit (>=4.3.0):**
+
 - **Purpose:** Git hooks for quality checks
 - **Usage:** Pre-commit linting/formatting enforcement
 - **Evidence:** CONTRIBUTING.md:23
 - **Confidence:** 🟢 High
 
 **🟢 pytest (>=8.4.2):**
+
 - **Purpose:** Testing framework
 - **Usage:** Unit tests
 - **Evidence:** tests/test_prompts.py:4
 - **Confidence:** 🟢 High
 
 **🟢 pytest-cov (>=7.0.0):**
+
 - **Purpose:** Coverage reporting
 - **Usage:** Test coverage measurement
 - **Evidence:** pyproject.toml:12
 - **Confidence:** 🟢 High
 
 **🟢 Ruff (>=0.14.0):**
+
 - **Purpose:** Linting and formatting
 - **Usage:** Code quality enforcement
 - **Evidence:** pyproject.toml:13, configured pyproject.toml:40-64
@@ -936,6 +1009,7 @@ spec-driven-development-mcp  # Calls server:main
 **Development Dependencies (pyproject.toml:16-24):**
 
 **🟢 python-semantic-release (>=10.4.1):**
+
 - **Purpose:** Automated versioning and releases
 - **Usage:** CI/CD version bumps, CHANGELOG generation
 - **Evidence:** pyproject.toml:21, configured pyproject.toml:72-96
@@ -944,12 +1018,14 @@ spec-driven-development-mcp  # Calls server:main
 **Implicit Dependencies:**
 
 **🟡 Starlette (via FastMCP):**
+
 - **Purpose:** ASGI framework
 - **Usage:** Custom HTTP routes (Request, PlainTextResponse)
-- **Evidence:** mcp_server/__init__.py:8-9
+- **Evidence:** mcp_server/**init**.py:8-9
 - **Confidence:** 🟡 Medium (implicit dependency)
 
 **🟡 PyYAML (via FastMCP or stdlib):**
+
 - **Purpose:** YAML parsing for frontmatter
 - **Usage:** parse_frontmatter() (prompt_utils.py:8)
 - **Gap:** Not explicit in pyproject.toml
@@ -957,6 +1033,7 @@ spec-driven-development-mcp  # Calls server:main
 - **Confidence:** 🟡 Medium (used but not explicit)
 
 **🟢 anyio (via pytest/FastMCP):**
+
 - **Purpose:** Async test support
 - **Usage:** anyio.run() to call async FastMCP methods in tests
 - **Evidence:** tests/test_prompts.py:3, tests/test_prompts.py:62
@@ -967,21 +1044,24 @@ spec-driven-development-mcp  # Calls server:main
 #### Logging & Observability
 
 **🔴 Planned but not implemented:**
+
 - **Configuration exists:** SDD_LOG_LEVEL, SDD_LOG_FORMAT (config.py:38-40)
 - **Not used:** No logger instantiation found
-- **TODO:** mcp_server/__init__.py:43
+- **TODO:** mcp_server/**init**.py:43
 - **Current state:** Relies on FastMCP/Starlette default logging
 - **Confidence:** 🔴 Low (config defined but not wired up)
 
 #### Error Handling & Resilience
 
 **🟢 Validation with Clear Errors:**
+
 - **Port validation:** Raises ValueError with message (config.py:32-36)
 - **Directory validation:** Raises ValueError if prompts dir missing (prompts_loader.py:24-25)
 - **File validation:** Raises FileNotFoundError if prompt missing (prompt_utils.py:43-44)
 - **Confidence:** 🟢 High
 
 **🟡 Graceful YAML Parsing:**
+
 - **Strategy:** Return empty dict on YAML error (prompt_utils.py:92-95)
 - **Resilience:** Prompts still load with defaults
 - **Trade-off:** Silent failure vs. robustness
@@ -992,6 +1072,7 @@ spec-driven-development-mcp  # Calls server:main
 #### Configuration Management
 
 **🟢 Environment Variables Strategy:**
+
 - **Pattern:** Environment variables with sensible defaults
 - **Evidence:** Config class (config.py:19-48)
 - **Variables:** 11 total (SDD_* prefix)
@@ -1001,6 +1082,7 @@ spec-driven-development-mcp  # Calls server:main
 **No secrets management** (no secrets required - MCP auth delegated to client)
 
 **🟢 Multi-environment Support:**
+
 - **Dev:** STDIO transport, local paths
 - **Production:** HTTP transport, configurable workspace
 - **Evidence:** docs/operations.md:59-90
@@ -1009,18 +1091,21 @@ spec-driven-development-mcp  # Calls server:main
 #### Security Practices
 
 **🟢 CORS Configuration:**
+
 - **Default:** Enabled with wildcard (config.py:42-48)
 - **Configurable:** Can restrict origins
 - **Evidence:** SDD_CORS_ENABLED, SDD_CORS_ORIGINS
 - **Confidence:** 🟢 High (HTTP transport only)
 
 **🟡 No Authentication/Authorization:**
+
 - **Rationale:** Delegated to MCP client
 - **Trade-off:** Simplicity vs. security
 - **Appropriate for:** Local development, trusted clients
 - **Confidence:** 🟡 Medium (intentional design choice)
 
 **🟢 Input Validation:**
+
 - **Port range:** 1-65535 (config.py:33-34)
 - **Path validation:** Resolves to absolute paths (config.py:22-25)
 - **Confidence:** 🟢 High
@@ -1030,12 +1115,14 @@ spec-driven-development-mcp  # Calls server:main
 #### Performance & Caching
 
 **🟢 No Caching Needed:**
+
 - **Rationale:** Prompts are static files, loaded once at startup
-- **Evidence:** register_prompts() called once in create_app() (mcp_server/__init__.py:31)
+- **Evidence:** register_prompts() called once in create_app() (mcp_server/**init**.py:31)
 - **Appropriate for:** Small set of static prompts
 - **Confidence:** 🟢 High
 
 **🟢 Lightweight:**
+
 - **Memory:** ~4 Markdown files loaded into memory (~10-20 KB)
 - **CPU:** No heavy computation
 - **Startup time:** Fast (no database connections, no external services)
@@ -1048,7 +1135,7 @@ spec-driven-development-mcp  # Calls server:main
 Priority files for anyone working on this codebase:
 
 1. **server.py:7-22** - Entry point, main() function, mcp instance creation
-2. **mcp_server/__init__.py:17-45** - Application factory, server initialization, prompt/tool registration
+2. **mcp_server/**init**.py:17-45** - Application factory, server initialization, prompt/tool registration
 3. **mcp_server/config.py:16-70** - Configuration management, environment variables, validation
 4. **mcp_server/prompts_loader.py:23-36** - Prompt loading orchestration
 5. **mcp_server/prompt_utils.py:42-98** - Markdown parsing, frontmatter extraction, YAML handling
@@ -1221,26 +1308,30 @@ Priority files for anyone working on this codebase:
 ### High Confidence Findings ✅
 
 **Architecture & Design:**
+
 - ✅ Minimalist MCP server architecture (312 lines, focused scope)
-- ✅ FastMCP as core framework (pyproject.toml:9, mcp_server/__init__.py:7)
-- ✅ Factory pattern for app creation (mcp_server/__init__.py:17-45)
+- ✅ FastMCP as core framework (pyproject.toml:9, mcp_server/**init**.py:7)
+- ✅ Factory pattern for app creation (mcp_server/**init**.py:17-45)
 - ✅ Configuration via environment variables (config.py:16-70, 11 vars)
 - ✅ Dynamic prompt loading from Markdown files (prompts_loader.py:23-36)
 - ✅ YAML frontmatter + Markdown pattern (prompt_utils.py:84-98)
 
 **Features:**
-- ✅ Health check endpoint (mcp_server/__init__.py:26-28, v1.5.0)
+
+- ✅ Health check endpoint (mcp_server/**init**.py:26-28, v1.5.0)
 - ✅ 4 workflow prompts (generate-spec, generate-task-list, manage-tasks, generate-context)
 - ✅ STDIO and HTTP transport support (config.py:13, 28-48)
-- ✅ Basic example tool (placeholder - mcp_server/__init__.py:33-37)
+- ✅ Basic example tool (placeholder - mcp_server/**init**.py:33-37)
 
 **Code Quality:**
+
 - ✅ Ruff linting/formatting (pyproject.toml:40-64)
 - ✅ Conventional commits (CONTRIBUTING.md:84-94)
 - ✅ Automated semantic versioning (pyproject.toml:72-96)
 - ✅ 100% test coverage for prompt loading (tests/test_prompts.py)
 
 **Documentation:**
+
 - ✅ Comprehensive README with workflow guide
 - ✅ Operations guide for deployment
 - ✅ Contributing guide with conventions
@@ -1249,22 +1340,26 @@ Priority files for anyone working on this codebase:
 ### Medium Confidence (Needs Validation) ⚠️
 
 **Design Choices:**
+
 - 🟡 Python 3.12 requirement rationale (inferred: modern type hints, performance)
 - 🟡 /workspace default (inferred: container-oriented design)
 - 🟡 Silent YAML error handling (design choice: robustness over strict validation)
 - 🟡 Global config singleton (trade-off: simplicity vs. testability)
 
 **Dependencies:**
+
 - 🟡 PyYAML as implicit dependency (likely bundled with FastMCP, should be explicit)
 - 🟡 Starlette as implicit dependency (bundled with FastMCP)
 
 **Configuration:**
+
 - 🟡 No test coverage threshold (recommended 80%)
 - 🟡 FastMCP version pinning (recommended: pin to minor version)
 
 ### Low Confidence (Unknown) ❓
 
 **Planned Features:**
+
 - 🔴 Resources (Task 2.1) - No details on implementation
 - 🔴 Tools (Task 5.1) - Priority and timeline unknown
 - 🔴 Notifications (Task 5.2) - Priority and timeline unknown
@@ -1272,6 +1367,7 @@ Priority files for anyone working on this codebase:
 - 🔴 Logging (Task 5.4) - Config exists but not implemented
 
 **Implementation Details:**
+
 - 🔴 TODO task number references (Task 2.1, 5.1, etc.) - Source unknown
 - 🔴 Health check intended use (container orchestration? monitoring?)
 - 🔴 Current test coverage percentage (no report available)
@@ -1287,12 +1383,14 @@ Priority files for anyone working on this codebase:
 ### 12.2 Important Gaps (🟧 Should Address)
 
 **🟧 GAP-001: TODO Task Traceability**
-- **Issue:** TODOs reference "Task 2.1", "Task 5.1", etc. without links (mcp_server/__init__.py:39-43)
+
+- **Issue:** TODOs reference "Task 2.1", "Task 5.1", etc. without links (mcp_server/**init**.py:39-43)
 - **Impact:** Hard to track where these tasks are defined
 - **Recommendation:** Link TODOs to task files or document task numbers
 - **Effort:** 10 min | **Priority:** 🟧 Important
 
 **🟧 GAP-002: Planned Features Priority**
+
 - **Issue:** 5 TODOs with no priority or timeline
 - **User Answer [2025-01-23]:** Priority order: Tools (high), Resources (medium), Logging (medium), Notifications (low), Sampling (low)
 - **Recommendation:** Document priorities in PROGRESS.md, update TODOs with priority tags
@@ -1301,9 +1399,11 @@ Priority files for anyone working on this codebase:
 ### 12.3 Minor Gaps (🟨 Nice to Have)
 
 **🟨 GAP-003: PyYAML Dependency Not Explicit**
+
 - **Issue:** PyYAML used (prompt_utils.py:8) but not in pyproject.toml
 - **User Answer [2025-01-23]:** PyYAML is likely a FastMCP dependency, but should be explicit
 - **Recommendation:** Add to pyproject.toml:
+
   ```toml
   dependencies = [
       "fastmcp>=2.12.4",
@@ -1311,41 +1411,49 @@ Priority files for anyone working on this codebase:
       ...
   ]
   ```
+
 - **Effort:** 2 min | **Impact:** Low | **Priority:** 🟨 Minor
 
 **🟨 GAP-004: FastMCP Version Pinning**
+
 - **Issue:** Uses `>=2.12.4` (open-ended, risk of breaking changes)
 - **User Answer [2025-01-23]:** Yes, pin to minor version to prevent breaking changes
 - **Recommendation:** Change to `fastmcp>=2.12.4,<3.0.0`
 - **Effort:** 2 min | **Impact:** Low | **Priority:** 🟨 Minor
 
 **🟨 GAP-005: Test Coverage Threshold**
+
 - **Issue:** pytest-cov installed but no threshold configured
 - **User Answer [2025-01-23]:** Target 80% coverage
 - **Recommendation:** Add to pyproject.toml:
+
   ```toml
   [tool.pytest.ini_options]
   minversion = "8.0"
   addopts = "-ra --cov=mcp_server --cov-fail-under=80"
   testpaths = ["tests"]
   ```
+
 - **Effort:** 5 min | **Impact:** Low | **Priority:** 🟨 Minor
 
 **🟨 GAP-006: Python 3.12 Requirement Rationale**
+
 - **Issue:** No documented rationale for Python 3.12 minimum
 - **User Answer [2025-01-23]:** Chosen for modern type hints (PEP 695), improved error messages, performance, long-term support (until 2028)
 - **Recommendation:** Document in README or CONTRIBUTING.md
 - **Effort:** 5 min | **Impact:** Low | **Priority:** 🟨 Minor
 
 **🟨 GAP-007: Health Check Purpose**
+
 - **Issue:** /health endpoint exists but no documentation on its use
 - **Questions:** Container orchestration? Should it check prompts directory?
 - **Recommendation:** Document intended use in docs/operations.md
 - **Effort:** 10 min | **Impact:** Low | **Priority:** 🟨 Minor
 
 **🟨 GAP-008: Logging Not Implemented**
+
 - **Issue:** Config exists (SDD_LOG_LEVEL, SDD_LOG_FORMAT) but not wired up
-- **TODO:** mcp_server/__init__.py:43
+- **TODO:** mcp_server/**init**.py:43
 - **User Answer [2025-01-23]:** Medium priority (after Tools and Resources)
 - **Recommendation:** Implement structured logging in future PR
 - **Effort:** 2-3 hours | **Impact:** Medium | **Priority:** 🟨 Minor (for now)
@@ -1365,8 +1473,8 @@ When building new features in this codebase:
    - Auto-discovery handles registration (no code changes needed)
 
 2. **Add New Tools:**
-   - Use @mcp.tool() decorator in mcp_server/__init__.py
-   - Follow basic-example pattern (mcp_server/__init__.py:33-37)
+   - Use @mcp.tool() decorator in mcp_server/**init**.py
+   - Follow basic-example pattern (mcp_server/**init**.py:33-37)
    - Provide clear description for MCP clients
    - Consider moving to separate tools/ module if many tools
 
@@ -1401,6 +1509,7 @@ When building new features in this codebase:
 ### 13.4 Prompt Development
 
 - **Frontmatter fields:**
+
   ```yaml
   ---
   name: my-prompt-name
@@ -1414,6 +1523,7 @@ When building new features in this codebase:
     allowed-tools: Tool1, Tool2, Tool3
   ---
   ```
+
 - **Content:** Use clear Markdown with ## headings
 - **Structure:** Goal → Process → Output Format → Examples
 - **User interaction:** Ask short questions (3-5), not long questionnaires

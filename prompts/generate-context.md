@@ -41,6 +41,7 @@ You **MUST** follow this workflow:
 7. **Finally, Phase 6** → Generate final document
 
 **Auto-Continue Rules:**
+
 - **Phase 2**: If no conflicts or gaps found in documentation, state "No clarification needed" and proceed to Phase 3
 - **Phase 4**: If no integration/dependency issues found, state "No integration issues" and proceed to Phase 5
 - **Phase 5**: If no gaps/unknowns found, state "No significant gaps identified" and proceed to Phase 6
@@ -342,9 +343,11 @@ Find and catalog:
 ### ⛔ CHECKPOINT - AUTO-CONTINUE OR WAIT FOR USER
 
 **If you found conflicts or gaps:**
+
 - Ask for clarification and **WAIT** for user responses
 
 **If no clarification is needed:**
+
 - Present your findings summary
 - State "No conflicts or gaps found - proceeding to Phase 3"
 - **Auto-continue to Phase 3** (no user acknowledgment required)
@@ -496,6 +499,7 @@ Example:
 **Pay special attention to Medium (🟡) and Low (🔴) confidence items - these MUST be validated before proceeding.**
 
 **Ask questions like:**
+
 - "Does this analysis match your understanding of the system?"
 - "Are there any inaccuracies in what I found?"
 - "For the Medium confidence items, can you confirm [specific finding]?"
@@ -582,6 +586,7 @@ Example:
 **You MUST present your pattern findings and give the user a chance to discuss them.**
 
 **Ask questions like:**
+
 - "Does this architectural philosophy match your understanding?"
 - "Are there any patterns I've missed or misidentified?"
 - "Would you like me to elaborate on any of these patterns before I continue?"
@@ -782,6 +787,7 @@ I found some gaps that need your input:
 4. **ONLY THEN proceed to Phase 6**
 
 **If you have NO gaps or questions:**
+
 - Explicitly state "I found no significant gaps"
 - **Auto-continue to Phase 6** (no user input required)
 
@@ -801,12 +807,14 @@ I found some gaps that need your input:
 **Goal:** When gaps exist but user input is not immediately available, provide reasoned autonomous answers
 
 **When to Use Autonomous Answers:**
+
 - User is unavailable or has requested autonomous analysis
 - Gap is non-critical (🟨 Minor or some 🟧 Important items)
 - Sufficient context exists to make reasonable inference
 - Decision can be validated/corrected later
 
 **When NOT to Use Autonomous Answers:**
+
 - 🟥 Critical gaps (security, auth, data integrity decisions)
 - Architectural choices with significant long-term impact
 - Contradictions between code and documentation
@@ -817,6 +825,7 @@ I found some gaps that need your input:
 For each gap where autonomous answer is appropriate:
 
 1. **State the Gap:**
+
    ```text
    GAP-003: FastMCP Framework Choice
    - Evidence: FastMCP used extensively (mcp_server/__init__.py:7, 24)
@@ -824,6 +833,7 @@ For each gap where autonomous answer is appropriate:
    ```
 
 2. **Analyze Available Context:**
+
    ```text
    Context Analysis:
    - Project is MCP (Model Context Protocol) server
@@ -833,6 +843,7 @@ For each gap where autonomous answer is appropriate:
    ```
 
 3. **Make Reasoned Inference:**
+
    ```text
    Autonomous Answer: 🔵 Assumed
    "FastMCP chosen as the official Python framework for MCP protocol implementation.
@@ -845,6 +856,7 @@ For each gap where autonomous answer is appropriate:
    ```
 
 4. **Flag for Validation:**
+
    ```text
    Confidence: 🟡 Medium (reasonable inference, should be validated)
    Recommendation: Document in README or ADR for future reference
