@@ -66,6 +66,10 @@ def test_markdown_generator_applies_agent_overrides(sample_prompt):
     assert meta["command_file_extension"] == agent.command_file_extension
     assert meta["source_prompt"] == "sample-prompt"
     assert meta["source_path"].endswith("sample-prompt.md")
+    assert "version" in meta
+    assert isinstance(meta["version"], str)
+    assert "updated_at" in meta
+    assert isinstance(meta["updated_at"], str)
 
     assert "Use the provided instructions" in body
     assert "$ARGUMENTS" not in body
@@ -113,6 +117,10 @@ def test_toml_generator_applies_agent_overrides(sample_prompt):
     assert meta["command_file_extension"] == agent.command_file_extension
     assert meta["source_prompt"] == "sample-prompt"
     assert meta["source_path"].endswith("sample-prompt.md")
+    assert "version" in meta
+    assert isinstance(meta["version"], str)
+    assert "updated_at" in meta
+    assert isinstance(meta["updated_at"], str)
 
     arguments = command["arguments"]
     assert arguments["required"] == {

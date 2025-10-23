@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Protocol
 
 import tomli_w
 import yaml
 
+from mcp_server import __version__
 from mcp_server.prompt_utils import MarkdownPrompt, PromptArgumentSpec
 from slash_commands.config import AgentConfig, CommandFormat
 
@@ -216,6 +218,8 @@ class MarkdownCommandGenerator:
             "command_file_extension": agent.command_file_extension,
             "source_prompt": prompt.name,
             "source_path": str(prompt.path),
+            "version": __version__,
+            "updated_at": datetime.now().isoformat(),
         })
         return meta
 
@@ -278,6 +282,8 @@ class TomlCommandGenerator:
             "command_file_extension": agent.command_file_extension,
             "source_prompt": prompt.name,
             "source_path": str(prompt.path),
+            "version": __version__,
+            "updated_at": datetime.now().isoformat(),
         })
         return meta
 

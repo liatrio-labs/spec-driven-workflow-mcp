@@ -4,6 +4,9 @@ A FastMCP-based server providing prompts, resources, and tools for
 spec-driven development workflows.
 """
 
+import tomllib
+from pathlib import Path
+
 from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
@@ -11,7 +14,16 @@ from starlette.responses import PlainTextResponse
 from .config import config
 from .prompts_loader import register_prompts
 
-__version__ = "0.1.0"
+
+def _get_version() -> str:
+    """Get the version from pyproject.toml."""
+    pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
+    with pyproject_path.open("rb") as f:
+        data = tomllib.load(f)
+    return data["project"]["version"]
+
+
+__version__ = _get_version()
 
 
 def create_app() -> FastMCP:
