@@ -11,10 +11,13 @@ import yaml
 try:
     from __version__ import __version__
 except ImportError:
-    # Fallback for when installed as a package
-    from importlib.metadata import version
+    # Fallback when installed as a package
+    from importlib.metadata import PackageNotFoundError, version
 
-    __version__ = version("spec-driven-development-mcp")
+    try:
+        __version__ = version("spec-driven-development-mcp")
+    except PackageNotFoundError:
+        __version__ = "0.0.0"
 
 from mcp_server.prompt_utils import MarkdownPrompt, PromptArgumentSpec
 from slash_commands.config import AgentConfig, CommandFormat
@@ -213,7 +216,8 @@ class MarkdownCommandGenerator:
             "command_format": agent.command_format.value,
             "command_file_extension": agent.command_file_extension,
             "source_prompt": prompt.name,
-            "source_path": str(prompt.path),
+            # Store only basename to avoid leaking absolute paths
+            "source_path": prompt.path.name,
             "version": __version__,
             "updated_at": datetime.now(UTC).isoformat(),
         })

@@ -87,7 +87,7 @@ class SlashCommandWriter:
             overwrite_action: Global overwrite action to apply. If None, will prompt per file.
         """
         self.prompts_dir = prompts_dir
-        self.agents = agents or []
+        self.agents = agents if agents is not None else list_agent_keys()
         self.dry_run = dry_run
         self.base_path = base_path or Path.cwd()
         self.overwrite_action = overwrite_action
