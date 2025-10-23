@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from slash_commands.config import CommandFormat
-from slash_commands.writer import SlashCommandWriter
+from slash_commands.writer import SlashCommandWriter, _find_package_prompts_dir
 
 
 @pytest.fixture
@@ -228,6 +228,31 @@ This is a bundled test prompt.
         assert result["prompts_loaded"] == 1
         assert len(result["prompts"]) == 1
         assert result["prompts"][0]["name"] == "bundled-prompt"
+
+
+def test_find_package_prompts_dir_importlib(tmp_path: Path):
+    """Test that _find_package_prompts_dir can find prompts via importlib."""
+    with patch("importlib.resources.files") as mock_files:
+        # Create a mock traversable object for the prompts directory
+        mock_prompts_resource = MagicMock()
+        mock_prompts_resource.is_dir.return_value = True
+        mock_prompts_resource.__str__.return_value = str(tmp_path)
+
+        # Mock the anchor package traversable
+        mock_anchor = MagicMock()
+        # Mock the parent traversal and joining with "prompts"
+        mock_anchor.parent.__truediv__.return_value = mock_prompts_resource
+
+        mock_files.return_value = mock_anchor
+
+        # Call the function being tested
+        result = _find_package_prompts_dir()
+
+        # Verify that importlib.resources.files was called correctly
+        mock_files.assert_called_once_with("slash_commands")
+
+        # Verify that the correct path was returned
+        assert result == tmp_path
 
 
 def test_writer_falls_back_to_package_prompts(tmp_path):

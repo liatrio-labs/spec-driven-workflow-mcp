@@ -31,8 +31,10 @@ def _find_package_prompts_dir() -> Path | None:
     # Try to use importlib.resources to locate bundled prompts
     # This works for installed packages (including wheel distributions)
     try:
-        package = importlib.resources.files("spec_driven_development_mcp")
-        prompts_resource = package / "prompts"
+        # Get a traversable for a known package in our distribution
+        package_anchor = importlib.resources.files("slash_commands")
+        # Navigate from the package anchor to the included "prompts" directory
+        prompts_resource = package_anchor.parent / "prompts"
         # Check if the prompts directory exists in the resource
         if prompts_resource.is_dir():
             return Path(str(prompts_resource))
