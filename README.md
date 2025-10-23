@@ -17,25 +17,26 @@
 
 ## TLDR
 
-**Install the workflow prompts as slash commands:**
+1. Install the workflow prompts as slash commands in all your [local AI tools](#supported-ai-tools):
 
-```bash
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
-```
+    ```bash
+    uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+    ```
 
-**Use `/generate-spec` with your idea:**
+2. In your AI tool of choice, use `/generate-spec` with your idea:
 
-```text
-I want to add user authentication to my app
-```
+    ```text
+    /generate-spec I want to add user authentication to my app
+    ```
 
-→ AI asks clarifying questions → You provide answers → Spec created in `tasks/0001-spec-user-auth.md`
+    → AI asks clarifying questions → You provide answers → Spec created in `tasks/0001-spec-user-auth.md`
 
-**Continue the flow:**
+3. Continue the flow:
 
-- Run `/generate-task-list-from-spec` → Task list created in `tasks/tasks-0001-spec-user-auth.md`
-- Use `/manage-tasks` → Execute tasks one-by-one with proof artifacts
-- **SHIP IT** 🚢💨
+    - Run `/generate-task-list-from-spec` → Task list created in `tasks/tasks-0001-spec-user-auth.md`
+    - Use `/manage-tasks` → Execute tasks one-by-one with proof artifacts
+
+4. **SHIP IT** 🚢💨
 
 ## Highlights
 
@@ -148,6 +149,23 @@ The SDD workflow can be used in three ways, from simplest to most automated:
 3. **Execute with discipline:** Follow `prompts/manage-tasks.md` while implementing. Update statuses as you work, attach proof artifacts, and pause for reviews at each demoable slice.
 
 ### Option 2: Native Slash Commands (Recommended)
+
+#### Supported AI Tools
+
+The slash command generator currently supports the following AI coding assistants:
+
+| AI Tool      | Command Install Location                         |
+|--------------|--------------------------------------------------|
+| Claude Code  | `~/.claude/commands`                             |
+| Codex CLI    | `~/.codex/prompts`                               |
+| Cursor       | `~/.cursor/commands`                             |
+| Gemini CLI   | `~/.gemini/commands`                             |
+| VS Code      | `~/.config/Code/User/prompts`                    |
+| Windsurf     | `~/.codeium/windsurf/global_workflows`           |
+
+For full setup and agent-specific details, see [docs/slash-command-generator.md](./docs/slash-command-generator.md).
+
+#### Slash Command Installation
 
 Generate slash commands for your AI coding assistant and use the prompts as native commands:
 
