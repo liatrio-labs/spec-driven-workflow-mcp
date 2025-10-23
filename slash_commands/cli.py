@@ -172,14 +172,14 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
             print(
                 "  3. Or use --detection-path to search in a different directory", file=sys.stderr
             )
-            sys.exit(2)  # Validation error
+            raise typer.Exit(code=2) from None  # Validation error
 
         # Interactive selection: all detected agents pre-selected
         if not yes:
             selected_agents = _prompt_agent_selection(detected)
             if not selected_agents:
                 print("Cancelled: No agents selected.", file=sys.stderr)
-                sys.exit(1)  # User cancellation
+                raise typer.Exit(code=1) from None  # User cancellation
             agents = [agent.key for agent in selected_agents]
         else:
             # If --yes is used, auto-select all detected agents
@@ -212,21 +212,22 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
             f"  - Check that --prompts-dir points to a valid directory (current: {prompts_dir})",
             file=sys.stderr,
         )
-        sys.exit(3)  # I/O error (e.g., prompts directory doesn't exist)
+        raise typer.Exit(code=3) from None  # I/O error (e.g., prompts directory doesn't exist)
     except KeyError as e:
         print(f"Error: Invalid agent key: {e}", file=sys.stderr)
         print("\nTo fix this:", file=sys.stderr)
         print("  - Use --list-agents to see all supported agents", file=sys.stderr)
         print("  - Ensure agent keys are spelled correctly", file=sys.stderr)
-        print(f"  - Valid agent keys: {', '.join(list_agent_keys())}", file=sys.stderr)
-        sys.exit(2)  # Validation error (invalid agent key)
+        valid_keys = ", ".join(list_agent_keys())
+        print(f"  - Valid agent keys: {valid_keys}", file=sys.stderr)
+        raise typer.Exit(code=2) from None  # Validation error (invalid agent key)
     except PermissionError as e:
         print(f"Error: Permission denied: {e}", file=sys.stderr)
         print("\nTo fix this:", file=sys.stderr)
         print("  - Check file and directory permissions", file=sys.stderr)
         print("  - Ensure you have write access to the output directory", file=sys.stderr)
         print("  - Try running with elevated permissions if needed", file=sys.stderr)
-        sys.exit(3)  # I/O error (permission denied)
+        raise typer.Exit(code=3) from None  # I/O error (permission denied)
     except OSError as e:
         print(f"Error: I/O error: {e}", file=sys.stderr)
         print("\nTo fix this:", file=sys.stderr)
@@ -236,11 +237,11 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
             f"  - Verify the path exists: {actual_target_path}",
             file=sys.stderr,
         )
-        sys.exit(3)  # I/O error (file system errors)
+        raise typer.Exit(code=3) from None  # I/O error (file system errors)
     except RuntimeError as e:
         if "Cancelled" in str(e):
             print("Cancelled: Operation cancelled by user.", file=sys.stderr)
-            sys.exit(1)  # User cancellation
+            raise typer.Exit(code=1) from None  # User cancellation
         raise
 
     # Print summary
@@ -365,14 +366,14 @@ def cleanup(
         confirmed = questionary.confirm("Are you sure you want to proceed?", default=False).ask()
         if not confirmed:
             console.print("[yellow]Cleanup cancelled.[/yellow]")
-            sys.exit(1)
+            raise typer.Exit(code=1) from None
 
     # Perform cleanup
     try:
         result = writer.cleanup(agents=agents, include_backups=include_backups, dry_run=dry_run)
     except Exception as e:
         console.print(f"[bold red]Error during cleanup: {e}[/bold red]")
-        sys.exit(3)
+        raise typer.Exit(code=3) from None
 
     # Print summary in a panel
     mode = "DRY RUN" if dry_run else "Cleanup"

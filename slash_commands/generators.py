@@ -50,12 +50,16 @@ def _apply_agent_overrides(
             if "arguments" in overrides:
                 # Merge base arguments with override arguments
                 override_args = _normalize_override_arguments(overrides["arguments"])
-                # Deduplicate by name with override precedence
-                existing_names = {arg.name for arg in arguments}
-                # Only add override args that don't already exist
-                arguments = list(arguments) + [
-                    arg for arg in override_args if arg.name not in existing_names
-                ]
+                # Override by name (override precedence), preserving base order
+                base_list = list(arguments)
+                idx_by_name = {arg.name: i for i, arg in enumerate(base_list)}
+                for oarg in override_args:
+                    if oarg.name in idx_by_name:
+                        base_list[idx_by_name[oarg.name]] = oarg
+                    else:
+                        idx_by_name[oarg.name] = len(base_list)
+                        base_list.append(oarg)
+                arguments = base_list
             if "enabled" in overrides:
                 enabled = overrides["enabled"]
 
@@ -116,22 +120,6 @@ def _build_arguments_section_markdown(arguments: list[PromptArgumentSpec]) -> st
         else:
             lines.append(f"- `[{arg.name}]` (optional): {arg.description or ''}")
     return "\n".join(lines)
-
-
-def _build_arguments_section_toml(arguments: list[PromptArgumentSpec]) -> str:
-    """Build a TOML-formatted arguments section."""
-    if not arguments:
-        return "{ required = {}, optional = {} }"
-
-    required = {}
-    optional = {}
-    for arg in arguments:
-        if arg.required:
-            required[arg.name] = arg.description or ""
-        else:
-            optional[arg.name] = arg.description or ""
-
-    return f"{{ required = {required}, optional = {optional} }}"
 
 
 def _replace_placeholders(
@@ -197,7 +185,7 @@ class MarkdownCommandGenerator:
         body = _replace_placeholders(prompt.body, arguments, replace_double_braces=False)
 
         # Format as YAML frontmatter + body
-        yaml_content = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
+        yaml_content = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
         output = f"---\n{yaml_content}---\n\n{body}\n"
         return _normalize_output(output)
 

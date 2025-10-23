@@ -28,7 +28,7 @@ def detect_agents(target_dir: Path | str) -> list[AgentConfig]:
 def _agent_configured(agent: AgentConfig, base_path: Path) -> bool:
     """Return ``True`` if any of the agent's detection directories exist."""
 
-    return any((base_path / Path(directory)).exists() for directory in agent.detection_dirs)
+    return any((base_path / Path(directory)).exists() for directory in agent.iter_detection_dirs())
 
 
 def iter_detection_directories(agent: AgentConfig, base_path: Path | str) -> Iterable[Path]:

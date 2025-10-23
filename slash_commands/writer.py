@@ -8,7 +8,7 @@ import shutil
 # tomllib is part of the Python standard library since Python 3.11
 # Project requires Python 3.12+ for compatibility with all dependencies
 import tomllib
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
 
@@ -57,7 +57,7 @@ def create_backup(file_path: Path) -> Path:
     Returns:
         Path to the backup file
     """
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    timestamp = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
     backup_path = file_path.with_suffix(f"{file_path.suffix}.{timestamp}.bak")
 
     # Copy file with metadata preserved
@@ -163,9 +163,11 @@ class SlashCommandWriter:
         content = generator.generate(prompt, agent)
 
         # Determine output path (resolve relative to base_path)
-        output_path = (
-            self.base_path / agent.command_dir / f"{prompt.name}{agent.command_file_extension}"
-        )
+        # Sanitize file stem: drop any path components and restrict to safe chars
+        safe_stem = Path(prompt.name).name  # remove any directories
+        safe_stem = re.sub(r"[^A-Za-z0-9._-]+", "-", safe_stem).strip("-_.") or "command"
+        filename = f"{safe_stem}{agent.command_file_extension}"
+        output_path = self.base_path / agent.command_dir / filename
 
         # Handle existing files
         if output_path.exists() and not self.dry_run:
@@ -233,7 +235,7 @@ class SlashCommandWriter:
             List of dicts with keys: path, agent, agent_display_name, type, reason
         """
         found_files = []
-        agent_keys = agents or list_agent_keys()
+        agent_keys = list_agent_keys() if agents is None else agents
 
         for agent_key in agent_keys:
             try:
@@ -247,7 +249,7 @@ class SlashCommandWriter:
                 for file_path in command_dir.glob(f"*{agent.command_file_extension}"):
                     if self._is_generated_file(file_path, agent):
                         found_files.append({
-                            "path": file_path,
+                            "path": str(file_path),
                             "agent": agent.key,
                             "agent_display_name": agent.display_name,
                             "type": "command",
@@ -262,7 +264,7 @@ class SlashCommandWriter:
                     for file_path in command_dir.iterdir():
                         if file_path.is_file() and pattern.match(file_path.name):
                             found_files.append({
-                                "path": file_path,
+                                "path": str(file_path),
                                 "agent": agent.key,
                                 "agent_display_name": agent.display_name,
                                 "type": "backup",
@@ -363,7 +365,7 @@ class SlashCommandWriter:
         errors = []
 
         for file_info in found_files:
-            file_path = file_info["path"]
+            file_path = Path(file_info["path"])
             if not dry_run:
                 try:
                     file_path.unlink()
