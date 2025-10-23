@@ -112,15 +112,19 @@ class SlashCommandWriter:
 
         # Generate files
         files = []
+        files_written = 0
         for prompt in prompts:
             for agent in agent_configs:
                 file_info = self._generate_file(prompt, agent)
                 if file_info:
                     files.append(file_info)
+                    # Only count files that were actually written (not dry run)
+                    if not self.dry_run:
+                        files_written += 1
 
         return {
             "prompts_loaded": len(prompts),
-            "files_written": len(files),
+            "files_written": files_written,
             "files": files,
             "prompts": [{"name": p.name, "path": str(p.path)} for p in prompts],
             "backups_created": self._backups_created,
