@@ -54,7 +54,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 **Key Pattern:** Agent-based parallel discovery + explicit file reading
 
-**Agent: code-explorer**
+### Agent: code-explorer
 
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
@@ -107,7 +107,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 **Key Pattern:** Options with trade-offs + recommendation, not just one solution
 
-**Agent: code-architect**
+### Agent: code-architect
 
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
@@ -160,7 +160,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 **Key Pattern:** Parallel multi-focus review + user decision on fixes
 
-**Agent: code-reviewer**
+### Agent: code-reviewer
 
 - **Tools:** Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch
 - **Model:** Sonnet
@@ -395,7 +395,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 ### Claude Code Flow
 
-```
+```text
 1. Discovery           →  Understand feature request
                           ↓
 2. Codebase           →  Launch 2-3 code-explorer agents
@@ -423,7 +423,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 ### Our Current Flow
 
-```
+```text
 1. generate-          →  Comprehensive codebase analysis
    codebase-context      Generate analysis document
                           ↓
@@ -468,7 +468,7 @@ The AI should adapt its questions based on the prompt...
 
 **Recommended Change:**
 
-```markdown
+```text
 ## Phase 1: Initial Understanding
 - Receive feature request
 - Clarify if unclear
@@ -614,8 +614,6 @@ User Login:
 5. Database query → models/User.ts:89
 6. JWT token generation → utils/jwt.ts:12
 7. Response with token → controllers/AuthController.ts:52
-
-```
 ```
 
 **Rationale:** Makes codebase context more action-oriented, similar to code-explorer agent.
@@ -626,7 +624,7 @@ User Login:
 
 **Current State:**
 
-```markdown
+```text
 ## Process
 ...
 4. Assess current state (codebase review)
@@ -636,7 +634,7 @@ User Login:
 
 **Recommended Change:**
 
-```markdown
+```text
 ## Process
 ...
 4. **Review Architecture Decision:**
@@ -660,7 +658,7 @@ User Login:
 
 Add checkpoint markers:
 
-```markdown
+```text
 ## Checkpoints
 
 This prompt has the following user interaction checkpoints:
@@ -712,7 +710,7 @@ Create `docs/workflow.md`:
 
 ## Updated Workflow Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    SPEC-DRIVEN DEVELOPMENT                  │
 └─────────────────────────────────────────────────────────────┘
