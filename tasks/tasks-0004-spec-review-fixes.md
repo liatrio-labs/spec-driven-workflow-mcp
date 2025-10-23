@@ -50,15 +50,15 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 3.6 Run tests with `pytest tests/test_validation.py -v` to verify all validation tests pass
   - [x] 3.7 Run full test suite with `pytest` to ensure no regressions
 
-- [ ] 4.0 Centralize Version Management
+- [~] 4.0 Centralize Version Management
   - Demo Criteria: "Version read from `pyproject.toml` via shared `__version__.py` module; no imports from `mcp_server` module for version; version displayed correctly in generated metadata"
   - Proof Artifact(s): "New `__version__.py` module in project root; updated imports in `slash_commands/generators.py`; terminal output showing correct version in generated files"
-  - [ ] 4.1 Create new file `__version__.py` at project root with version reading logic using `tomllib` to read from `pyproject.toml`
-  - [ ] 4.2 Update `slash_commands/generators.py` line 11 to import from `__version__` instead of `mcp_server`: change `from mcp_server import __version__` to `from __version__ import __version__`
-  - [ ] 4.3 Verify version is correctly imported by running `python -c "from __version__ import __version__; print(__version__)"`
-  - [ ] 4.4 Test that generated files contain correct version by running `uv run sdd-generate-commands --dry-run` and checking metadata
-  - [ ] 4.5 Optionally update `mcp_server/__init__.py` to import from shared `__version__.py` module for consistency
-  - [ ] 4.6 Run all tests with `pytest` to ensure version changes don't break existing functionality
+  - [x] 4.1 Create new file `__version__.py` at project root with version reading logic using `tomllib` to read from `pyproject.toml`
+  - [x] 4.2 Update `slash_commands/generators.py` line 11 to import from `__version__` instead of `mcp_server`: change `from mcp_server import __version__` to `from __version__ import __version__`
+  - [x] 4.3 Verify version is correctly imported by running `python -c "from __version__ import __version__; print(__version__)"`
+  - [x] 4.4 Test that generated files contain correct version by running `uv run sdd-generate-commands --dry-run` and checking metadata
+  - [x] 4.5 Optionally update `mcp_server/__init__.py` to import from shared `__version__.py` module for consistency
+  - [x] 4.6 Run all tests with `pytest` to ensure version changes don't break existing functionality
 
 - [ ] 5.0 Add Troubleshooting Documentation
   - Demo Criteria: "Troubleshooting section added to `docs/slash-command-generator.md`; FAQ covers common error scenarios; documentation includes Python version requirements"

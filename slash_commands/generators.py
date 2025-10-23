@@ -8,7 +8,7 @@ from typing import Any, Protocol
 import tomli_w
 import yaml
 
-from mcp_server import __version__
+from __version__ import __version__
 from mcp_server.prompt_utils import MarkdownPrompt, PromptArgumentSpec
 from slash_commands.config import AgentConfig, CommandFormat
 
