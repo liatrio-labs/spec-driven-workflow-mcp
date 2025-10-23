@@ -8,7 +8,14 @@ from typing import Any, Protocol
 import tomli_w
 import yaml
 
-from __version__ import __version__
+try:
+    from __version__ import __version__
+except ImportError:
+    # Fallback for when installed as a package
+    from importlib.metadata import version
+
+    __version__ = version("spec-driven-development-mcp")
+
 from mcp_server.prompt_utils import MarkdownPrompt, PromptArgumentSpec
 from slash_commands.config import AgentConfig, CommandFormat
 
