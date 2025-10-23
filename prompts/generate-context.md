@@ -36,11 +36,13 @@ You **MUST** follow this workflow:
 2. **Complete Phase 2** → IF questions needed, ASK and WAIT; OTHERWISE proceed to Phase 3
 3. **Complete Phase 3** → ASK VALIDATION QUESTIONS → **STOP and WAIT** for user answers
 4. **Complete Phase 3.5** → PRESENT FINDINGS → **STOP and WAIT** for user to discuss
-5. **Complete Phase 5** → IF gaps found, ASK and WAIT; OTHERWISE proceed to Phase 6
-6. **Finally, Phase 6** → Generate final document
+5. **Complete Phase 4** → IF integration issues found, ASK and WAIT; OTHERWISE proceed to Phase 5
+6. **Complete Phase 5** → IF gaps found, ASK and WAIT; OTHERWISE proceed to Phase 6
+7. **Finally, Phase 6** → Generate final document
 
 **Auto-Continue Rules:**
 - **Phase 2**: If no conflicts or gaps found in documentation, state "No clarification needed" and proceed to Phase 3
+- **Phase 4**: If no integration/dependency issues found, state "No integration issues" and proceed to Phase 5
 - **Phase 5**: If no gaps/unknowns found, state "No significant gaps identified" and proceed to Phase 6
 - **All other phases**: MUST stop and wait for user input
 

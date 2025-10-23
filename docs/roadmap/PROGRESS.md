@@ -29,13 +29,13 @@ This document tracks the implementation of improvements to our MCP spec-driven d
 
 **Deliverables:**
 
-- ✅ `docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md` (18,287 words)
+- ✅ `docs/research/codebase-context/claude-code-feature-dev-comparison.md` (18,287 words)
   - Complete 7-phase workflow analysis
   - Agent specifications (code-explorer, code-architect, code-reviewer)
   - Gap analysis with priority matrix
   - Implementation roadmap
 
-- ✅ `docs/research/reverse-engineer-prompts/research-synthesis.md` (8,000+ words)
+- ✅ `docs/research/codebase-context/research-synthesis.md` (8,000+ words)
   - Integration of all research sources
   - Actionable recommendations with priorities
   - Specific enhancements for each prompt
@@ -152,11 +152,11 @@ Pre-completion verification:
 
 ```text
 ✅ prompts/generate-context.md (enhanced)
-✅ docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md (new)
-✅ docs/research/reverse-engineer-prompts/research-synthesis.md (new)
-✅ docs/research/reverse-engineer-prompts/code-analyst.md (cataloged)
-✅ docs/research/reverse-engineer-prompts/information-analyst.md (cataloged)
-✅ docs/research/reverse-engineer-prompts/context_bootstrap.md (cataloged)
+✅ docs/research/codebase-context/claude-code-feature-dev-comparison.md (new)
+✅ docs/research/codebase-context/research-synthesis.md (new)
+✅ docs/research/codebase-context/code-analyst.md (cataloged)
+✅ docs/research/codebase-context/information-analyst.md (cataloged)
+✅ docs/research/codebase-context/context_bootstrap.md (cataloged)
 ✅ docs/PROGRESS.md (new - this file)
 ```
 
@@ -652,11 +652,11 @@ The following improvements are **documented and ready to implement** but will be
 
 ### Research Documents
 
-- [Claude Code Feature-Dev Comparison](./research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md)
-- [Research Synthesis](./research/reverse-engineer-prompts/research-synthesis.md)
-- [Code Analyst Pattern](./research/reverse-engineer-prompts/code-analyst.md)
-- [Information Analyst Pattern](./research/reverse-engineer-prompts/information-analyst.md)
-- [Context Bootstrap Pattern](./research/reverse-engineer-prompts/context_bootstrap.md)
+- [Claude Code Feature-Dev Comparison](./research/codebase-context/claude-code-feature-dev-comparison.md)
+- [Research Synthesis](./research/codebase-context/research-synthesis.md)
+- [Code Analyst Pattern](./research/codebase-context/code-analyst.md)
+- [Information Analyst Pattern](./research/codebase-context/information-analyst.md)
+- [Context Bootstrap Pattern](./research/codebase-context/context_bootstrap.md)
 
 ### External Links
 
@@ -670,7 +670,7 @@ The following improvements are **documented and ready to implement** but will be
 
 For questions about this implementation:
 
-- Review research documents in `docs/research/reverse-engineer-prompts/`
+- Review research documents in `docs/research/codebase-context/`
 - Check progress updates in this document
 - Refer to commit messages for detailed change rationale
 
