@@ -603,8 +603,8 @@ For key user flows, trace the execution path:
 - Output/response generation
 
 **Example Flow:**
-```
 
+```text
 User Login:
 
 1. POST /api/auth/login → routes/auth.ts:23
