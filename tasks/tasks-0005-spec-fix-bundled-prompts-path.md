@@ -4,7 +4,7 @@
 
 - `slash_commands/writer.py` - Contains `_find_package_prompts_dir()` and `_load_prompts()` methods that need to use `importlib.resources` and distinguish between default vs explicit paths
 - `tests/test_writer.py` - Tests for writer functionality, needs updates for new behavior
-- `slash_commands/cli.py` - CLI interface that needs to change default value for `prompts_dir` parameter and improve error handling
+- `slash_commands/cli.py` - CLI that needs to change default value for `prompts_dir` parameter and improve error handling
 - `tests/test_cli.py` - CLI tests that may need updates for new default behavior
 
 ### Notes

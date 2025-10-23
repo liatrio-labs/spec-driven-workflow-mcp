@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow-mcp?style=social" alt="GitHub stars"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow?style=social" alt="GitHub stars"/></a>
     <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
 </p>
 
@@ -171,18 +171,18 @@ Generate slash commands for your AI coding assistant and use the prompts as nati
 
 ```bash
 # Clone and install locally
-git clone https://github.com/liatrio-labs/spec-driven-workflow-mcp.git
-cd spec-driven-workflow-mcp
+git clone https://github.com/liatrio-labs/spec-driven-workflow.git
+cd spec-driven-workflow
 uv sync
-uv run sdd-generate-commands --yes
+uv run sdd-generate-commands generate --yes
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow-mcp sdd-generate-commands --yes
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
 ```
 
 This will auto-detect your configured AI assistants (Claude Code, Cursor, Windsurf, etc.) and generate command files in your home directory.
 
-**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp sdd-generate-commands --yes` for a one-liner installation.
+**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp sdd-generate-commands generate --yes` for a one-liner installation.
 
 See [docs/slash-command-generator.md](./docs/slash-command-generator.md) for details.
 
@@ -202,8 +202,8 @@ Run the prompts as an MCP server for programmatic access. This option is most us
 
 ```bash
 # Clone the repository
-git clone https://github.com/liatrio-labs/spec-driven-workflow-mcp.git
-cd spec-driven-workflow-mcp
+git clone https://github.com/liatrio-labs/spec-driven-workflow.git
+cd spec-driven-workflow
 
 # Install dependencies
 uv sync
@@ -218,7 +218,7 @@ uv sync
 uvx fastmcp run server.py
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow-mcp spec-driven-development-mcp
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp
 ```
 
 **With MCP Inspector:**
@@ -234,7 +234,7 @@ uvx fastmcp dev server.py
 uvx fastmcp run server.py --transport http --port 8000
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow-mcp spec-driven-development-mcp --transport http --port 8000
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp --transport http --port 8000
 ```
 
 **Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp` for a one-liner installation with optional `--transport` and `--port` arguments. The `fastmcp run` approach remains available for development and advanced options.

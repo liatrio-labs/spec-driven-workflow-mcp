@@ -47,7 +47,8 @@ meta:
 ---
 
 # Generate Specification
-"""
+""",
+            encoding="utf-8",
         )
 
         (prompts_dir / "generate-task-list-from-spec.md").write_text(
@@ -63,7 +64,8 @@ meta:
 ---
 
 # Generate Task List
-"""
+""",
+            encoding="utf-8",
         )
 
         (prompts_dir / "manage-tasks.md").write_text(
@@ -80,7 +82,8 @@ meta:
 ---
 
 # Manage Tasks
-"""
+""",
+            encoding="utf-8",
         )
 
         yield prompts_dir
