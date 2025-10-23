@@ -219,6 +219,7 @@ This is a bundled test prompt.
         agents=["claude-code"],
         dry_run=True,
         base_path=tmp_path,
+        is_explicit_prompts_dir=False,  # Use default path to enable fallback
     )
 
     # Mock the fallback function to return the mock package prompts directory
@@ -258,6 +259,7 @@ This is a test prompt.
         agents=["claude-code"],
         dry_run=True,
         base_path=tmp_path,
+        is_explicit_prompts_dir=False,  # Use default path to enable fallback
     )
 
     # Mock the fallback function to return the mock package prompts directory

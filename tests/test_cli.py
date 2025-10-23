@@ -153,7 +153,32 @@ def test_cli_handles_missing_prompts_directory(tmp_path):
         )
 
         assert result.exit_code == 3  # I/O error
-        assert "does not exist" in result.stdout.lower() or "error" in result.stdout.lower()
+
+
+def test_cli_explicit_path_shows_specific_directory_error(tmp_path):
+    """Test that CLI shows specific directory error message when using explicit path."""
+    prompts_dir = tmp_path / "nonexistent"
+    runner = CliRunner()
+
+    # Mock the fallback function to return None to test the error case
+    with patch("slash_commands.writer._find_package_prompts_dir", return_value=None):
+        # Explicitly specify --prompts-dir
+        result = runner.invoke(
+            app,
+            [
+                "generate",
+                "--prompts-dir",
+                str(prompts_dir),
+                "--agents",
+                "claude-code",
+                "--yes",
+            ],
+        )
+
+        assert result.exit_code == 3  # I/O error
+        # Should mention specific directory check
+        assert "Ensure the specified prompts directory exists" in result.stdout
+        assert f"current: {prompts_dir}" in result.stdout
 
 
 def test_cli_shows_summary(mock_prompts_dir, tmp_path):

@@ -15,7 +15,7 @@
 
 ## Tasks
 
-- [~] 1.0 Update `_find_package_prompts_dir()` to use importlib.resources
+- [x] 1.0 Update `_find_package_prompts_dir()` to use importlib.resources
   - Demo Criteria: "Run from home directory and verify bundled prompts are located without specifying --prompts-dir"
   - Proof Artifact(s): "Test: `pytest tests/test_writer.py::test_writer_finds_bundled_prompts` shows successful resolution"
   - [x] 1.1 Import `importlib.resources` module
@@ -24,13 +24,13 @@
   - [x] 1.4 Add proper error handling for importlib edge cases
   - [x] 1.5 Write unit test for importlib.resources path resolution
 
-- [ ] 2.0 Update CLI to distinguish default vs explicit prompts directory
+- [x] 2.0 Update CLI to distinguish default vs explicit prompts directory
   - Demo Criteria: "Running without --prompts-dir shows bundled prompts; explicit --prompts-dir/nonexistent shows clear error"
   - Proof Artifact(s): "Test: Explicit vs default behavior verified in CLI tests; CLI error messages are clear"
-  - [ ] 2.1 Change `prompts_dir` default value from `Path("prompts")` to `None` in CLI signature
-  - [ ] 2.2 Pass a flag or sentinel value to SlashCommandWriter indicating if path was user-specified
-  - [ ] 2.3 Update SlashCommandWriter.__init__ to accept the flag parameter
-  - [ ] 2.4 Update error handling in CLI to show different messages for default vs explicit paths
+  - [x] 2.1 Change `prompts_dir` default value from `Path("prompts")` to `None` in CLI signature
+  - [x] 2.2 Pass a flag or sentinel value to SlashCommandWriter indicating if path was user-specified
+  - [x] 2.3 Update SlashCommandWriter.__init__ to accept the flag parameter
+  - [x] 2.4 Update error handling in CLI to show different messages for default vs explicit paths
 
 - [ ] 3.0 Update `_load_prompts()` to handle default vs explicit paths differently
   - Demo Criteria: "Default path falls back to bundled prompts; explicit path fails immediately without fallback"

@@ -109,13 +109,14 @@ def create_backup(file_path: Path) -> Path:
 class SlashCommandWriter:
     """Orchestrates prompt loading and generation of command files for multiple agents."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         prompts_dir: Path,
         agents: list[str] | None = None,
         dry_run: bool = False,
         base_path: Path | None = None,
         overwrite_action: OverwriteAction | None = None,
+        is_explicit_prompts_dir: bool = True,
     ):
         """Initialize the writer.
 
@@ -125,12 +126,15 @@ class SlashCommandWriter:
             dry_run: If True, don't write files but report what would be written
             base_path: Base directory for output paths. If None, uses current directory.
             overwrite_action: Global overwrite action to apply. If None, will prompt per file.
+            is_explicit_prompts_dir: If True, prompts_dir was explicitly provided by user.
+                If False, use bundled prompts fallback.
         """
         self.prompts_dir = prompts_dir
         self.agents = agents if agents is not None else list_agent_keys()
         self.dry_run = dry_run
         self.base_path = base_path or Path.cwd()
         self.overwrite_action = overwrite_action
+        self.is_explicit_prompts_dir = is_explicit_prompts_dir
         self._global_overwrite = False  # Track if user chose "overwrite-all"
         self._backups_created = []  # Track backup files created
 
@@ -175,11 +179,16 @@ class SlashCommandWriter:
         # Check if the specified prompts directory exists
         prompts_dir = self.prompts_dir
         if not prompts_dir.exists():
-            # Try to find prompts in the installed package
-            package_prompts_dir = _find_package_prompts_dir()
-            if package_prompts_dir is not None:
-                prompts_dir = package_prompts_dir
+            # Only attempt fallback to bundled prompts when using default path
+            if not self.is_explicit_prompts_dir:
+                # Try to find prompts in the installed package
+                package_prompts_dir = _find_package_prompts_dir()
+                if package_prompts_dir is not None:
+                    prompts_dir = package_prompts_dir
+                else:
+                    raise ValueError(f"Prompts directory does not exist: {self.prompts_dir}")
             else:
+                # Explicit path not found, raise error immediately without fallback
                 raise ValueError(f"Prompts directory does not exist: {self.prompts_dir}")
 
         prompts = []

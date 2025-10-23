@@ -61,13 +61,13 @@ def _prompt_agent_selection(detected_agents: list) -> list:
 @app.command()
 def generate(  # noqa: PLR0913 PLR0912 PLR0915
     prompts_dir: Annotated[
-        Path,
+        Path | None,
         typer.Option(
             "--prompts-dir",
             "-p",
             help="Directory containing prompt files",
         ),
-    ] = Path("prompts"),
+    ] = None,
     agents: Annotated[
         list[str] | None,
         typer.Option(
@@ -191,14 +191,21 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     # Determine target path (default to home directory)
     actual_target_path = target_path if target_path is not None else Path.home()
 
+    # Track whether prompts_dir was explicitly provided by the user
+    # If None, use default (bundled prompts fallback)
+    # If provided, it's user-specified
+    is_explicit_prompts_dir = prompts_dir is not None
+    actual_prompts_dir = prompts_dir if prompts_dir is not None else Path("prompts")
+
     # Create writer
     overwrite_action = "overwrite" if yes else None
     writer = SlashCommandWriter(
-        prompts_dir=prompts_dir,
+        prompts_dir=actual_prompts_dir,
         agents=agents,
         dry_run=dry_run,
         base_path=actual_target_path,
         overwrite_action=overwrite_action,
+        is_explicit_prompts_dir=is_explicit_prompts_dir,
     )
 
     # Generate commands
@@ -207,11 +214,18 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     except ValueError as e:
         print(f"Error: {e}", file=sys.stderr)
         print("\nTo fix this:", file=sys.stderr)
-        print("  - Ensure the prompts directory exists", file=sys.stderr)
-        print(
-            f"  - Check that --prompts-dir points to a valid directory (current: {prompts_dir})",
-            file=sys.stderr,
-        )
+        if is_explicit_prompts_dir:
+            # User explicitly provided --prompts-dir
+            print("  - Ensure the specified prompts directory exists", file=sys.stderr)
+            print(
+                "  - Check that --prompts-dir points to a valid directory",
+                file=sys.stderr,
+            )
+            print(f"    (current: {prompts_dir})", file=sys.stderr)
+        else:
+            # Default path, tried to fall back to bundled prompts
+            print("  - Bundled prompts were not found in the installed package", file=sys.stderr)
+            print("  - Use --prompts-dir to specify a custom prompts directory", file=sys.stderr)
         raise typer.Exit(code=3) from None  # I/O error (e.g., prompts directory doesn't exist)
     except KeyError as e:
         print(f"Error: Invalid agent key: {e}", file=sys.stderr)
