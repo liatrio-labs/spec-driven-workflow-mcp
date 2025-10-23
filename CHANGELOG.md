@@ -2,6 +2,41 @@
 
 <!-- version list -->
 
+## v1.5.0 (2025-10-22)
+
+### Build System
+
+- **linter**: Centralize markdownlint configuration
+  ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+### Documentation
+
+- Enhance README header with badges and improved formatting
+  ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+- Enhance README structure and add workflow improvements
+  ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+- Enhance README structure with highlights and workflow guidance
+  ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+- Minor tweak ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+- Refocus workflow guidance and tooling notes
+  ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+### Features
+
+- Add health check for mcp ([#16](https://github.com/liatrio-labs/spec-driven-workflow/pull/16),
+  [`387568f`](https://github.com/liatrio-labs/spec-driven-workflow/commit/387568fadf7fde848a11bbaeecbe2f58b239c4e9))
+
+
 ## v1.4.0 (2025-10-18)
 
 ### Bug Fixes

@@ -20,14 +20,6 @@ repos:
     rev: v0.45.0
     hooks:
       - id: markdownlint-fix
-        args:
-          - "--disable"
-          - "MD013"  # Line length
-          - "MD024"  # Duplicate headings
-          - "MD033"  # Inline HTML
-          - "MD034"  # Bare URLs
-          - "MD041"  # First line in file must be a top-level heading
-          - "--"
         exclude: "CHANGELOG.md|LICENSE"
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook

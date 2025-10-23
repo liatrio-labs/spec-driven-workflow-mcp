@@ -1,0 +1,20 @@
+# Default state for all rules
+default: true
+
+# Path to configuration file to extend
+extends: null
+
+# Line length
+MD013:  false
+
+# Duplicate headings
+MD024:  false
+
+# Inline HTML
+MD033:  false
+
+# Bare URLs
+MD034:  false
+
+# First line in file must be a top-level heading
+MD041:  false

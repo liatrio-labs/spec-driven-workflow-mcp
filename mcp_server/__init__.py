@@ -5,6 +5,8 @@ spec-driven development workflows.
 """
 
 from fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse
 
 from .config import config
 from .prompts_loader import register_prompts
@@ -20,6 +22,10 @@ def create_app() -> FastMCP:
     """
     # Initialize FastMCP server
     mcp = FastMCP(name="spec-driven-development-mcp")
+
+    @mcp.custom_route("/health", methods=["GET"])
+    async def health_check(request: Request) -> PlainTextResponse:
+        return PlainTextResponse("OK")
 
     # Load prompts from the prompts directory and register them
     register_prompts(mcp, config.prompts_dir)
