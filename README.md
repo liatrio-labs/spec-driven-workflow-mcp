@@ -15,6 +15,28 @@
     <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
 </p>
 
+## TLDR
+
+**Install the workflow prompts as slash commands:**
+
+```bash
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+```
+
+**Use `/generate-spec` with your idea:**
+
+```text
+I want to add user authentication to my app
+```
+
+→ AI asks clarifying questions → You provide answers → Spec created in `tasks/0001-spec-user-auth.md`
+
+**Continue the flow:**
+
+- Run `/generate-task-list-from-spec` → Task list created in `tasks/tasks-0001-spec-user-auth.md`
+- Use `/manage-tasks` → Execute tasks one-by-one with proof artifacts
+- **Profit** 🎉
+
 ## Highlights
 
 - **Prompt-first workflow:** Use curated prompts to go from idea → spec → task list → implementation-ready backlog.
