@@ -35,7 +35,7 @@ I want to add user authentication to my app
 
 - Run `/generate-task-list-from-spec` → Task list created in `tasks/tasks-0001-spec-user-auth.md`
 - Use `/manage-tasks` → Execute tasks one-by-one with proof artifacts
-- **Profit** 🎉
+- **SHIP IT** 🚢💨
 
 ## Highlights
 
