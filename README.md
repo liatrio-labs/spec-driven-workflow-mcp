@@ -9,11 +9,34 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow-mcp?style=social" alt="GitHub stars"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow?style=social" alt="GitHub stars"/></a>
     <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
 </p>
+
+## TLDR
+
+1. Install the workflow prompts as slash commands in all your [local AI tools](#supported-ai-tools):
+
+    ```bash
+    uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+    ```
+
+2. In your AI tool of choice, use `/generate-spec` with your idea:
+
+    ```text
+    /generate-spec I want to add user authentication to my app
+    ```
+
+    → AI asks clarifying questions → You provide answers → Spec created in `tasks/0001-spec-user-auth.md`
+
+3. Continue the flow:
+
+    - Run `/generate-task-list-from-spec` → Task list created in `tasks/tasks-0001-spec-user-auth.md`
+    - Use `/manage-tasks` → Execute tasks one-by-one with proof artifacts
+
+4. **SHIP IT** 🚢💨
 
 ## Highlights
 
@@ -115,19 +138,57 @@ sequenceDiagram
 - **Status Keys:** `[ ]` not started, `[~]` in progress, `[x]` complete, mirroring the manage-tasks guidance.
 - **Proof Artifacts:** URLs, CLI commands, screenshots, or tests captured per task to demonstrate working software.
 
-## Hands-On Usage (No MCP Required)
+## Hands-On Usage
+
+The SDD workflow can be used in three ways, from simplest to most automated:
+
+### Option 1: Manual Copy-Paste (No Tooling Required)
 
 1. **Kick off a spec:** Copy or reference `prompts/generate-spec.md` inside your preferred AI chat. Provide the feature idea, answer the clarifying questions, and review the generated spec before saving it under `/tasks`.
 2. **Plan the work:** Point the assistant to the new spec and walk through `prompts/generate-task-list-from-spec.md`. Approve parent tasks first, then request the detailed subtasks and relevant files. Commit the result to `/tasks`.
 3. **Execute with discipline:** Follow `prompts/manage-tasks.md` while implementing. Update statuses as you work, attach proof artifacts, and pause for reviews at each demoable slice.
 
-### Slash Command Integration (TBD)
+### Option 2: Native Slash Commands (Recommended)
 
-Guides are coming for wiring these prompts as first-class slash commands in popular IDEs and AI tools (Windsurf, VS Code, Cursor, Claude Code, Codex, and more).
+#### Supported AI Tools
 
-## Optional: Automate with the MCP Server
+The slash command generator currently supports the following AI coding assistants:
 
-Prefer tighter tooling? This repository also ships an MCP server that exposes the same prompts programmatically. Treat it as an accelerator—everything above works without it.
+| AI Tool      | Command Install Location                         |
+|--------------|--------------------------------------------------|
+| Claude Code  | `~/.claude/commands`                             |
+| Codex CLI    | `~/.codex/prompts`                               |
+| Cursor       | `~/.cursor/commands`                             |
+| Gemini CLI   | `~/.gemini/commands`                             |
+| VS Code      | `~/.config/Code/User/prompts`                    |
+| Windsurf     | `~/.codeium/windsurf/global_workflows`           |
+
+For full setup and agent-specific details, see [docs/slash-command-generator.md](./docs/slash-command-generator.md).
+
+#### Slash Command Installation
+
+Generate slash commands for your AI coding assistant and use the prompts as native commands:
+
+```bash
+# Clone and install locally
+git clone https://github.com/liatrio-labs/spec-driven-workflow.git
+cd spec-driven-workflow
+uv sync
+uv run sdd-generate-commands generate --yes
+
+# Or run directly from the git repo via uvx
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+```
+
+This will auto-detect your configured AI assistants (Claude Code, Cursor, Windsurf, etc.) and generate command files in your home directory.
+
+**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp sdd-generate-commands generate --yes` for a one-liner installation.
+
+See [docs/slash-command-generator.md](./docs/slash-command-generator.md) for details.
+
+### Option 3: MCP Server (Advanced)
+
+Run the prompts as an MCP server for programmatic access. This option is most useful for custom integrations and tools that support MCP.
 
 > Note: MCP prompt support is not uniformly supported across AI tools. See [docs/mcp-prompt-support.md](./docs/mcp-prompt-support.md) for details.
 
@@ -141,8 +202,8 @@ Prefer tighter tooling? This repository also ships an MCP server that exposes th
 
 ```bash
 # Clone the repository
-git clone https://github.com/liatrio-labs/spec-driven-workflow-mcp.git
-cd spec-driven-workflow-mcp
+git clone https://github.com/liatrio-labs/spec-driven-workflow.git
+cd spec-driven-workflow
 
 # Install dependencies
 uv sync
@@ -153,7 +214,11 @@ uv sync
 **STDIO (local development):**
 
 ```bash
+# From local clone
 uvx fastmcp run server.py
+
+# Or run directly from the git repo via uvx
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp
 ```
 
 **With MCP Inspector:**
@@ -165,8 +230,14 @@ uvx fastmcp dev server.py
 **HTTP Transport:**
 
 ```bash
+# Use fastmcp CLI for HTTP transport
 uvx fastmcp run server.py --transport http --port 8000
+
+# Or run directly from the git repo via uvx
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp --transport http --port 8000
 ```
+
+**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp` for a one-liner installation with optional `--transport` and `--port` arguments. The `fastmcp run` approach remains available for development and advanced options.
 
 See [docs/operations.md](docs/operations.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for advanced configuration, deployment, and contribution guidelines.
 

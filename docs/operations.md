@@ -147,10 +147,10 @@ uv run pytest
 ### Run with Coverage
 
 ```bash
-uv run pytest --cov=mcp_server --cov-report=html
+uv run pytest --cov=mcp_server --cov=slash_commands --cov-report=html
 ```
 
-### Run Specific Test File
+Open `htmlcov/index.html` in your browser to view the detailed coverage report.
 
 ```bash
 uv run pytest tests/test_prompts.py -v

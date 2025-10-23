@@ -8,10 +8,16 @@ from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
+try:
+    from __version__ import __version__
+except ImportError:
+    # Fallback for when installed as a package
+    from importlib.metadata import version
+
+    __version__ = version("spec-driven-development-mcp")
+
 from .config import config
 from .prompts_loader import register_prompts
-
-__version__ = "0.1.0"
 
 
 def create_app() -> FastMCP:

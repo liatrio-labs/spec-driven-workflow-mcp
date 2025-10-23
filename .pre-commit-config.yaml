@@ -32,3 +32,13 @@ repos:
         stages: [commit-msg]
         args:
           - "--extends=@commitlint/config-conventional"
+
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: Run pytest before push
+        entry: pytest
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
