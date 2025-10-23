@@ -316,7 +316,7 @@ def test_cli_interactive_agent_selection_selects_all(mock_prompts_dir, tmp_path)
                 command_dir=".cursor/commands",
                 command_format=CommandFormat.MARKDOWN,
                 command_file_extension=".md",
-                detection_dirs=(".cursor"),
+                detection_dirs=(".cursor",),
             ),
         ]
 

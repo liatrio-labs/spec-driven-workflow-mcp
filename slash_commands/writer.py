@@ -120,7 +120,7 @@ class SlashCommandWriter:
 
         return {
             "prompts_loaded": len(prompts),
-            "files_written": sum(1 for f in files if not self.dry_run),
+            "files_written": len(files),
             "files": files,
             "prompts": [{"name": p.name, "path": str(p.path)} for p in prompts],
             "backups_created": self._backups_created,
@@ -178,7 +178,7 @@ class SlashCommandWriter:
 
         # Write file if not dry run
         if not self.dry_run:
-            output_path.write_text(content)
+            output_path.write_text(content, encoding="utf-8")
 
         return {
             "path": str(output_path),

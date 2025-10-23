@@ -36,11 +36,12 @@ spec-driven-development-mcp = "server:main"
 sdd-generate-commands = "slash_commands.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["mcp_server", "prompts", "slash_commands"]
+packages = ["mcp_server", "slash_commands"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "server.py" = "server.py"
 "__version__.py" = "__version__.py"
+"prompts/" = "prompts/"
 
 
 # --- Ruff (linter + formatter) ---
