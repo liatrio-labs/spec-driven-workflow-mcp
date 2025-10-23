@@ -2,6 +2,250 @@
 
 <!-- version list -->
 
+## v1.6.0 (2025-10-23)
+
+### Bug Fixes
+
+- Add missing tomli-w dependency and update documentation
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Address additional CodeRabbit review comments
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Address CodeRabbitAI review comments
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Address PR review feedback for slash command generator
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Address remaining CodeRabbit AI review comments
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Correct agent command directories based on official documentation
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Correct detection logic to check command directory
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Normalize path return types to strings in find_generated_files
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Only fall back to bundled prompts for default directory
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Update typer version constraint to match available PyPI version
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **config**: Correct Cursor agent command directory and file extension
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **install**: Add fallback to find prompts in installed package
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **review**: Address PR review feedback
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **writer**: Improve importlib.resources package anchor path
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Chores
+
+- Mark task 2.0 complete - all generator subtasks finished
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Remove generated test files ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Update all packages to latest compatible versions
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Continuous Integration
+
+- Add pre-push test hook and fix dry_run file count bug
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Documentation
+
+- Add reference links to supported agents table
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Add slash command generator documentation
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Add TLDR section to README showing quick start workflow
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Document TOML reading approach and Python version requirements
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Enhance troubleshooting documentation and Python version requirements
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Improve README with numbered steps and supported AI tools table
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Mark task 5.0 and all subtasks complete
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Reorganize README with clearer usage options
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Replace Profit with SHIP IT meme in TLDR
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **slash-command-generator**: Align documentation with actual implementation
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **specs**: Add spec for fixing bundled prompts directory resolution
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **specs**: Add task list for fixing bundled prompts directory resolution
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **tasks**: Add spec and task list for code review fixes
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **tasks**: Add spec/tasks for slash commands helper
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **tasks**: Mark all tasks complete for bundled prompts resolution
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **tasks**: Update task list for bundled prompts resolution
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Features
+
+- Add importlib.resources support for bundled prompts resolution
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Add output normalization and snapshot regression tests
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Add slash_commands to package discovery configuration
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Change default paths to home directory and unify option names
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Fix critical audit issues and add detection path option
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Implement consistent exit codes and improved error handling
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Implement Markdown and TOML command generators with override support
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Implement overwrite handling with backup support
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Implement slash command writer with multi-agent support
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Implement Typer CLI with auto-detection and selection flows
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Improve --list-agents output with Rich table
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Improve list-agents table formatting
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **server**: Add command-line argument parsing for transport and port
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **slash-commands**: Add cleanup command for generated files
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **slash-commands**: Add generator for AI assistant native slash commands
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **slash-commands**: Add version and updated_at metadata to generated commands
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **slash-commands**: Bootstrap config and detection
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Refactoring
+
+- Centralize version management
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- Remove unsupported agents and update remaining paths
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **generators**: Align TOML format with official Gemini CLI spec
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **version**: Support both local and installed package modes
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+### Testing
+
+- Add generated content validation tests
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+- **coverage**: Add pytest-cov configuration and documentation
+  ([#19](https://github.com/liatrio-labs/spec-driven-workflow/pull/19),
+  [`31ba393`](https://github.com/liatrio-labs/spec-driven-workflow/commit/31ba393b3e47cb13e8c485691147c0fbbeb2b1e3))
+
+
 ## v1.5.0 (2025-10-22)
 
 ### Build System
