@@ -166,7 +166,7 @@ def prompt_with_placeholder_body(tmp_path) -> MarkdownPrompt:
               category: generator-tests
               command_prefix: sdd-
             agent_overrides:
-              qwen-code:
+              gemini-cli:
                 description: Prompt with TOML specific placeholder
             ---
 

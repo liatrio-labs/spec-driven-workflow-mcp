@@ -131,7 +131,7 @@ def test_toml_generator_applies_agent_overrides(sample_prompt):
 
 
 def test_toml_generator_substitutes_argument_placeholders(prompt_with_placeholder_body):
-    agent = get_agent_config("qwen-code")
+    agent = get_agent_config("gemini-cli")
     generator = TomlCommandGenerator()
 
     generated = generator.generate(prompt_with_placeholder_body, agent)
@@ -158,7 +158,7 @@ def test_toml_generator_substitutes_argument_placeholders(prompt_with_placeholde
     assert "[format]" in body_text
 
     meta = command["meta"]
-    assert meta["agent"] == "qwen-code"
+    assert meta["agent"] == "gemini-cli"
     assert meta["agent_display_name"] == agent.display_name
     assert meta["command_dir"] == agent.command_dir
     assert meta["command_format"] == agent.command_format.value

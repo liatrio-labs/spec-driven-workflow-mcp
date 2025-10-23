@@ -18,19 +18,19 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
         "command_file_extension": ".md",
         "detection_dirs": (".claude",),
     },
+    "codex-cli": {
+        "display_name": "Codex CLI",
+        "command_dir": ".codex/prompts",
+        "command_format": CommandFormat.MARKDOWN,
+        "command_file_extension": ".md",
+        "detection_dirs": (".codex",),
+    },
     "cursor": {
         "display_name": "Cursor",
-        "command_dir": ".cursor/commands",
+        "command_dir": ".cursor/rules",
         "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
+        "command_file_extension": ".mdc",
         "detection_dirs": (".cursor", ".cursorrules"),
-    },
-    "windsurf": {
-        "display_name": "Windsurf",
-        "command_dir": ".windsurfrules/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".windsurf", ".windsurfrules"),
     },
     "gemini-cli": {
         "display_name": "Gemini CLI",
@@ -39,75 +39,19 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
         "command_file_extension": ".toml",
         "detection_dirs": (".gemini",),
     },
-    "github-copilot": {
-        "display_name": "GitHub Copilot",
-        "command_dir": ".github/copilot/commands",
+    "vs-code": {
+        "display_name": "VS Code",
+        "command_dir": ".config/Code/User/prompts",
+        "command_format": CommandFormat.MARKDOWN,
+        "command_file_extension": ".prompt.md",
+        "detection_dirs": (".config/Code",),
+    },
+    "windsurf": {
+        "display_name": "Windsurf",
+        "command_dir": ".codeium/windsurf/global_workflows",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".github", ".github/copilot"),
-    },
-    "opencode": {
-        "display_name": "opencode",
-        "command_dir": ".config/opencode/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".config/opencode", ".opencode"),
-    },
-    "codex-cli": {
-        "display_name": "Codex CLI",
-        "command_dir": ".codex/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".codex",),
-    },
-    "kilo-code": {
-        "display_name": "Kilo Code",
-        "command_dir": ".kilocode/rules",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".kilocode",),
-    },
-    "auggie-cli": {
-        "display_name": "Auggie CLI",
-        "command_dir": ".augment/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".augment",),
-    },
-    "roo-code": {
-        "display_name": "Roo Code",
-        "command_dir": ".roo/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".roo",),
-    },
-    "codebuddy-cli": {
-        "display_name": "CodeBuddy CLI",
-        "command_dir": ".codebuddy/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".codebuddy",),
-    },
-    "amazon-q-developer": {
-        "display_name": "Amazon Q Developer",
-        "command_dir": ".aws/q/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".aws", ".aws/q"),
-    },
-    "amp": {
-        "display_name": "Amp",
-        "command_dir": ".agents/commands",
-        "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".md",
-        "detection_dirs": (".agents",),
-    },
-    "qwen-code": {
-        "display_name": "Qwen Code",
-        "command_dir": ".qwen/commands",
-        "command_format": CommandFormat.TOML,
-        "command_file_extension": ".toml",
-        "detection_dirs": (".qwen",),
+        "detection_dirs": (".codeium", ".codeium/windsurf"),
     },
 }
 
@@ -160,7 +104,13 @@ def test_supported_agents_match_expected_configuration(
         agent = supported_agents_by_key[key]
         for attribute, value in expected.items():
             assert getattr(agent, attribute) == value, f"Unexpected {attribute} for {key}"
-        assert agent.command_dir.endswith("/commands") or agent.command_dir.endswith("/rules")
+        assert (
+            agent.command_dir.endswith("/commands")
+            or agent.command_dir.endswith("/rules")
+            or agent.command_dir.endswith("/prompts")
+            or agent.command_dir.endswith("/global_workflows")
+            or agent.command_dir.endswith("/command")
+        )
         assert agent.command_file_extension.startswith(".")
         assert isinstance(agent.detection_dirs, tuple)
         assert all(dir_.startswith(".") for dir_ in agent.detection_dirs)
@@ -179,8 +129,8 @@ def test_supported_agents_include_all_markdown_and_toml_formats(
         for agent in supported_agents_by_key.values()
         if agent.command_format is CommandFormat.TOML
     ]
-    assert len(markdown_agents) == 12
-    assert len(toml_agents) == 2
+    assert len(markdown_agents) == 5
+    assert len(toml_agents) == 1
 
 
 def test_detection_dirs_cover_command_directory_roots(
@@ -192,10 +142,13 @@ def test_detection_dirs_cover_command_directory_roots(
             path_parts = agent.command_dir.split("/")
             # Check first directory component
             command_root = path_parts[0]
-            # For opencode, check if .config exists in detection_dirs
-            if agent.key == "opencode":
+            # For vs-code, check if .config exists in detection_dirs
+            if agent.key == "vs-code":
+                assert ".config" in agent.detection_dirs or ".config/Code" in agent.detection_dirs
+            elif agent.key == "windsurf":
                 assert (
-                    ".config" in agent.detection_dirs or ".config/opencode" in agent.detection_dirs
+                    ".codeium" in agent.detection_dirs
+                    or ".codeium/windsurf" in agent.detection_dirs
                 )
             else:
                 assert command_root in agent.detection_dirs
