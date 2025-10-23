@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
 
@@ -248,8 +249,10 @@ class SlashCommandWriter:
                 # Check for regular command files
                 for file_path in command_dir.glob(f"*{agent.command_file_extension}"):
                     if self._is_generated_file(file_path, agent):
+                        # Convert Path to string explicitly using os.fspath
+                        path_str = os.fspath(file_path)
                         found_files.append({
-                            "path": str(file_path),
+                            "path": path_str,
                             "agent": agent.key,
                             "agent_display_name": agent.display_name,
                             "type": "command",
@@ -263,8 +266,10 @@ class SlashCommandWriter:
                     pattern = re.compile(rf".*{escaped_ext}\.\d{{8}}-\d{{6}}\.bak$")
                     for file_path in command_dir.iterdir():
                         if file_path.is_file() and pattern.match(file_path.name):
+                            # Convert Path to string explicitly using os.fspath
+                            path_str = os.fspath(file_path)
                             found_files.append({
-                                "path": str(file_path),
+                                "path": path_str,
                                 "agent": agent.key,
                                 "agent_display_name": agent.display_name,
                                 "type": "backup",

@@ -370,7 +370,9 @@ description: Manual command
     found_files = writer.find_generated_files(agents=["claude-code"], include_backups=False)
 
     assert len(found_files) == 1
-    assert found_files[0]["path"] == generated_file
+    # Returned path should be a string
+    assert isinstance(found_files[0]["path"], str)
+    assert found_files[0]["path"] == str(generated_file)
     assert found_files[0]["agent"] == "claude-code"
     assert found_files[0]["type"] == "command"
 
@@ -401,7 +403,9 @@ agent = "gemini-cli"
     found_files = writer.find_generated_files(agents=["gemini-cli"], include_backups=False)
 
     assert len(found_files) == 1
-    assert found_files[0]["path"] == generated_file
+    # Returned path should be a string
+    assert isinstance(found_files[0]["path"], str)
+    assert found_files[0]["path"] == str(generated_file)
     assert found_files[0]["agent"] == "gemini-cli"
     assert found_files[0]["type"] == "command"
 
@@ -425,7 +429,9 @@ def test_writer_finds_backup_files(tmp_path):
     found_files = writer.find_generated_files(agents=["claude-code"], include_backups=True)
 
     assert len(found_files) == 1
-    assert found_files[0]["path"] == backup_file
+    # Returned path should be a string
+    assert isinstance(found_files[0]["path"], str)
+    assert found_files[0]["path"] == str(backup_file)
     assert found_files[0]["type"] == "backup"
 
 
