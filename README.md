@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow-mcp/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
-    <a href="https://github.com/liatrio-labs/spec-driven-workflow-mcp/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow-mcp?style=social" alt="GitHub stars"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml"><img src="https://github.com/liatrio-labs/spec-driven-workflow/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"/></a>
+    <a href="https://github.com/liatrio-labs/spec-driven-workflow/stargazers"><img src="https://img.shields.io/github/stars/liatrio-labs/spec-driven-workflow?style=social" alt="GitHub stars"/></a>
     <a href="docs/operations.md"><img src="https://img.shields.io/badge/docs-Operations-blue" alt="Documentation"/></a>
 </p>
 
@@ -141,8 +141,8 @@ Prefer tighter tooling? This repository also ships an MCP server that exposes th
 
 ```bash
 # Clone the repository
-git clone https://github.com/liatrio-labs/spec-driven-workflow-mcp.git
-cd spec-driven-workflow-mcp
+git clone https://github.com/liatrio-labs/spec-driven-workflow.git
+cd spec-driven-workflow
 
 # Install dependencies
 uv sync
