@@ -32,7 +32,7 @@ pre-commit install
 ### Common Commands
 
 ```bash
-# Run tests
+# Run tests with coverage
 uv run pytest
 
 # Run full pre-commit checks across the repo
@@ -55,13 +55,18 @@ See `docs/operations.md` for more details on transports and configuration.
 
 ## Testing
 
-- Tests use `pytest`.
+- Tests use `pytest` with coverage reporting via `pytest-cov`.
 - Before submitting a PR, run:
 
 ```bash
+# Run tests with coverage report
 uv run pytest
-uv run pre-commit run --all-files
+
+# View HTML coverage report (opens in browser)
+open htmlcov/index.html
 ```
+
+The test suite generates both terminal and HTML coverage reports showing which code paths are tested.
 
 ## Branching and Commit Conventions
 

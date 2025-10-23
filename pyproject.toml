@@ -70,8 +70,24 @@ ignore = [
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-ra"
+addopts = "-ra --cov=mcp_server --cov=slash_commands --cov-report=term-missing --cov-report=html"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["mcp_server", "slash_commands"]
+omit = ["tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
 
 # --- Semantic Release ---
 [tool.semantic_release]
