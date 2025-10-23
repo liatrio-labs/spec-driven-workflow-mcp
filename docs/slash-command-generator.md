@@ -6,10 +6,11 @@ The Slash Command Generator automates the creation of slash command files for AI
 
 The generator reads markdown prompts from the `prompts/` directory and produces command files in the appropriate format for each configured AI assistant. It supports:
 
-- **Multiple agents**: 14 supported AI assistants with different command formats
+- **Multiple agents**: 6 supported AI assistants with different command formats
 - **Auto-detection**: Automatically detects configured agents in your workspace
 - **Dry run mode**: Preview changes without writing files
 - **Safe overwrite handling**: Prompts before overwriting existing files with backup support
+- **Cleanup command**: Remove generated files and backups
 
 ## Installation
 
@@ -74,6 +75,7 @@ uv run sdd-generate-commands
 
 - Detects agents in your home directory (`~`)
 - Generates command files in your home directory
+- Without `--yes`, prompts you to select which detected agents to generate commands for (all detected agents are pre-selected)
 - Use `--detection-path` to search in a different directory
 - Use `--target-path` to generate files in a different location
 
@@ -148,26 +150,49 @@ find . -name "*.bak" -type f
 find . -name "*.bak" -type f -mtime +30 -delete
 ```
 
+### Cleanup Command
+
+Remove generated command files and backups:
+
+```bash
+# Show what would be deleted (dry run)
+uv run sdd-generate-commands cleanup --dry-run
+
+# Clean up all generated files
+uv run sdd-generate-commands cleanup --yes
+
+# Clean up specific agents only
+uv run sdd-generate-commands cleanup --agents claude-code --agents cursor --yes
+
+# Clean up without including backup files
+uv run sdd-generate-commands cleanup --no-backups --yes
+
+# Clean up with custom target path
+uv run sdd-generate-commands cleanup --target-path /path/to/project --yes
+```
+
+**Options**:
+
+- `--agents`: Specify which agents to clean (can be specified multiple times). If not specified, cleans all agents.
+- `--dry-run`: Show what would be deleted without actually deleting files
+- `--yes`, `-y`: Skip confirmation prompts
+- `--target-path`, `-t`: Target directory to search for generated files (defaults to home directory)
+- `--include-backups/--no-backups`: Include backup files in cleanup (default: true)
+
+**Note**: Without `--yes`, the cleanup command will prompt for confirmation before deleting files.
+
 ## Supported Agents
 
 The following agents are supported:
 
-| Agent | Display Name | Format | Extension | Reference |
-|-------|--------------|--------|-----------|-----------|
-| `amazon-q-developer` | Amazon Q Developer | Markdown | `.md` | [Home](https://aws.amazon.com/q/developer/) · [Docs](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html) |
-| `amp` | Amp | Markdown | `.md` | [Home](https://ampcode.com/) · [Docs](https://ampcode.com/manual) |
-| `auggie-cli` | Auggie CLI | Markdown | `.md` | [Home](https://www.augmentcode.com/product/CLI) · [Docs](https://docs.augmentcode.com/cli/overview) |
-| `claude-code` | Claude Code | Markdown | `.md` | [Home](https://docs.claude.com/) · [Docs](https://docs.claude.com/en/docs/claude-code/overview) |
-| `codebuddy-cli` | CodeBuddy CLI | Markdown | `.md` | [Home](https://www.codebuddy.ai/) · [Docs](https://docs.codebuddy.com/) |
-| `codex-cli` | Codex CLI | Markdown | `.md` | [Home](https://developers.openai.com/codex) · [Docs](https://developers.openai.com/codex/cli/) |
-| `cursor` | Cursor | Markdown | `.md` | [Home](https://cursor.com/) · [Docs](https://cursor.com/docs) |
-| `gemini-cli` | Gemini CLI | TOML | `.toml` | [Home](https://github.com/google-gemini/gemini-cli) · [Docs](https://geminicli.com/docs/) |
-| `github-copilot` | GitHub Copilot | Markdown | `.md` | [Home](https://github.com/features/copilot/cli) · [Docs](https://docs.github.com/en/copilot) |
-| `kilo-code` | Kilo Code | Markdown | `.md` | [Home](https://kilocode.ai/) · [Docs](https://kilocode.ai/docs/) |
-| `opencode` | opencode | Markdown | `.md` | [Home](https://opencode.ai/) · [Docs](https://opencode.ai/docs/) |
-| `qwen-code` | Qwen Code | TOML | `.toml` | [Home](https://github.com/QwenLM/qwen-code) · [Docs](https://qwenlm.github.io/qwen-code-docs/) |
-| `roo-code` | Roo Code | Markdown | `.md` | [Home](https://github.com/RooCodeInc/Roo-Code) · [Docs](https://docs.roocode.com/) |
-| `windsurf` | Windsurf | Markdown | `.md` | [Home](https://windsurf.com/editor) · [Docs](https://docs.windsurf.com/) |
+| Agent | Display Name | Format | Extension | Target Directory | Reference |
+|-------|--------------|--------|-----------|------------------|-----------|
+| `claude-code` | Claude Code | Markdown | `.md` | `.claude/commands` | [Home](https://docs.claude.com/) · [Docs](https://docs.claude.com/en/docs/claude-code/overview) |
+| `codex-cli` | Codex CLI | Markdown | `.md` | `.codex/prompts` | [Home](https://developers.openai.com/codex) · [Docs](https://developers.openai.com/codex/cli/) |
+| `cursor` | Cursor | Markdown | `.md` | `.cursor/commands` | [Home](https://cursor.com/) · [Docs](https://cursor.com/docs) |
+| `gemini-cli` | Gemini CLI | TOML | `.toml` | `.gemini/commands` | [Home](https://github.com/google-gemini/gemini-cli) · [Docs](https://geminicli.com/docs/) |
+| `vs-code` | VS Code | Markdown | `.prompt.md` | `.config/Code/User/prompts` | [Home](https://code.visualstudio.com/) · [Docs](https://code.visualstudio.com/docs) |
+| `windsurf` | Windsurf | Markdown | `.md` | `.codeium/windsurf/global_workflows` | [Home](https://windsurf.com/editor) · [Docs](https://docs.windsurf.com/) |
 
 ## Command File Formats
 
@@ -239,6 +264,10 @@ Prompts are markdown files with YAML frontmatter. Key fields:
 - **arguments**: List of command arguments
 - **enabled**: Whether the command is active (default: true)
 - **agent_overrides**: Agent-specific customization
+- **meta**: Metadata object (optional)
+  - **command_prefix**: Optional prefix to prepend to the command name (e.g., "sdd-" to create "sdd-manage-tasks")
+  - **category**: Category for the command
+  - **allowed-tools**: List of allowed tools
 - **body**: Markdown content for the command
 
 See `prompts/` directory for examples.
@@ -248,12 +277,12 @@ See `prompts/` directory for examples.
 Generated files are placed in agent-specific directories:
 
 ```text
-.claude/commands/        # Claude Code
-.cursor/commands/  # Cursor
-.gemini/commands/       # Gemini CLI
-.github/copilot/commands/  # GitHub Copilot
-.qwen/commands/        # Qwen Code
-.windsurfrules/commands/  # Windurf
+.claude/commands/              # Claude Code
+.config/Code/User/prompts/     # VS Code
+.codex/prompts/                # Codex CLI
+.cursor/commands/              # Cursor
+.gemini/commands/              # Gemini CLI
+.codeium/windsurf/global_workflows/  # Windsurf
 ```
 
 ## Examples
@@ -267,19 +296,18 @@ uv run sdd-generate-commands --list-agents
 **Output**:
 
 ```text
-Supported agents:
-  amazon-q-developer   - Amazon Q Developer
-  amp                  - Amp
-  auggie-cli           - Auggie CLI
-  claude-code          - Claude Code
-  cursor               - Cursor
-  gemini-cli           - Gemini CLI
-  github-copilot       - GitHub Copilot
-  kilo-code            - Kilo Code
-  opencode             - opencode
-  qwen-code            - Qwen Code
-  roo-code             - Roo Code
-  windsurf             - Windsurf
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                     Supported Agents                         ┃
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+┃ Agent Key    │ Display Name │ Target Path        │ Detected ┃
+┡━━━━━━━━━━━━━━╇══════════════╇════════════════════╇══════════┩
+│ claude-code  │ Claude Code  │ ~/.claude/commands │    ✓     │
+│ codex-cli    │ Codex CLI    │ ~/.codex/prompts   │    ✗     │
+│ cursor       │ Cursor       │ ~/.cursor/commands │    ✓     │
+│ gemini-cli   │ Gemini CLI   │ ~/.gemini/commands │    ✗     │
+│ vs-code      │ VS Code      │ ~/.config/Code/... │    ✗     │
+│ windsurf     │ Windsurf     │ ~/.codeium/...     │    ✗     │
+└──────────────┴──────────────┴────────────────────┴──────────┘
 ```
 
 ### Generate for Detected Agents
@@ -410,6 +438,44 @@ Files:
     Agent: Gemini CLI (gemini-cli)
 ```
 
+### Cleanup Generated Files
+
+```bash
+# Preview what would be deleted
+uv run sdd-generate-commands cleanup --dry-run
+```
+
+**Output**:
+
+```text
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                     Found 5 file(s) to delete                             ┃
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+┃ File Path                              │ Agent        │ Type            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇══════════════╇═════════════════┩
+│ .claude/commands/manage-tasks.md      │ Claude Code  │ command         │
+│ .claude/commands/generate-spec.md     │ Claude Code  │ command         │
+│ .cursor/commands/manage-tasks.md      │ Cursor       │ command         │
+│ .cursor/commands/manage-tasks.md.20250122-143059.bak │ Cursor │ backup │
+│ .gemini/commands/manage-tasks.toml    │ Gemini CLI   │ command         │
+└───────────────────────────────────────┴──────────────┴─────────────────┘
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                        Confirm Deletion                                   ┃
+┃  ⚠️  WARNING: This will permanently delete the files listed above.      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+Are you sure you want to proceed? (y/N)
+```
+
+After confirmation, the output shows:
+
+```text
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                           Cleanup Complete                                ┃
+┃  Files deleted: 5                                                         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 ## Configuration
 
 ### Target Path
@@ -421,13 +487,6 @@ uv run sdd-generate-commands --target-path /path/to/project
 ```
 
 **Note**: By default, commands are generated in your home directory. Use `--target-path` to specify a different location.
-
-### Environment Variables
-
-Configuration can be set via environment variables:
-
-- `SDD_PROMPTS_DIR`: Default prompts directory (default: `prompts`)
-- `SDD_BASE_PATH`: Default base path for output files
 
 ## Troubleshooting
 
