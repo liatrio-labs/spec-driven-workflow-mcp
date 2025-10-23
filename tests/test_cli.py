@@ -137,20 +137,23 @@ def test_cli_handles_missing_prompts_directory(tmp_path):
     prompts_dir = tmp_path / "nonexistent"
 
     runner = CliRunner()
-    result = runner.invoke(
-        app,
-        [
-            "generate",
-            "--prompts-dir",
-            str(prompts_dir),
-            "--agents",
-            "claude-code",
-            "--yes",
-        ],
-    )
 
-    assert result.exit_code == 3  # I/O error
-    assert "does not exist" in result.stdout.lower() or "error" in result.stdout.lower()
+    # Mock the fallback function to return None to test the error case
+    with patch("slash_commands.writer._find_package_prompts_dir", return_value=None):
+        result = runner.invoke(
+            app,
+            [
+                "generate",
+                "--prompts-dir",
+                str(prompts_dir),
+                "--agents",
+                "claude-code",
+                "--yes",
+            ],
+        )
+
+        assert result.exit_code == 3  # I/O error
+        assert "does not exist" in result.stdout.lower() or "error" in result.stdout.lower()
 
 
 def test_cli_shows_summary(mock_prompts_dir, tmp_path):

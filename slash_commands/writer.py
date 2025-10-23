@@ -20,6 +20,31 @@ from mcp_server.prompt_utils import MarkdownPrompt, load_markdown_prompt
 from slash_commands.config import AgentConfig, get_agent_config, list_agent_keys
 from slash_commands.generators import CommandGenerator
 
+
+def _find_package_prompts_dir() -> Path | None:
+    """Find the prompts directory in the installed package.
+
+    Returns:
+        Path to prompts directory if found, None otherwise
+    """
+    # The prompts directory is force-included at the package root level
+    # When installed, the structure is:
+    #   package_root/
+    #     __version__.py
+    #     prompts/
+    #     slash_commands/
+    #       writer.py
+    #
+    # So we need to go up from writer.py to the package root
+    package_root = Path(__file__).parent.parent
+    prompts_dir = package_root / "prompts"
+
+    if prompts_dir.exists():
+        return prompts_dir
+
+    return None
+
+
 OverwriteAction = Literal["cancel", "overwrite", "backup", "overwrite-all"]
 
 
@@ -133,11 +158,18 @@ class SlashCommandWriter:
 
     def _load_prompts(self) -> list[MarkdownPrompt]:
         """Load all prompts from the prompts directory."""
-        if not self.prompts_dir.exists():
-            raise ValueError(f"Prompts directory does not exist: {self.prompts_dir}")
+        # Check if the specified prompts directory exists
+        prompts_dir = self.prompts_dir
+        if not prompts_dir.exists():
+            # Try to find prompts in the installed package
+            package_prompts_dir = _find_package_prompts_dir()
+            if package_prompts_dir is not None:
+                prompts_dir = package_prompts_dir
+            else:
+                raise ValueError(f"Prompts directory does not exist: {self.prompts_dir}")
 
         prompts = []
-        for prompt_file in sorted(self.prompts_dir.glob("*.md")):
+        for prompt_file in sorted(prompts_dir.glob("*.md")):
             prompt = load_markdown_prompt(prompt_file)
             prompts.append(prompt)
 
