@@ -126,12 +126,14 @@ PR titles are validated automatically and must follow this format:
 **Valid types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
 **Examples:**
+
 - `feat(auth): add login button to navigation`
 - `fix: resolve race condition in async handler`
 - `docs: update installation instructions`
 - `chore: bump dependencies and run pre-commit`
 
 The description should:
+
 - Start with a lowercase letter
 - Be concise and descriptive
 - Use imperative mood (e.g., "add" not "added" or "adds")
