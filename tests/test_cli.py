@@ -303,10 +303,10 @@ def test_cli_interactive_agent_selection_selects_all(mock_prompts_dir, tmp_path)
             AgentConfig(
                 key="cursor",
                 display_name="Cursor",
-                command_dir=".cursor/rules",
+                command_dir=".cursor/commands",
                 command_format=CommandFormat.MARKDOWN,
-                command_file_extension=".mdc",
-                detection_dirs=(".cursor", ".cursorrules"),
+                command_file_extension=".md",
+                detection_dirs=(".cursor"),
             ),
         ]
 
@@ -325,7 +325,7 @@ def test_cli_interactive_agent_selection_selects_all(mock_prompts_dir, tmp_path)
         # Should generate files for both agents
         assert result.exit_code == 0
         assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()
-        assert (tmp_path / ".cursor" / "rules" / "test-prompt.mdc").exists()
+        assert (tmp_path / ".cursor" / "commands" / "test-prompt.md").exists()
 
 
 def test_cli_interactive_agent_selection_partial_selection(mock_prompts_dir, tmp_path):
@@ -364,7 +364,7 @@ def test_cli_interactive_agent_selection_partial_selection(mock_prompts_dir, tmp
         # Should only generate files for claude-code
         assert result.exit_code == 0
         assert (tmp_path / ".claude" / "commands" / "test-prompt.md").exists()
-        assert not (tmp_path / ".cursorrules" / "commands" / "test-prompt.md").exists()
+        assert not (tmp_path / ".cursor" / "commands" / "test-prompt.md").exists()
 
 
 def test_cli_interactive_agent_selection_cancels_on_no_selection(mock_prompts_dir, tmp_path):

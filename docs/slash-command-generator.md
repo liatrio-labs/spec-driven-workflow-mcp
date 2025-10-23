@@ -216,7 +216,7 @@ Generated files are placed in agent-specific directories:
 
 ```text
 .claude/commands/        # Claude Code
-.cursorrules/commands/  # Cursor
+.cursor/commands/  # Cursor
 .gemini/commands/       # Gemini CLI
 .github/copilot/commands/  # GitHub Copilot
 .qwen/commands/        # Qwen Code
@@ -272,11 +272,11 @@ Files:
     Agent: Claude Code (claude-code)
   - .claude/commands/generate-task-list-from-spec.md
     Agent: Claude Code (claude-code)
-  - .cursorrules/commands/manage-tasks.md
+  - .cursor/commands/manage-tasks.md
     Agent: Cursor (cursor)
-  - .cursorrules/commands/generate-spec.md
+  - .cursor/commands/generate-spec.md
     Agent: Cursor (cursor)
-  - .cursorrules/commands/generate-task-list-from-spec.md
+  - .cursor/commands/generate-task-list-from-spec.md
     Agent: Cursor (cursor)
 ```
 
@@ -303,11 +303,11 @@ Files:
     Agent: Claude Code (claude-code)
   - .claude/commands/generate-task-list-from-spec.md
     Agent: Claude Code (claude-code)
-  - .cursorrules/commands/manage-tasks.md
+  - .cursor/commands/manage-tasks.md
     Agent: Cursor (cursor)
-  - .cursorrules/commands/generate-spec.md
+  - .cursor/commands/generate-spec.md
     Agent: Cursor (cursor)
-  - .cursorrules/commands/generate-task-list-from-spec.md
+  - .cursor/commands/generate-task-list-from-spec.md
     Agent: Cursor (cursor)
 ```
 
@@ -337,7 +337,7 @@ Generation complete:
   Files written: 6
   Backups created: 2
     - .claude/commands/manage-tasks.md.20250122-143059.bak
-    - .cursorrules/commands/manage-tasks.md.20250122-143059.bak
+    - .cursor/commands/manage-tasks.md.20250122-143059.bak
 
 Files:
   - .claude/commands/manage-tasks.md

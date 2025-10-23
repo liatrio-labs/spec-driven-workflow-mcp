@@ -27,10 +27,10 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
     },
     "cursor": {
         "display_name": "Cursor",
-        "command_dir": ".cursor/rules",
+        "command_dir": ".cursor/commands",
         "command_format": CommandFormat.MARKDOWN,
-        "command_file_extension": ".mdc",
-        "detection_dirs": (".cursor", ".cursorrules"),
+        "command_file_extension": ".md",
+        "detection_dirs": (".cursor",),
     },
     "gemini-cli": {
         "display_name": "Gemini CLI",
@@ -106,7 +106,6 @@ def test_supported_agents_match_expected_configuration(
             assert getattr(agent, attribute) == value, f"Unexpected {attribute} for {key}"
         assert (
             agent.command_dir.endswith("/commands")
-            or agent.command_dir.endswith("/rules")
             or agent.command_dir.endswith("/prompts")
             or agent.command_dir.endswith("/global_workflows")
             or agent.command_dir.endswith("/command")

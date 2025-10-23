@@ -45,10 +45,10 @@ _SUPPORTED_AGENT_DATA: tuple[tuple[str, str, str, CommandFormat, str, tuple[str,
     (
         "cursor",
         "Cursor",
-        ".cursor/rules",
+        ".cursor/commands",
         CommandFormat.MARKDOWN,
-        ".mdc",
-        (".cursor", ".cursorrules"),
+        ".md",
+        (".cursor",),
     ),
     ("gemini-cli", "Gemini CLI", ".gemini/commands", CommandFormat.TOML, ".toml", (".gemini",)),
     (
