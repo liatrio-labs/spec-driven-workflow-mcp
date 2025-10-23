@@ -7,14 +7,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_server.prompt_utils import MarkdownPrompt
 from slash_commands.config import CommandFormat
 from slash_commands.writer import SlashCommandWriter
 
 
 @pytest.fixture
 def mock_prompt_load(tmp_path):
-    """Create a mock prompt loader that returns sample prompts."""
+    """Create a prompts directory with a sample prompt file."""
     prompts_dir = tmp_path / "prompts"
     prompts_dir.mkdir()
 
@@ -35,27 +34,12 @@ This is a test prompt.
 """
     )
 
-    def load_prompts(dir_path: Path):
-        return [
-            MarkdownPrompt(
-                path=prompt_file,
-                name="test-prompt",
-                description="Test prompt for writer tests",
-                tags={"testing"},
-                meta=None,
-                enabled=True,
-                arguments=[],
-                body="# Test Prompt\n\nThis is a test prompt.",
-                agent_overrides=None,
-            )
-        ]
-
-    return prompts_dir, load_prompts
+    return prompts_dir
 
 
-def test_writer_generates_command_for_single_agent(mock_prompt_load, tmp_path):
+def test_writer_generates_command_for_single_agent(mock_prompt_load: Path, tmp_path):
     """Test that writer generates command file for a single agent."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -78,9 +62,9 @@ def test_writer_generates_command_for_single_agent(mock_prompt_load, tmp_path):
     assert result["files"][0]["agent"] == "claude-code"
 
 
-def test_writer_generates_commands_for_multiple_agents(mock_prompt_load, tmp_path):
+def test_writer_generates_commands_for_multiple_agents(mock_prompt_load: Path, tmp_path):
     """Test that writer generates command files for multiple agents."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -103,9 +87,9 @@ def test_writer_generates_commands_for_multiple_agents(mock_prompt_load, tmp_pat
     assert len(result["files"]) == 2
 
 
-def test_writer_respects_dry_run_flag(mock_prompt_load, tmp_path):
+def test_writer_respects_dry_run_flag(mock_prompt_load: Path, tmp_path):
     """Test that writer doesn't create files when dry_run is True."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -126,9 +110,9 @@ def test_writer_respects_dry_run_flag(mock_prompt_load, tmp_path):
     assert result["files"][0]["path"] == str(expected_path)
 
 
-def test_writer_creates_parent_directories(mock_prompt_load, tmp_path):
+def test_writer_creates_parent_directories(mock_prompt_load: Path, tmp_path):
     """Test that writer creates parent directories if they don't exist."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -145,9 +129,9 @@ def test_writer_creates_parent_directories(mock_prompt_load, tmp_path):
     assert expected_dir.is_dir()
 
 
-def test_writer_calls_generator_with_correct_agent(mock_prompt_load, tmp_path):
+def test_writer_calls_generator_with_correct_agent(mock_prompt_load: Path, tmp_path):
     """Test that writer calls generator with correct agent configuration."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     with patch("slash_commands.writer.CommandGenerator") as mock_generator_class:
         mock_generator = MagicMock()
@@ -168,9 +152,9 @@ def test_writer_calls_generator_with_correct_agent(mock_prompt_load, tmp_path):
         assert mock_generator.generate.called
 
 
-def test_writer_loads_prompts_from_directory(mock_prompt_load, tmp_path):
+def test_writer_loads_prompts_from_directory(mock_prompt_load: Path, tmp_path):
     """Test that writer loads prompts from the specified directory."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -202,9 +186,9 @@ def test_writer_handles_missing_prompts_directory(tmp_path):
         writer.generate()
 
 
-def test_writer_handles_invalid_agent_key(mock_prompt_load, tmp_path):
+def test_writer_handles_invalid_agent_key(mock_prompt_load: Path, tmp_path):
     """Test that writer handles invalid agent keys gracefully."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     writer = SlashCommandWriter(
         prompts_dir=prompts_dir,
@@ -217,9 +201,9 @@ def test_writer_handles_invalid_agent_key(mock_prompt_load, tmp_path):
         writer.generate()
 
 
-def test_writer_detects_existing_files(mock_prompt_load, tmp_path):
+def test_writer_detects_existing_files(mock_prompt_load: Path, tmp_path):
     """Test that writer detects existing command files."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     # Create an existing file
     output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
@@ -244,9 +228,9 @@ def test_writer_detects_existing_files(mock_prompt_load, tmp_path):
         assert "Test Prompt" in output_path.read_text()
 
 
-def test_writer_cancels_on_existing_files(mock_prompt_load, tmp_path):
+def test_writer_cancels_on_existing_files(mock_prompt_load: Path, tmp_path):
     """Test that writer cancels when user chooses not to overwrite."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     # Create an existing file
     output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
@@ -270,9 +254,9 @@ def test_writer_cancels_on_existing_files(mock_prompt_load, tmp_path):
         assert output_path.read_text() == original_content
 
 
-def test_writer_backs_up_existing_files(mock_prompt_load, tmp_path):
+def test_writer_backs_up_existing_files(mock_prompt_load: Path, tmp_path):
     """Test that writer creates backup files when requested."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     # Create an existing file
     output_path = tmp_path / ".claude" / "commands" / "test-prompt.md"
@@ -302,9 +286,9 @@ def test_writer_backs_up_existing_files(mock_prompt_load, tmp_path):
         assert "Test Prompt" in output_path.read_text()
 
 
-def test_writer_applies_overwrite_globally(mock_prompt_load, tmp_path):
+def test_writer_applies_overwrite_globally(mock_prompt_load: Path, tmp_path):
     """Test that writer can apply overwrite decision globally."""
-    prompts_dir, _load_prompts = mock_prompt_load
+    prompts_dir = mock_prompt_load
 
     # Create multiple existing files
     output_path1 = tmp_path / ".claude" / "commands" / "test-prompt.md"

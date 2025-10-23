@@ -55,6 +55,8 @@ This means:
 - ✅ Guaranteed compatibility with your Python installation
 - ✅ Faster import times
 
+**Note**: While `tomllib` handles parsing TOML files (reading), the project uses `tomli-w` for writing TOML files (generating command files for Gemini CLI). Both are lightweight dependencies and `tomli-w` is required for generating TOML command files.
+
 ### Running Commands
 
 After installation, use `uv run` to execute the command:
@@ -223,7 +225,7 @@ $ARGUMENTS
 
 ### TOML Format
 
-TOML-based agents (Gemini CLI, Qwen Code) use TOML syntax:
+TOML-based agents (Gemini CLI) use TOML syntax:
 
 ```toml
 [command]

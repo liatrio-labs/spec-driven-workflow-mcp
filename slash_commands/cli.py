@@ -218,9 +218,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         print("\nTo fix this:", file=sys.stderr)
         print("  - Use --list-agents to see all supported agents", file=sys.stderr)
         print("  - Ensure agent keys are spelled correctly", file=sys.stderr)
-        print(
-            "  - Valid agent keys include: claude-code, cursor, gemini-cli, etc.", file=sys.stderr
-        )
+        print(f"  - Valid agent keys: {', '.join(list_agent_keys())}", file=sys.stderr)
         sys.exit(2)  # Validation error (invalid agent key)
     except PermissionError as e:
         print(f"Error: Permission denied: {e}", file=sys.stderr)

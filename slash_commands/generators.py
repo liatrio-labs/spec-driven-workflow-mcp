@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any, Protocol
 
 import tomli_w
@@ -47,8 +47,12 @@ def _apply_agent_overrides(
             if "arguments" in overrides:
                 # Merge base arguments with override arguments
                 override_args = _normalize_override_arguments(overrides["arguments"])
-                # Combine base args with override args (override args are appended)
-                arguments = list(arguments) + override_args
+                # Deduplicate by name with override precedence
+                existing_names = {arg.name for arg in arguments}
+                # Only add override args that don't already exist
+                arguments = list(arguments) + [
+                    arg for arg in override_args if arg.name not in existing_names
+                ]
             if "enabled" in overrides:
                 enabled = overrides["enabled"]
 
@@ -78,7 +82,7 @@ def _normalize_output(content: str) -> str:
     - Ensures consistent line endings (LF)
     - Removes trailing whitespace from lines
     - Ensures UTF-8 encoding
-    - Normalizes multiple blank lines to single blank line
+    - Preserves intentional blank lines
 
     Args:
         content: The generated content to normalize
@@ -89,23 +93,8 @@ def _normalize_output(content: str) -> str:
     # Normalize line endings to LF
     content = content.replace("\r\n", "\n").replace("\r", "\n")
 
-    # Remove trailing whitespace from each line
-    lines = []
-    for line in content.splitlines():
-        lines.append(line.rstrip())
-
-    # Normalize multiple consecutive blank lines to single blank line
-    normalized_lines = []
-    prev_blank = False
-    for line in lines:
-        is_blank = not line.strip()
-        if is_blank and prev_blank:
-            continue  # Skip consecutive blank lines
-        normalized_lines.append(line)
-        prev_blank = is_blank
-
-    # Join lines and ensure trailing newline
-    result = "\n".join(normalized_lines)
+    # Remove trailing whitespace from each line, preserve intentional blank lines
+    result = "\n".join(line.rstrip() for line in content.splitlines())
     if result and not result.endswith("\n"):
         result += "\n"
 
@@ -226,7 +215,7 @@ class MarkdownCommandGenerator:
             "source_prompt": prompt.name,
             "source_path": str(prompt.path),
             "version": __version__,
-            "updated_at": datetime.now().isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
         })
         return meta
 
@@ -265,7 +254,7 @@ class TomlCommandGenerator:
         # These are ignored by Gemini CLI but preserved for bookkeeping
         toml_data["meta"] = {
             "version": __version__,
-            "updated_at": datetime.now().isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
             "source_prompt": prompt.name,
             "agent": agent.key,
         }

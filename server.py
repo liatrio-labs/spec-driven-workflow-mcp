@@ -4,7 +4,7 @@ This is the main entrypoint for running the FastMCP server.
 The 'mcp' instance is automatically discovered by the FastMCP CLI.
 """
 
-import sys
+import argparse
 
 from mcp_server import create_app
 
@@ -22,25 +22,24 @@ def main() -> None:
     It runs the MCP server using stdio transport by default, or http transport
     if --transport http is passed as an argument.
     """
-    # Parse command line arguments
-    transport = "stdio"
-    port = 8000
-    args = sys.argv[1:]
-
-    # Simple argument parsing for transport and port
-    if "--transport" in args:
-        idx = args.index("--transport")
-        if idx + 1 < len(args):
-            transport = args[idx + 1]
-
-    if "--port" in args:
-        idx = args.index("--port")
-        if idx + 1 < len(args):
-            port = int(args[idx + 1])
+    parser = argparse.ArgumentParser(description="Run the MCP server")
+    parser.add_argument(
+        "--transport",
+        choices=["stdio", "http"],
+        default="stdio",
+        help="Transport type (default: stdio)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="HTTP server port (default: 8000)",
+    )
+    args = parser.parse_args()
 
     # Run the server with the specified transport
-    if transport == "http":
-        mcp.run(transport="http", port=port)
+    if args.transport == "http":
+        mcp.run(transport="http", port=args.port)
     else:
         mcp.run()
 

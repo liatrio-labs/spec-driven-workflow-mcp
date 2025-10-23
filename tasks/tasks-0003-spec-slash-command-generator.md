@@ -25,11 +25,11 @@
 ## Tasks
 
 - [x] 1.0 Establish slash command configuration and agent detection foundations
-  - Demo Criteria: "Config data models enumerate all 14 agents with accurate directories/formats and detection flags configured tools under pytest validation."
+  - Demo Criteria: "Config data models enumerate all 6 agents with accurate directories/formats and detection flags configured tools under pytest validation."
   - Proof Artifact(s): "CLI: `pytest tests/test_config.py tests/test_detection.py -v`; Log: detection fixture output listing detected agents."
   - [x] 1.1 Author failing tests in `tests/test_config.py` that assert required fields and format values for every agent entry.
   - [x] 1.2 Implement `CommandFormat` enum, `AgentConfig` dataclass, and helper accessors in `slash_commands/config.py` to satisfy the tests.
-  - [x] 1.3 Populate `SUPPORTED_AGENTS` with all 14 tools, including directory paths, file extensions, and format metadata.
+  - [x] 1.3 Populate `SUPPORTED_AGENTS` with all 6 tools, including directory paths, file extensions, and format metadata.
   - [x] 1.4 Draft failing detection tests in `tests/test_detection.py` covering positive, negative, and mixed directory scenarios using `tmp_path` fixtures.
   - [x] 1.5 Implement `detect_agents` (and supporting utilities) in `slash_commands/detection.py` so detection tests pass with deterministic ordering.
 
@@ -42,7 +42,7 @@
   - [x] 2.4 Implement `CommandGenerator` base class plus Markdown and TOML subclasses in `slash_commands/generators.py`, including helper factory selection logic.
   - [x] 2.5 Refine generators to normalize whitespace and encoding, updating tests to use snapshot-style comparisons for regression safety.
 
-- [x] 3.0 Build slash command writer orchestrating multi-agent generation and dry runs
+- [x] 3.0 Build slash command writer orchestrating multi‑agent generation and dry runs
   - Demo Criteria: "Writer loads prompts, generates commands for single and multi-agent selections, ensures directories exist, and reports dry-run results without writes."
   - Proof Artifact(s): "CLI: `pytest tests/test_writer.py -v`; Log: dry-run test output showing file paths and counts."
   - [x] 3.1 Introduce failing writer tests that mock prompt loading and assert correct call sequences for single and multi-agent runs.

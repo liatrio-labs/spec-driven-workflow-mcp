@@ -62,8 +62,8 @@ See `docs/operations.md` for more details on transports and configuration.
 # Run tests with coverage report
 uv run pytest
 
-# View HTML coverage report (opens in browser)
-open htmlcov/index.html
+# View HTML coverage report (opens in default browser)
+uv run python -m webbrowser htmlcov/index.html
 ```
 
 The test suite generates both terminal and HTML coverage reports showing which code paths are tested.

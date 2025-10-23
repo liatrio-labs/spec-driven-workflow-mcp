@@ -52,6 +52,7 @@ def test_yaml_frontmatter_parsing(sample_prompt):
     # Verify frontmatter is a dict and contains required fields
     assert isinstance(frontmatter, dict)
     assert "name" in frontmatter
+    assert frontmatter["name"].startswith("sdd-"), "Expected command name to include prefix"
     assert "description" in frontmatter
     assert "tags" in frontmatter
     assert "enabled" in frontmatter
@@ -179,6 +180,13 @@ def test_generated_content_is_valid_before_writing(sample_prompt):
     toml_data = tomllib.loads(toml_content)
     assert isinstance(toml_data, dict)
     assert "prompt" in toml_data
+
+    # Verify TOML meta includes updated_at
+    assert "meta" in toml_data
+    assert "updated_at" in toml_data["meta"]
+    updated_at = toml_data["meta"]["updated_at"]
+    assert isinstance(updated_at, str), "Expected updated_at to be a string"
+    # Note: datetime formatting with timezone ensures ISO-8601 compliance
 
     # Both should be valid before any file writing occurs
     assert len(markdown_content) > 0

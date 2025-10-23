@@ -34,7 +34,8 @@ def test_detect_agents_identifies_configured_directories(
     detected = detect_agents(tmp_path)
     detected_keys = [agent.key for agent in detected]
 
-    assert detected_keys == sorted(agent_keys)
+    expected_order = [a.key for a in SUPPORTED_AGENTS if a.key in agent_keys]
+    assert detected_keys == expected_order
     for key in detected_keys:
         directories = {tmp_path / path for path in supported_agents_by_key[key].detection_dirs}
         assert all(directory.exists() for directory in directories)

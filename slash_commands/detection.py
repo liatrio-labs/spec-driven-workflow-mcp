@@ -35,7 +35,7 @@ def iter_detection_directories(agent: AgentConfig, base_path: Path | str) -> Ite
     """Yield absolute paths for the agent's detection directories."""
 
     base = Path(base_path)
-    for directory in agent.detection_dirs:
+    for directory in agent.iter_detection_dirs():
         yield base / Path(directory)
 
 

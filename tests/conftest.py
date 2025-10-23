@@ -136,7 +136,8 @@ def sample_prompt(tmp_path) -> MarkdownPrompt:
 
             Use the provided instructions to perform the desired action.
             """
-        )
+        ),
+        encoding="utf-8",
     )
 
     return load_markdown_prompt(prompt_path)
@@ -178,7 +179,8 @@ def prompt_with_placeholder_body(tmp_path) -> MarkdownPrompt:
 
             and ensure `{{args}}` are handled correctly.
             """
-        )
+        ),
+        encoding="utf-8",
     )
 
     return load_markdown_prompt(prompt_path)
