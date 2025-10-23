@@ -32,27 +32,27 @@
   - [x] 2.3 Update SlashCommandWriter.__init__ to accept the flag parameter
   - [x] 2.4 Update error handling in CLI to show different messages for default vs explicit paths
 
-- [ ] 3.0 Update `_load_prompts()` to handle default vs explicit paths differently
+- [x] 3.0 Update `_load_prompts()` to handle default vs explicit paths differently
   - Demo Criteria: "Default path falls back to bundled prompts; explicit path fails immediately without fallback"
   - Proof Artifact(s): "Test: `test_writer_default_path_fallback` and `test_writer_explicit_path_no_fallback` pass"
-  - [ ] 3.1 Modify `_load_prompts()` to check the flag for explicit vs default
-  - [ ] 3.2 Only attempt fallback to bundled prompts when using default path
-  - [ ] 3.3 Raise clear error for explicit non-existent paths without fallback
-  - [ ] 3.4 Write tests for both scenarios (default with fallback, explicit without fallback)
+  - [x] 3.1 Modify `_load_prompts()` to check the flag for explicit vs default
+  - [x] 3.2 Only attempt fallback to bundled prompts when using default path
+  - [x] 3.3 Raise clear error for explicit non-existent paths without fallback
+  - [x] 3.4 Write tests for both scenarios (default with fallback, explicit without fallback)
 
-- [ ] 4.0 Improve error messages for better user guidance
+- [x] 4.0 Improve error messages for better user guidance
   - Demo Criteria: "Error messages clearly distinguish scenarios and provide actionable guidance"
   - Proof Artifact(s): "CLI output showing clear, distinct error messages for each failure scenario"
-  - [ ] 4.1 Create different error messages for "default path not found" vs "explicit path not found"
-  - [ ] 4.2 Include information about attempted fallback in error messages
-  - [ ] 4.3 Show the actual paths that were checked
-  - [ ] 4.4 Update existing error handling in CLI to use new messages
+  - [x] 4.1 Create different error messages for "default path not found" vs "explicit path not found"
+  - [x] 4.2 Include information about attempted fallback in error messages
+  - [x] 4.3 Show the actual paths that were checked
+  - [x] 4.4 Update existing error handling in CLI to use new messages
 
-- [ ] 5.0 Ensure backward compatibility and verify existing tests pass
+- [~] 5.0 Ensure backward compatibility and verify existing tests pass
   - Demo Criteria: "All existing tests pass; development workflow still works; custom prompts paths still work"
   - Proof Artifact(s): "Test suite: All tests pass; Manual: Run from project root works; Manual: Custom --prompts-dir works"
-  - [ ] 5.1 Run full test suite to ensure no regressions
-  - [ ] 5.2 Update or remove tests that expected old behavior
-  - [ ] 5.3 Test development workflow (running from project root with local prompts)
-  - [ ] 5.4 Test custom prompts directory still works when explicitly specified
+  - [x] 5.1 Run full test suite to ensure no regressions
+  - [x] 5.2 Update or remove tests that expected old behavior
+  - [x] 5.3 Test development workflow (running from project root with local prompts)
+  - [x] 5.4 Test custom prompts directory still works when explicitly specified
   - [ ] 5.5 Manual test with uvx installation from GitHub to verify remote install works
