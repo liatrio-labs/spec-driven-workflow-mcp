@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import re
 import shutil
+
+# tomllib is part of the Python standard library since Python 3.11
+# Project requires Python 3.12+ for compatibility with all dependencies
 import tomllib
 from datetime import datetime
 from pathlib import Path

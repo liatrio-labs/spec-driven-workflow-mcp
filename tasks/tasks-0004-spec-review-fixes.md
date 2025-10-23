@@ -23,7 +23,7 @@ Based on: `0004-spec-review-fixes.md`
 
 ## Tasks
 
-- [~] 1.0 Fix Package Discovery Configuration
+- [x] 1.0 Fix Package Discovery Configuration
   - Demo Criteria: "Run `uv pip install -e .` successfully; execute `uv run sdd-generate-commands --list-agents` without import errors; verify installed package includes `slash_commands` directory"
   - Proof Artifact(s): "Updated `pyproject.toml` with packages configuration; terminal output showing successful installation; terminal output showing successful CLI execution"
   - [x] 1.1 Update `pyproject.toml` line 39 to include `"slash_commands"` in the packages list: `packages = ["mcp_server", "prompts", "slash_commands"]`
@@ -31,13 +31,13 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 1.3 Execute `uv run sdd-generate-commands --list-agents` to verify CLI works without import errors
   - [x] 1.4 Verify that the installed package includes the `slash_commands` directory using: `python -c "import slash_commands; print(slash_commands.__file__)"`
 
-- [ ] 2.0 Document TOML Reading Approach
+- [~] 2.0 Document TOML Reading Approach
   - Demo Criteria: "Verify `tomllib` import works in `slash_commands/writer.py`; documentation clearly states Python 3.12+ requirement; no runtime errors from TOML reading"
   - Proof Artifact(s): "Documentation update clarifying Python version requirement; terminal output showing successful TOML parsing"
-  - [ ] 2.1 Add note to `docs/slash-command-generator.md` documentation section clarifying that Python 3.12+ is required and `tomllib` is available in standard library
-  - [ ] 2.2 Add a comment in `slash_commands/writer.py` near the `tomllib` import explaining it's from stdlib (Python 3.12+)
-  - [ ] 2.3 Verify `tomllib` import works by running `python -c "import tomllib; print('OK')"` in Python 3.12+
-  - [ ] 2.4 Test TOML reading by running existing tests: `pytest tests/test_writer.py -v`
+  - [x] 2.1 Add note to `docs/slash-command-generator.md` documentation section clarifying that Python 3.12+ is required and `tomllib` is available in standard library
+  - [x] 2.2 Add a comment in `slash_commands/writer.py` near the `tomllib` import explaining it's from stdlib (Python 3.12+)
+  - [x] 2.3 Verify `tomllib` import works by running `python -c "import tomllib; print('OK')"` in Python 3.12+
+  - [x] 2.4 Test TOML reading by running existing tests: `pytest tests/test_writer.py -v`
 
 - [ ] 3.0 Add Generated Content Validation Tests
   - Demo Criteria: "New tests validate TOML round-trip parsing; new tests validate YAML parsing; tests catch invalid content before file writing"

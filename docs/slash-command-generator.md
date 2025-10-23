@@ -19,7 +19,21 @@ The CLI is installed as part of the project dependencies:
 uv sync
 ```
 
-## Usage
+## Python Version Requirements
+
+This project requires **Python 3.12 or higher**. The `tomllib` module is used for parsing TOML files and is part of the Python standard library starting with Python 3.11, but Python 3.12+ is required to ensure compatibility with all project dependencies.
+
+To verify your Python version:
+
+```bash
+python --version
+```
+
+The `tomllib` module provides TOML parsing without requiring additional dependencies:
+
+```python
+import tomllib  # Available in Python 3.11+ standard library
+```
 
 ### Running Commands
 
