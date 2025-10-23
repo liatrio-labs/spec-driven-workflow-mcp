@@ -193,7 +193,7 @@ The Claude Code feature-dev plugin implements a battle-tested 7-phase workflow t
 
 ## Our Current MCP Workflow
 
-### Prompt 1: generate-codebase-context (NEW)
+### Prompt 1: generate-context (NEW)
 
 **Goal:** Analyze codebase architecture, patterns, and conventions
 
@@ -474,7 +474,7 @@ The AI should adapt its questions based on the prompt...
 - Clarify if unclear
 
 ## Phase 2: Codebase Context Review
-- **PREREQUISITE:** Must have run generate-codebase-context first
+- **PREREQUISITE:** Must have run generate-context first
 - Read the analysis document
 - Review key files identified in analysis
 - Understand existing patterns
@@ -570,7 +570,7 @@ If user says "whatever you think is best", provide recommendation and get explic
 
 ### 🎯 Phase 2: Important Enhancements
 
-#### 4. Enhance `generate-codebase-context` to be More Actionable
+#### 4. Enhance `generate-context` to be More Actionable
 
 **Current State:** Comprehensive but documentation-focused
 
@@ -683,7 +683,7 @@ Create `docs/workflow.md`:
 
 ## Complete Flow
 
-1. **Analyze Codebase** - Run `generate-codebase-context`
+1. **Analyze Codebase** - Run `generate-context`
    - Output: Analysis document + key files list
 
 2. **Create Specification** - Run `generate-spec`
@@ -717,7 +717,7 @@ Create `docs/workflow.md`:
 │                    SPEC-DRIVEN DEVELOPMENT                  │
 └─────────────────────────────────────────────────────────────┘
 
-1. generate-codebase-context
+1. generate-context
    └─> Output: /tasks/0001-analysis-[name].md
        └─> Key files list (5-10 essential files)
            └─> Execution path traces
@@ -783,7 +783,7 @@ Create `docs/workflow.md`:
 
 ### Sprint 2: Important Improvements (Week 2)
 
-- [ ] Enhance `generate-codebase-context` with key files output
+- [ ] Enhance `generate-context` with key files output
 - [ ] Add execution path tracing to context analysis
 - [ ] Update `generate-task-list-from-spec` to reference architecture
 - [ ] Add explicit checkpoints to all prompts

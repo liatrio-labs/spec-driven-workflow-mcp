@@ -27,7 +27,7 @@ This is **critical** - it separates:
 
 **Application to Our Prompts:**
 
-- `generate-codebase-context` should focus on WHAT and HOW (from code)
+- `generate-context` should focus on WHAT and HOW (from code)
 - Must have explicit phase to ask user for WHY and goals
 - Cannot infer intent from code alone
 
@@ -200,7 +200,7 @@ This is **critical** - it separates:
 
 | Aspect | Our Current Approach | Research Best Practice | Gap |
 |--------|---------------------|------------------------|-----|
-| **Code vs. Docs Separation** | Single `generate-codebase-context` prompt | Separate Code Analyst + Information Analyst | Not separated - conflates WHAT/HOW with WHY |
+| **Code vs. Docs Separation** | Single `generate-context` prompt | Separate Code Analyst + Information Analyst | Not separated - conflates WHAT/HOW with WHY |
 | **Evidence Citations** | General descriptions | Explicit file:line references + timestamps | Weak evidence trail |
 | **Confidence Levels** | Implicit | Explicit (High/Medium/Low with gaps) | No confidence assessment |
 | **Documentation Audit** | Not included | Explicit phase: scan + categorize + date-check | Missing documentation review |
@@ -212,7 +212,7 @@ This is **critical** - it separates:
 
 ## Actionable Recommendations
 
-### 🔴 HIGH PRIORITY: Restructure `generate-codebase-context`
+### 🔴 HIGH PRIORITY: Restructure `generate-context`
 
 **Current State:** Single monolithic prompt trying to do everything
 
@@ -306,7 +306,7 @@ Every finding MUST include evidence:
 
 ### 🔴 HIGH PRIORITY: Add Confidence Assessment
 
-Add to `generate-codebase-context` and `review-implementation`:
+Add to `generate-context` and `review-implementation`:
 
 ```markdown
 ## Confidence Assessment
@@ -523,7 +523,7 @@ Ask targeted questions about:
 
 ## Specific Prompt Enhancements
 
-### For `generate-codebase-context`
+### For `generate-context`
 
 **Add from code-analyst.md:**
 
@@ -643,7 +643,7 @@ Ask targeted questions about:
 - [ ] Add documentation audit phase
 - [ ] Test on sample codebase
 
-**Deliverable:** Updated `generate-codebase-context` with evidence citations and confidence levels
+**Deliverable:** Updated `generate-context` with evidence citations and confidence levels
 
 ---
 

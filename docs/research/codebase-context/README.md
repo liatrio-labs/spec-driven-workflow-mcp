@@ -117,7 +117,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - ❌ Specific versions (too volatile)
 - ❌ Testing infrastructure details
 
-**Applied To:** `generate-codebase-context` Phase 3 (Code Analysis)
+**Applied To:** `generate-context` Phase 3 (Code Analysis)
 
 ---
 
@@ -152,7 +152,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - Distinguish explicit vs implicit
 - Focus on rationale (unique value)
 
-**Applied To:** `generate-codebase-context` Phase 2 (Documentation Audit)
+**Applied To:** `generate-context` Phase 2 (Documentation Audit)
 
 ---
 
@@ -183,7 +183,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 - SYSTEM-OVERVIEW.md
 - README.md updates
 
-**Applied To:** Overall `generate-codebase-context` structure and phasing
+**Applied To:** Overall `generate-context` structure and phasing
 
 ---
 
@@ -191,7 +191,7 @@ This directory contains research and analysis conducted to improve our MCP spec-
 
 ### Phase 1 (Completed) ✅
 
-**Enhanced `generate-codebase-context` Prompt:**
+**Enhanced `generate-context` Prompt:**
 
 From **code-analyst.md:**
 

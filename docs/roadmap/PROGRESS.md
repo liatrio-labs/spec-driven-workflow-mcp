@@ -48,13 +48,14 @@ This document tracks the implementation of improvements to our MCP spec-driven d
 
 #### 2. Renamed Prompt ✅
 
-- ✅ Renamed `reverse-engineer-codebase` → `generate-codebase-context`
+- ✅ Renamed `reverse-engineer-codebase` → `generate-context`
   - Better reflects purpose: generating context for development
   - Aligns with workflow terminology
+  - Shorter, more concise name
 
-#### 3. Enhanced `generate-codebase-context` Prompt ✅
+#### 3. Enhanced `generate-context` Prompt ✅
 
-**File:** `prompts/generate-codebase-context.md`
+**File:** `prompts/generate-context.md`
 **Lines:** 877 lines (up from ~500)
 **Status:** Complete and ready for use
 
@@ -150,7 +151,7 @@ Pre-completion verification:
 ### Files Added/Modified
 
 ```text
-✅ prompts/generate-codebase-context.md (enhanced)
+✅ prompts/generate-context.md (enhanced)
 ✅ docs/research/reverse-engineer-prompts/claude-code-feature-dev-comparison.md (new)
 ✅ docs/research/reverse-engineer-prompts/research-synthesis.md (new)
 ✅ docs/research/reverse-engineer-prompts/code-analyst.md (cataloged)
@@ -162,9 +163,9 @@ Pre-completion verification:
 ### Commits
 
 1. `feat: add reverse-engineer-codebase prompt for contextual analysis`
-2. `refactor: rename reverse-engineer-codebase to generate-codebase-context`
+2. `refactor: rename reverse-engineer-codebase to generate-context`
 3. `docs: add comprehensive research analysis for prompt improvements`
-4. `feat: enhance generate-codebase-context with evidence citations and confidence levels`
+4. `feat: enhance generate-context with evidence citations and confidence levels`
 
 ### Ready for Review
 
@@ -191,7 +192,7 @@ The following improvements are **documented and ready to implement** but will be
 **Changes Needed:**
 
 1. **Add Phase 2A: Context Review (NEW)**
-   - Prerequisite: Must have run `generate-codebase-context`
+   - Prerequisite: Must have run `generate-context`
    - Read analysis document
    - Review essential files identified
    - Understand existing patterns
@@ -426,8 +427,8 @@ The following improvements are **documented and ready to implement** but will be
 
 ## Complete Flow
 
-1. **Analyze Codebase** - `generate-codebase-context`
-   - Output: `/tasks/[n]-context-[name].md`
+1. **Analyze Codebase** - `generate-context`
+   - Output: `/docs/00[n]-SYSTEM.md`
    - Evidence-based analysis with citations
    - Confidence levels for all findings
    - Essential files list + execution traces
@@ -527,7 +528,7 @@ The following improvements are **documented and ready to implement** but will be
 **Deliverables:**
 
 - ✅ Research analysis and synthesis
-- ✅ Enhanced `generate-codebase-context` prompt
+- ✅ Enhanced `generate-context` prompt
 - ✅ Progress documentation
 
 **Merge Criteria:**
