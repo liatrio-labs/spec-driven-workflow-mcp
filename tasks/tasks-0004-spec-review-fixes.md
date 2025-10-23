@@ -31,7 +31,7 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 1.3 Execute `uv run sdd-generate-commands --list-agents` to verify CLI works without import errors
   - [x] 1.4 Verify that the installed package includes the `slash_commands` directory using: `python -c "import slash_commands; print(slash_commands.__file__)"`
 
-- [~] 2.0 Document TOML Reading Approach
+- [x] 2.0 Document TOML Reading Approach
   - Demo Criteria: "Verify `tomllib` import works in `slash_commands/writer.py`; documentation clearly states Python 3.12+ requirement; no runtime errors from TOML reading"
   - Proof Artifact(s): "Documentation update clarifying Python version requirement; terminal output showing successful TOML parsing"
   - [x] 2.1 Add note to `docs/slash-command-generator.md` documentation section clarifying that Python 3.12+ is required and `tomllib` is available in standard library
@@ -39,16 +39,16 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 2.3 Verify `tomllib` import works by running `python -c "import tomllib; print('OK')"` in Python 3.12+
   - [x] 2.4 Test TOML reading by running existing tests: `pytest tests/test_writer.py -v`
 
-- [ ] 3.0 Add Generated Content Validation Tests
+- [x] 3.0 Add Generated Content Validation Tests
   - Demo Criteria: "New tests validate TOML round-trip parsing; new tests validate YAML parsing; tests catch invalid content before file writing"
   - Proof Artifact(s): "Test file `tests/test_validation.py` with validation tests; pytest output showing all validation tests passing; example of test catching invalid content"
-  - [ ] 3.1 Create new test file `tests/test_validation.py` for validation tests
-  - [ ] 3.2 Add test function `test_toml_round_trip_parsing()` that generates TOML content, parses it back, and verifies equivalence
-  - [ ] 3.3 Add test function `test_yaml_frontmatter_parsing()` that validates YAML frontmatter is parseable and structurally correct
-  - [ ] 3.4 Add test function `test_invalid_toml_content_caught()` that attempts to generate invalid TOML and verifies it's caught
-  - [ ] 3.5 Add test function `test_invalid_yaml_content_caught()` that attempts to generate invalid YAML and verifies it's caught
-  - [ ] 3.6 Run tests with `pytest tests/test_validation.py -v` to verify all validation tests pass
-  - [ ] 3.7 Run full test suite with `pytest` to ensure no regressions
+  - [x] 3.1 Create new test file `tests/test_validation.py` for validation tests
+  - [x] 3.2 Add test function `test_toml_round_trip_parsing()` that generates TOML content, parses it back, and verifies equivalence
+  - [x] 3.3 Add test function `test_yaml_frontmatter_parsing()` that validates YAML frontmatter is parseable and structurally correct
+  - [x] 3.4 Add test function `test_invalid_toml_content_caught()` that attempts to generate invalid TOML and verifies it's caught
+  - [x] 3.5 Add test function `test_invalid_yaml_content_caught()` that attempts to generate invalid YAML and verifies it's caught
+  - [x] 3.6 Run tests with `pytest tests/test_validation.py -v` to verify all validation tests pass
+  - [x] 3.7 Run full test suite with `pytest` to ensure no regressions
 
 - [ ] 4.0 Centralize Version Management
   - Demo Criteria: "Version read from `pyproject.toml` via shared `__version__.py` module; no imports from `mcp_server` module for version; version displayed correctly in generated metadata"
