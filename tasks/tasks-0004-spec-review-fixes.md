@@ -50,7 +50,7 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 3.6 Run tests with `pytest tests/test_validation.py -v` to verify all validation tests pass
   - [x] 3.7 Run full test suite with `pytest` to ensure no regressions
 
-- [~] 4.0 Centralize Version Management
+- [x] 4.0 Centralize Version Management
   - Demo Criteria: "Version read from `pyproject.toml` via shared `__version__.py` module; no imports from `mcp_server` module for version; version displayed correctly in generated metadata"
   - Proof Artifact(s): "New `__version__.py` module in project root; updated imports in `slash_commands/generators.py`; terminal output showing correct version in generated files"
   - [x] 4.1 Create new file `__version__.py` at project root with version reading logic using `tomllib` to read from `pyproject.toml`
@@ -60,12 +60,12 @@ Based on: `0004-spec-review-fixes.md`
   - [x] 4.5 Optionally update `mcp_server/__init__.py` to import from shared `__version__.py` module for consistency
   - [x] 4.6 Run all tests with `pytest` to ensure version changes don't break existing functionality
 
-- [ ] 5.0 Add Troubleshooting Documentation
+- [x] 5.0 Add Troubleshooting Documentation
   - Demo Criteria: "Troubleshooting section added to `docs/slash-command-generator.md`; FAQ covers common error scenarios; documentation includes Python version requirements"
   - Proof Artifact(s): "Updated documentation file; table mapping error messages to solutions; Python version compatibility matrix"
-  - [ ] 5.1 Add a "Python Version Requirements" section near the beginning of `docs/slash-command-generator.md` stating Python 3.12+ is required
-  - [ ] 5.2 Expand the existing "Troubleshooting" section with at least 5 common error scenarios and their solutions
-  - [ ] 5.3 Add troubleshooting entries for: "No Agents Detected", "Invalid Agent Key", "Permission Denied", "I/O Error", "Prompts Directory Not Found"
-  - [ ] 5.4 Add a Python version compatibility note explaining why `tomllib` is available and no additional dependencies are needed
-  - [ ] 5.5 Review documentation for clarity and completeness
-  - [ ] 5.6 Verify the documentation renders correctly when viewed as markdown
+  - [x] 5.1 Add a "Python Version Requirements" section near the beginning of `docs/slash-command-generator.md` stating Python 3.12+ is required
+  - [x] 5.2 Expand the existing "Troubleshooting" section with at least 5 common error scenarios and their solutions
+  - [x] 5.3 Add troubleshooting entries for: "No Agents Detected", "Invalid Agent Key", "Permission Denied", "I/O Error", "Prompts Directory Not Found"
+  - [x] 5.4 Add a Python version compatibility note explaining why `tomllib` is available and no additional dependencies are needed
+  - [x] 5.5 Review documentation for clarity and completeness
+  - [x] 5.6 Verify the documentation renders correctly when viewed as markdown

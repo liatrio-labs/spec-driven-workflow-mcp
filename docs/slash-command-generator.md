@@ -23,17 +23,36 @@ uv sync
 
 This project requires **Python 3.12 or higher**. The `tomllib` module is used for parsing TOML files and is part of the Python standard library starting with Python 3.11, but Python 3.12+ is required to ensure compatibility with all project dependencies.
 
-To verify your Python version:
+### Why Python 3.12+?
+
+1. **Standard Library TOML Support**: The `tomllib` module is included in Python's standard library since Python 3.11, eliminating the need for external TOML parsing dependencies like `tomli`.
+2. **Dependency Compatibility**: Project dependencies such as `fastmcp`, `ruff`, and others require Python 3.12+.
+3. **Modern Language Features**: Python 3.12 introduces performance improvements and language features that benefit the project.
+
+### Verifying Your Python Version
+
+To check your current Python version:
 
 ```bash
 python --version
 ```
 
-The `tomllib` module provides TOML parsing without requiring additional dependencies:
+Expected output: `Python 3.12.x` or higher
+
+### No Additional Dependencies Required
+
+Because `tomllib` is part of the standard library, you don't need to install additional packages for TOML parsing:
 
 ```python
-import tomllib  # Available in Python 3.11+ standard library
+import tomllib  # Built-in, no pip install needed
 ```
+
+This means:
+
+- ✅ No external TOML parsing dependencies
+- ✅ One less package to manage
+- ✅ Guaranteed compatibility with your Python installation
+- ✅ Faster import times
 
 ### Running Commands
 
