@@ -4,14 +4,20 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 import questionary
 import typer
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
 
-from slash_commands import SlashCommandWriter, detect_agents, get_agent_config, list_agent_keys
+from slash_commands import (
+    SlashCommandWriter,
+    detect_agents,
+    get_agent_config,
+    list_agent_keys,
+)
 
 app = typer.Typer(
     name="sdd-generate-commands",
@@ -252,6 +258,143 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     for file_info in result["files"]:
         print(f"  - {file_info['path']}")
         print(f"    Agent: {file_info['agent_display_name']} ({file_info['agent']})")
+
+
+@app.command()
+def cleanup(
+    agents: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--agents",
+            "-a",
+            help=(
+                "Agent keys to clean (can be specified multiple times). "
+                "If not specified, cleans all agents."
+            ),
+        ),
+    ] = None,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            help="Show what would be deleted without actually deleting files",
+        ),
+    ] = False,
+    yes: Annotated[
+        bool,
+        typer.Option(
+            "--yes",
+            "-y",
+            help="Skip confirmation prompts",
+        ),
+    ] = False,
+    target_path: Annotated[
+        Path | None,
+        typer.Option(
+            "--target-path",
+            "-t",
+            help="Target directory to search for generated files (defaults to home directory)",
+        ),
+    ] = None,
+    include_backups: Annotated[
+        bool,
+        typer.Option(
+            "--include-backups/--no-backups",
+            help="Include backup files in cleanup (default: True)",
+        ),
+    ] = True,
+) -> None:
+    """Clean up generated slash command files."""
+    # Determine target path (default to home directory)
+    actual_target_path = target_path if target_path is not None else Path.home()
+
+    # Create writer for finding files
+    writer = SlashCommandWriter(
+        prompts_dir=Path("prompts"),  # Not used for cleanup
+        agents=[],
+        dry_run=dry_run,
+        base_path=actual_target_path,
+    )
+
+    # Find files
+    found_files = writer.find_generated_files(agents=agents, include_backups=include_backups)
+
+    if not found_files:
+        console.print("[green]No generated files found.[/green]")
+        return
+
+    # Display what will be deleted in a table
+    table = Table(title=f"Found {len(found_files)} file(s) to delete")
+    table.add_column("File Path", style="cyan", no_wrap=False)
+    table.add_column("Agent", style="magenta")
+    table.add_column("Type", style="yellow", justify="center")
+
+    # Group files by agent for better readability
+    files_by_agent: dict[str, list[dict[str, Any]]] = {}
+    for file_info in found_files:
+        agent = file_info["agent_display_name"]
+        if agent not in files_by_agent:
+            files_by_agent[agent] = []
+        files_by_agent[agent].append(file_info)
+
+    # Add rows to table
+    for agent, files in sorted(files_by_agent.items()):
+        for file_info in files:
+            type_display = {
+                "command": "[green]command[/green]",
+                "backup": "[yellow]backup[/yellow]",
+            }.get(file_info["type"], file_info["type"])
+            table.add_row(
+                str(file_info["path"]),
+                agent,
+                type_display,
+            )
+
+    console.print()
+    console.print(table)
+
+    # Prompt for confirmation
+    if not yes:
+        console.print()
+        console.print(
+            Panel(
+                "[bold red]⚠️  WARNING: This will permanently delete "
+                "the files listed above.[/bold red]",
+                title="Confirm Deletion",
+                border_style="red",
+            )
+        )
+        confirmed = questionary.confirm("Are you sure you want to proceed?", default=False).ask()
+        if not confirmed:
+            console.print("[yellow]Cleanup cancelled.[/yellow]")
+            sys.exit(1)
+
+    # Perform cleanup
+    try:
+        result = writer.cleanup(agents=agents, include_backups=include_backups, dry_run=dry_run)
+    except Exception as e:
+        console.print(f"[bold red]Error during cleanup: {e}[/bold red]")
+        sys.exit(3)
+
+    # Print summary in a panel
+    mode = "DRY RUN" if dry_run else "Cleanup"
+    deleted_text = "would be" if dry_run else ""
+    summary_lines = [
+        f"Files {deleted_text} deleted: [bold green]{result['files_deleted']}[/bold green]",
+    ]
+    if result.get("errors"):
+        summary_lines.append(f"Errors: [bold red]{len(result['errors'])}[/bold red]")
+        for error in result["errors"]:
+            summary_lines.append(f"  - {error['path']}: {error['error']}")
+
+    console.print()
+    console.print(
+        Panel(
+            "\n".join(summary_lines),
+            title=f"{mode} Complete",
+            border_style="green" if not result.get("errors") else "red",
+        )
+    )
 
 
 def main() -> None:

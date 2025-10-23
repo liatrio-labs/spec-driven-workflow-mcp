@@ -347,3 +347,199 @@ This is another test prompt.
         # Both files should be overwritten
         assert "Test Prompt" in output_path1.read_text()
         assert "Test Prompt 2" in output_path2.read_text()
+
+
+def test_writer_finds_generated_markdown_files(tmp_path):
+    """Test that writer can find generated markdown files."""
+    # Create a generated markdown file
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    generated_file = command_dir / "test-command.md"
+    generated_file.write_text("""---
+name: test-command
+description: Test command
+meta:
+  source_prompt: test-prompt
+  version: 1.0.0
+  agent: claude-code
+---
+# Test Command
+""")
+
+    # Create a non-generated file
+    non_generated_file = command_dir / "manual-command.md"
+    non_generated_file.write_text("""---
+name: manual-command
+description: Manual command
+---
+# Manual Command
+""")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    found_files = writer.find_generated_files(agents=["claude-code"], include_backups=False)
+
+    assert len(found_files) == 1
+    assert found_files[0]["path"] == generated_file
+    assert found_files[0]["agent"] == "claude-code"
+    assert found_files[0]["type"] == "command"
+
+
+def test_writer_finds_generated_toml_files(tmp_path):
+    """Test that writer can find generated TOML files."""
+    # Create a generated TOML file
+    command_dir = tmp_path / ".gemini" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    generated_file = command_dir / "test-command.toml"
+    generated_file.write_text("""prompt = "Test command"
+description = "Test description"
+
+[meta]
+source_prompt = "test-prompt"
+version = "1.0.0"
+agent = "gemini-cli"
+""")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    found_files = writer.find_generated_files(agents=["gemini-cli"], include_backups=False)
+
+    assert len(found_files) == 1
+    assert found_files[0]["path"] == generated_file
+    assert found_files[0]["agent"] == "gemini-cli"
+    assert found_files[0]["type"] == "command"
+
+
+def test_writer_finds_backup_files(tmp_path):
+    """Test that writer can find backup files."""
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create a backup file
+    backup_file = command_dir / "test-command.md.20241201-120000.bak"
+    backup_file.write_text("backup content")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    found_files = writer.find_generated_files(agents=["claude-code"], include_backups=True)
+
+    assert len(found_files) == 1
+    assert found_files[0]["path"] == backup_file
+    assert found_files[0]["type"] == "backup"
+
+
+def test_writer_cleanup_deletes_generated_files(tmp_path):
+    """Test that cleanup deletes generated files."""
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    generated_file = command_dir / "test-command.md"
+    generated_file.write_text("""---
+name: test-command
+description: Test command
+meta:
+  source_prompt: test-prompt
+  version: 1.0.0
+---
+# Test Command
+""")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    result = writer.cleanup(agents=["claude-code"], include_backups=False, dry_run=False)
+
+    assert result["files_deleted"] == 1
+    assert not generated_file.exists()
+
+
+def test_writer_cleanup_dry_run_does_not_delete_files(tmp_path):
+    """Test that cleanup dry run does not delete files."""
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    generated_file = command_dir / "test-command.md"
+    generated_file.write_text("""---
+name: test-command
+description: Test command
+meta:
+  source_prompt: test-prompt
+  version: 1.0.0
+---
+# Test Command
+""")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=True,
+        base_path=tmp_path,
+    )
+
+    result = writer.cleanup(agents=["claude-code"], include_backups=False, dry_run=True)
+
+    assert result["files_deleted"] == 1
+    assert generated_file.exists()  # File should still exist
+
+
+def test_writer_cleanup_deletes_backup_files(tmp_path):
+    """Test that cleanup deletes backup files."""
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    backup_file = command_dir / "test-command.md.20241201-120000.bak"
+    backup_file.write_text("backup content")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    result = writer.cleanup(agents=["claude-code"], include_backups=True, dry_run=False)
+
+    assert result["files_deleted"] == 1
+    assert not backup_file.exists()
+
+
+def test_writer_cleanup_excludes_backups_when_requested(tmp_path):
+    """Test that cleanup excludes backup files when requested."""
+    command_dir = tmp_path / ".claude" / "commands"
+    command_dir.mkdir(parents=True, exist_ok=True)
+
+    backup_file = command_dir / "test-command.md.20241201-120000.bak"
+    backup_file.write_text("backup content")
+
+    writer = SlashCommandWriter(
+        prompts_dir=tmp_path / "prompts",
+        agents=[],
+        dry_run=False,
+        base_path=tmp_path,
+    )
+
+    result = writer.cleanup(agents=["claude-code"], include_backups=False, dry_run=False)
+
+    assert result["files_deleted"] == 0
+    assert backup_file.exists()  # Backup should still exist
