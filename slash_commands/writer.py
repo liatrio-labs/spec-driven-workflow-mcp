@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.resources
 import os
 import re
 import shutil
@@ -27,6 +28,19 @@ def _find_package_prompts_dir() -> Path | None:
     Returns:
         Path to prompts directory if found, None otherwise
     """
+    # Try to use importlib.resources to locate bundled prompts
+    # This works for installed packages (including wheel distributions)
+    try:
+        package = importlib.resources.files("spec_driven_development_mcp")
+        prompts_resource = package / "prompts"
+        # Check if the prompts directory exists in the resource
+        if prompts_resource.is_dir():
+            return Path(str(prompts_resource))
+    except (ModuleNotFoundError, AttributeError, ValueError):
+        # Fall through to fallback strategy
+        pass
+
+    # Fallback strategy: use file path resolution
     # The prompts directory is force-included at the package root level
     # When installed, the structure is:
     #   package_root/

@@ -15,14 +15,14 @@
 
 ## Tasks
 
-- [ ] 1.0 Update `_find_package_prompts_dir()` to use importlib.resources
+- [~] 1.0 Update `_find_package_prompts_dir()` to use importlib.resources
   - Demo Criteria: "Run from home directory and verify bundled prompts are located without specifying --prompts-dir"
   - Proof Artifact(s): "Test: `pytest tests/test_writer.py::test_writer_finds_bundled_prompts` shows successful resolution"
-  - [ ] 1.1 Import `importlib.resources` module
-  - [ ] 1.2 Add strategy using `importlib.resources.files()` to locate bundled prompts
-  - [ ] 1.3 Keep existing fallback strategy using `Path(__file__).parent.parent`
-  - [ ] 1.4 Add proper error handling for importlib edge cases
-  - [ ] 1.5 Write unit test for importlib.resources path resolution
+  - [x] 1.1 Import `importlib.resources` module
+  - [x] 1.2 Add strategy using `importlib.resources.files()` to locate bundled prompts
+  - [x] 1.3 Keep existing fallback strategy using `Path(__file__).parent.parent`
+  - [x] 1.4 Add proper error handling for importlib edge cases
+  - [x] 1.5 Write unit test for importlib.resources path resolution
 
 - [ ] 2.0 Update CLI to distinguish default vs explicit prompts directory
   - Demo Criteria: "Running without --prompts-dir shows bundled prompts; explicit --prompts-dir/nonexistent shows clear error"

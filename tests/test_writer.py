@@ -190,6 +190,45 @@ def test_writer_handles_missing_prompts_directory(tmp_path):
         writer.generate()
 
 
+def test_writer_finds_bundled_prompts(tmp_path):
+    """Test that writer finds bundled prompts using importlib.resources."""
+    prompts_dir = tmp_path / "nonexistent"
+
+    # Create a mock package prompts directory
+    package_prompts_dir = tmp_path / "package_prompts"
+    package_prompts_dir.mkdir()
+    prompt_file = package_prompts_dir / "bundled-prompt.md"
+    prompt_file.write_text(
+        """---
+name: bundled-prompt
+description: Bundled prompt test
+tags:
+  - testing
+arguments: []
+enabled: true
+---
+# Bundled Prompt
+
+This is a bundled test prompt.
+""",
+        encoding="utf-8",
+    )
+
+    writer = SlashCommandWriter(
+        prompts_dir=prompts_dir,
+        agents=["claude-code"],
+        dry_run=True,
+        base_path=tmp_path,
+    )
+
+    # Mock the fallback function to return the mock package prompts directory
+    with patch("slash_commands.writer._find_package_prompts_dir", return_value=package_prompts_dir):
+        result = writer.generate()
+        assert result["prompts_loaded"] == 1
+        assert len(result["prompts"]) == 1
+        assert result["prompts"][0]["name"] == "bundled-prompt"
+
+
 def test_writer_falls_back_to_package_prompts(tmp_path):
     """Test that writer falls back to package prompts when specified directory doesn't exist."""
     prompts_dir = tmp_path / "nonexistent"
