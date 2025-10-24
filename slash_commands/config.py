@@ -65,7 +65,7 @@ _SUPPORTED_AGENT_DATA: tuple[tuple[str, str, str, CommandFormat, str, tuple[str,
         ".config/opencode/command",
         CommandFormat.MARKDOWN,
         ".md",
-        (".config/opencode",),
+        (".opencode",),
     ),
 )
 
