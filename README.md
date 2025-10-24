@@ -66,6 +66,8 @@ All prompts live in `prompts/` and are designed for use inside your preferred AI
 2. **`generate-task-list-from-spec`** (`prompts/generate-task-list-from-spec.md`): Transform the approved spec into actionable parent tasks and sub-tasks with proof artifacts.
 3. **`manage-tasks`** (`prompts/manage-tasks.md`): Coordinate execution, update task status, and record outcomes as you deliver value.
 
+> Experimental: **`/boulder-dash`** (`prompts/boulder-dash.md`) is available when you want help exploring domain boundaries and slicing capabilities before kicking off the spec workflow. Use it opportunistically; it’s not required for the core flow.
+
 Each prompt writes Markdown outputs into `tasks/`, giving you a lightweight backlog that is easy to review, share, and implement.
 
 ## How does it work?
