@@ -39,6 +39,13 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
         "command_file_extension": ".toml",
         "detection_dirs": (".gemini",),
     },
+    "opencode": {
+        "display_name": "OpenCode CLI",
+        "command_dir": ".config/opencode/command",
+        "command_format": CommandFormat.MARKDOWN,
+        "command_file_extension": ".md",
+        "detection_dirs": (".config/opencode",),
+    },
     "vs-code": {
         "display_name": "VS Code",
         "command_dir": ".config/Code/User/prompts",
@@ -128,7 +135,7 @@ def test_supported_agents_include_all_markdown_and_toml_formats(
         for agent in supported_agents_by_key.values()
         if agent.command_format is CommandFormat.TOML
     ]
-    assert len(markdown_agents) == 5
+    assert len(markdown_agents) == 6
     assert len(toml_agents) == 1
 
 
@@ -149,6 +156,8 @@ def test_detection_dirs_cover_command_directory_roots(
                     ".codeium" in agent.detection_dirs
                     or ".codeium/windsurf" in agent.detection_dirs
                 )
+            elif agent.key == "opencode":
+                assert ".config/opencode" in agent.detection_dirs
             else:
                 assert command_root in agent.detection_dirs
         else:
