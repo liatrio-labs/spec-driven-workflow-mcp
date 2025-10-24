@@ -25,6 +25,7 @@ class MarkdownPrompt:
     enabled: bool
     arguments: list[PromptArgumentSpec]
     body: str
+    agent_overrides: dict[str, Any] | None = None
 
     def decorator_kwargs(self) -> dict[str, Any]:
         kwargs: dict[str, Any] = {"name": self.name}
@@ -63,11 +64,13 @@ def load_markdown_prompt(path: Path) -> MarkdownPrompt:
             "arguments",
             "meta",
             "enabled",
+            "agent_overrides",
         }
     }
     meta = {**base_meta, **additional_meta} if additional_meta else base_meta or None
 
     arguments = normalize_arguments(frontmatter.get("arguments"))
+    agent_overrides = frontmatter.get("agent_overrides")
 
     return MarkdownPrompt(
         path=path,
@@ -78,6 +81,7 @@ def load_markdown_prompt(path: Path) -> MarkdownPrompt:
         enabled=bool(enabled),
         arguments=arguments,
         body=body,
+        agent_overrides=agent_overrides,
     )
 
 

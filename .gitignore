@@ -2,7 +2,10 @@
 __pycache__
 .venv
 
-# Misc
-temp/
+# Coverage
+htmlcov
 .coverage
 coverage.xml
+
+# Misc
+temp/

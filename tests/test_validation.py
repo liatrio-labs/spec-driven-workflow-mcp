@@ -1,0 +1,193 @@
+"""Tests for validating generated content before file writing."""
+
+from __future__ import annotations
+
+import tomllib
+
+import pytest
+import yaml
+
+from mcp_server.prompt_utils import load_markdown_prompt, parse_frontmatter
+from slash_commands.config import get_agent_config
+from slash_commands.generators import CommandGenerator
+
+
+def test_toml_round_trip_parsing(sample_prompt):
+    """Generate TOML content, parse it back, and verify equivalence."""
+    agent = get_agent_config("gemini-cli")
+    generator = CommandGenerator.create(agent.command_format)
+
+    # Generate TOML content
+    generated_content = generator.generate(sample_prompt, agent)
+
+    # Parse it back
+    parsed_data = tomllib.loads(generated_content)
+
+    # Verify key fields are preserved
+    assert "prompt" in parsed_data
+    assert isinstance(parsed_data["prompt"], str)
+    assert parsed_data["prompt"].startswith("# Sample Prompt")
+
+    assert "description" in parsed_data
+    assert isinstance(parsed_data["description"], str)
+
+    assert "meta" in parsed_data
+    assert isinstance(parsed_data["meta"], dict)
+    assert "version" in parsed_data["meta"]
+    assert "source_prompt" in parsed_data["meta"]
+    assert parsed_data["meta"]["source_prompt"] == "sample-prompt"
+
+
+def test_yaml_frontmatter_parsing(sample_prompt):
+    """Validate YAML frontmatter is parseable and structurally correct."""
+    agent = get_agent_config("claude-code")
+    generator = CommandGenerator.create(agent.command_format)
+
+    # Generate markdown content
+    generated_content = generator.generate(sample_prompt, agent)
+
+    # Parse frontmatter
+    frontmatter, body = parse_frontmatter(generated_content)
+
+    # Verify frontmatter is a dict and contains required fields
+    assert isinstance(frontmatter, dict)
+    assert "name" in frontmatter
+    assert frontmatter["name"].startswith("sdd-"), "Expected command name to include prefix"
+    assert "description" in frontmatter
+    assert "tags" in frontmatter
+    assert "enabled" in frontmatter
+    assert "arguments" in frontmatter
+    assert "meta" in frontmatter
+
+    # Verify structural correctness
+    assert isinstance(frontmatter["name"], str)
+    assert isinstance(frontmatter["description"], str)
+    assert isinstance(frontmatter["tags"], list)
+    assert isinstance(frontmatter["enabled"], bool)
+    assert isinstance(frontmatter["arguments"], list)
+    assert isinstance(frontmatter["meta"], dict)
+
+    # Verify body is present
+    assert isinstance(body, str)
+    assert len(body) > 0
+
+
+def test_invalid_toml_content_caught(tmp_path):
+    """Attempt to generate invalid TOML and verify it's caught."""
+    agent = get_agent_config("gemini-cli")
+    generator = CommandGenerator.create(agent.command_format)
+
+    # Create a prompt that might cause issues
+    prompt_path = tmp_path / "test-prompt.md"
+    prompt_path.write_text(
+        """---
+name: test-prompt
+description: Test prompt
+tags: []
+arguments: []
+enabled: true
+---
+# Test
+
+Body content
+"""
+    )
+
+    prompt = load_markdown_prompt(prompt_path)
+
+    # Generate content
+    generated_content = generator.generate(prompt, agent)
+
+    # Verify generated content is valid TOML
+    try:
+        parsed_data = tomllib.loads(generated_content)
+        # If we get here, the TOML is valid
+        assert isinstance(parsed_data, dict)
+    except tomllib.TOMLDecodeError as e:
+        pytest.fail(f"Generated TOML is invalid: {e}")
+
+    # Test with intentionally invalid TOML-like content
+    invalid_toml = """prompt = "test
+description = invalid
+"""
+    with pytest.raises(tomllib.TOMLDecodeError):
+        tomllib.loads(invalid_toml)
+
+
+def test_invalid_yaml_content_caught(tmp_path):
+    """Attempt to generate invalid YAML and verify it's caught."""
+    agent = get_agent_config("claude-code")
+    generator = CommandGenerator.create(agent.command_format)
+
+    # Create a prompt
+    prompt_path = tmp_path / "test-prompt.md"
+    prompt_path.write_text(
+        """---
+name: test-prompt
+description: Test prompt
+tags: []
+arguments: []
+enabled: true
+---
+# Test
+
+Body content
+"""
+    )
+
+    prompt = load_markdown_prompt(prompt_path)
+
+    # Generate content
+    generated_content = generator.generate(prompt, agent)
+
+    # Verify generated content has valid YAML frontmatter
+    try:
+        frontmatter, _body = parse_frontmatter(generated_content)
+        # If we get here, the YAML is valid
+        assert isinstance(frontmatter, dict)
+    except yaml.YAMLError as e:
+        pytest.fail(f"Generated YAML frontmatter is invalid: {e}")
+
+    # Test with intentionally invalid YAML-like content
+    invalid_yaml = """---
+name: test
+description: invalid: content: here
+tags: []
+---
+"""
+    with pytest.raises(yaml.YAMLError):
+        yaml.safe_load(invalid_yaml)
+
+
+def test_generated_content_is_valid_before_writing(sample_prompt):
+    """Verify that content generated by both generators is valid before writing."""
+    markdown_agent = get_agent_config("claude-code")
+    toml_agent = get_agent_config("gemini-cli")
+
+    markdown_generator = CommandGenerator.create(markdown_agent.command_format)
+    toml_generator = CommandGenerator.create(toml_agent.command_format)
+
+    # Generate both formats
+    markdown_content = markdown_generator.generate(sample_prompt, markdown_agent)
+    toml_content = toml_generator.generate(sample_prompt, toml_agent)
+
+    # Verify markdown content
+    frontmatter, body = parse_frontmatter(markdown_content)
+    assert isinstance(frontmatter, dict)
+    assert isinstance(body, str)
+
+    # Verify TOML content
+    toml_data = tomllib.loads(toml_content)
+    assert isinstance(toml_data, dict)
+    assert "prompt" in toml_data
+
+    # Verify TOML meta includes updated_at
+    assert "meta" in toml_data
+    assert "updated_at" in toml_data["meta"]
+    updated_at = toml_data["meta"]["updated_at"]
+    assert isinstance(updated_at, str), "Expected updated_at to be a string"
+    # Note: datetime formatting with timezone ensures ISO-8601 compliance
+
+    # Both should be valid before any file writing occurs
+    assert len(markdown_content) > 0
+    assert len(toml_content) > 0
