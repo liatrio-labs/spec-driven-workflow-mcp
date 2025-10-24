@@ -38,7 +38,7 @@ jobs:
       - name: Check authorization
         id: check
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.ORG_MEMBER_CHECK_TOKEN }}
         run: |
           ACTOR="${{ github.actor }}"
 
