@@ -620,7 +620,8 @@ The following improvements are **documented and ready to implement** but will be
 
 **Decision:** Require file:line for code, path#heading for docs, dated quotes for users
 **Rationale:** Provides traceability and accountability for all findings
-**Source:** code-analyst.md + information-analyst.md patterns
+**Source:** code-analyst.md (lines 267-273, Key Principles),
+          information-analyst.md (lines 151-159, Key Principles)
 
 ### Decision 2: Confidence Levels
 
@@ -638,7 +639,8 @@ The following improvements are **documented and ready to implement** but will be
 
 **Decision:** Replace batch questionnaires with short focused rounds
 **Rationale:** Better user engagement, more thoughtful answers
-**Source:** context_bootstrap.md + Claude Code Phase 3 pattern
+**Source:** context_bootstrap.md (lines 38-42, Interactive Dialog principle),
+          Claude Code Phase 3 (see docs/research/codebase-context/claude-code-feature-dev-comparison.md, lines 66-87)
 
 ### Decision 5: Mandatory Clarifying Phase
 

@@ -772,6 +772,9 @@ Create `docs/workflow.md`:
 
 ## Implementation Priority
 
+See [docs/roadmap/PROGRESS.md](../../roadmap/PROGRESS.md) for detailed Phase 2 planning,
+effort estimates, and acceptance criteria.
+
 ### Sprint 1: Critical Gaps (Week 1)
 
 - [ ] Enhance `generate-spec` with mandatory clarifying phase

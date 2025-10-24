@@ -198,7 +198,7 @@ Categorize every finding by confidence level:
 - If no code references found → Start with Low Confidence
 - If docs are >6 months old without code confirmation → Maximum Medium Confidence
 
-### Always Flag Medium and Low Confidence Items for User Validation
+### Always Flag Medium- and Low-Confidence Items for User Validation
 
 ## Process
 
@@ -261,6 +261,9 @@ Automatically detect and analyze:
 
 #### Questions for User (Short - 3 questions max)
 
+**Important:** Keep questions brief and focused. Extended questionnaires reduce engagement
+and response quality. You'll ask follow-up questions in Phase 5 based on these answers.
+
 1. **Scope:** Should I analyze the entire codebase, or focus on specific components? If specific, which ones?
 
 2. **Purpose:** What's the primary reason for this analysis?
@@ -319,9 +322,8 @@ Find and catalog:
 
 - Why was [technology X] chosen?
 - Why [pattern Y] over alternatives?
-- What constraints drove decisions?
-- What trade-offs were considered?
-- What problems were these choices solving?
+- What constraints or trade-offs influenced these decisions?
+- What problems did these choices solve?
 
 **For each rationale found:**
 

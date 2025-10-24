@@ -276,6 +276,14 @@ Following Information Analyst patterns:
 - Save to `/tasks/[n]-context-[name].md`
 ```
 
+### Migration Impact
+
+This restructuring will change the output format and process. Users with existing
+codebase context documents should:
+- **Still valid:** All file:line citations remain accurate
+- **May need updating:** If they reference specific sections, page numbers may shift
+- **Recommended:** Regenerate context analyses using the new prompt format for consistency
+
 ---
 
 ### 🔴 HIGH PRIORITY: Add Evidence Citation Standards
