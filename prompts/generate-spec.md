@@ -61,7 +61,7 @@ Before writing the Spec, the AI **must** ask clarifying questions to gather suff
 - Provide multiple-choice options (A/B/C) when possible
 - Wait for answers before proceeding
 
-**⛔ STOP - Wait for user answers before proceeding to Phase 3**
+#### ⛔ STOP - Wait for user answers before proceeding to Phase 3
 
 ### Phase 3: Draft Specification
 
@@ -77,7 +77,7 @@ Present the spec to the user for review. Ask if they:
 - Have additional questions or clarifications
 - Want to adjust scope or requirements
 
-**⛔ STOP - Wait for user feedback before finalizing**
+#### ⛔ STOP - Wait for user feedback before finalizing
 
 ### Phase 5: Finalize
 
