@@ -33,40 +33,27 @@ jobs:
         )
       )
     outputs:
-      is-authorized: ${{ steps.check.outputs.authorized }}
+      is-authorized: ${{ steps.check.outputs.is-authorized }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Check authorization
         id: check
-        env:
-          GH_TOKEN: ${{ secrets.ORG_MEMBER_CHECK_TOKEN }}
-        run: |
-          ACTOR="${{ github.actor }}"
-
-          # Check if user is a repo collaborator/owner/member first
-          if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
-            AUTHOR_ASSOC="${{ github.event.comment.author_association }}"
-          elif [[ "${{ github.event_name }}" == "pull_request_review_comment" ]]; then
-            AUTHOR_ASSOC="${{ github.event.comment.author_association }}"
-          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
-            AUTHOR_ASSOC="${{ github.event.review.author_association }}"
-          elif [[ "${{ github.event_name }}" == "issues" ]]; then
-            AUTHOR_ASSOC="${{ github.event.issue.author_association }}"
-          fi
-
-          if [[ "$AUTHOR_ASSOC" == "OWNER" ]] || [[ "$AUTHOR_ASSOC" == "MEMBER" ]] || [[ "$AUTHOR_ASSOC" == "COLLABORATOR" ]]; then
-            echo "User is authorized via author_association: $AUTHOR_ASSOC"
-            echo "authorized=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Check if user is a member of liatrio-labs organization
-          if gh api "orgs/liatrio-labs/members/$ACTOR" --silent 2>/dev/null; then
-            echo "User is authorized as liatrio-labs organization member"
-            echo "authorized=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "User is not authorized"
-            echo "authorized=false" >> "$GITHUB_OUTPUT"
-          fi
+        uses: ./.github/actions/check-org-membership
+        with:
+          trigger-command: '/oc-codex'
+          github-token: ${{ secrets.ORG_MEMBER_CHECK_TOKEN }}
+          event-name: ${{ github.event_name }}
+          comment-body: ${{ github.event.comment.body || '' }}
+          comment-author-association: ${{ github.event.comment.author_association || '' }}
+          review-body: ${{ github.event.review.body || '' }}
+          review-author-association: ${{ github.event.review.author_association || '' }}
+          issue-body: ${{ github.event.issue.body || '' }}
+          issue-title: ${{ github.event.issue.title || '' }}
+          issue-author-association: ${{ github.event.issue.author_association || '' }}
+          actor: ${{ github.actor }}
+          organization: 'liatrio-labs'
 
   opencode:
     needs: check-org-membership

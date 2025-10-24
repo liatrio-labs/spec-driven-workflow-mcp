@@ -1,0 +1,98 @@
+name: Check Organization Membership
+description: Checks if a user is authorized via repository permissions or organization membership
+
+inputs:
+  trigger-command:
+    description: 'The trigger command to check for (e.g., @claude or /oc-codex)'
+    required: true
+  github-token:
+    description: 'GitHub token with org membership read permissions'
+    required: true
+  event-name:
+    description: 'The GitHub event name (github.event_name)'
+    required: true
+  comment-body:
+    description: 'The comment body if applicable'
+    required: false
+    default: ''
+  comment-author-association:
+    description: 'The comment author association if applicable'
+    required: false
+    default: ''
+  review-body:
+    description: 'The review body if applicable'
+    required: false
+    default: ''
+  review-author-association:
+    description: 'The review author association if applicable'
+    required: false
+    default: ''
+  issue-body:
+    description: 'The issue body if applicable'
+    required: false
+    default: ''
+  issue-title:
+    description: 'The issue title if applicable'
+    required: false
+    default: ''
+  issue-author-association:
+    description: 'The issue author association if applicable'
+    required: false
+    default: ''
+  actor:
+    description: 'The GitHub actor (github.actor)'
+    required: true
+  organization:
+    description: 'The organization name to check membership in'
+    required: true
+    default: 'liatrio-labs'
+
+outputs:
+  is-authorized:
+    description: 'Whether the user is authorized to trigger the workflow'
+    value: ${{ steps.check.outputs.authorized }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check authorization
+      id: check
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        TRIGGER_COMMAND: ${{ inputs.trigger-command }}
+        EVENT_NAME: ${{ inputs.event-name }}
+        COMMENT_BODY: ${{ inputs.comment-body }}
+        COMMENT_AUTHOR_ASSOC: ${{ inputs.comment-author-association }}
+        REVIEW_BODY: ${{ inputs.review-body }}
+        REVIEW_AUTHOR_ASSOC: ${{ inputs.review-author-association }}
+        ISSUE_BODY: ${{ inputs.issue-body }}
+        ISSUE_TITLE: ${{ inputs.issue-title }}
+        ISSUE_AUTHOR_ASSOC: ${{ inputs.issue-author-association }}
+        ACTOR: ${{ inputs.actor }}
+        ORGANIZATION: ${{ inputs.organization }}
+      run: |
+        # Determine the author association based on event type
+        if [[ "$EVENT_NAME" == "issue_comment" ]] || [[ "$EVENT_NAME" == "pull_request_review_comment" ]]; then
+          AUTHOR_ASSOC="$COMMENT_AUTHOR_ASSOC"
+        elif [[ "$EVENT_NAME" == "pull_request_review" ]]; then
+          AUTHOR_ASSOC="$REVIEW_AUTHOR_ASSOC"
+        elif [[ "$EVENT_NAME" == "issues" ]]; then
+          AUTHOR_ASSOC="$ISSUE_AUTHOR_ASSOC"
+        fi
+
+        # Check if user is a repo collaborator/owner/member first
+        if [[ "$AUTHOR_ASSOC" == "OWNER" ]] || [[ "$AUTHOR_ASSOC" == "MEMBER" ]] || [[ "$AUTHOR_ASSOC" == "COLLABORATOR" ]]; then
+          echo "User is authorized via author_association: $AUTHOR_ASSOC"
+          echo "authorized=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        # Check if user is a member of the organization
+        if gh api "orgs/$ORGANIZATION/members/$ACTOR" --silent 2>/dev/null; then
+          echo "User is authorized as $ORGANIZATION organization member"
+          echo "authorized=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "User is not authorized"
+          echo "authorized=false" >> "$GITHUB_OUTPUT"
+        fi
