@@ -44,7 +44,7 @@ EXPECTED_AGENTS: dict[str, dict[str, object]] = {
         "command_dir": ".config/opencode/command",
         "command_format": CommandFormat.MARKDOWN,
         "command_file_extension": ".md",
-        "detection_dirs": (".config/opencode",),
+        "detection_dirs": (".opencode",),
     },
     "vs-code": {
         "display_name": "VS Code",
@@ -157,7 +157,7 @@ def test_detection_dirs_cover_command_directory_roots(
                     or ".codeium/windsurf" in agent.detection_dirs
                 )
             elif agent.key == "opencode":
-                assert ".config/opencode" in agent.detection_dirs
+                assert ".opencode" in agent.detection_dirs
             else:
                 assert command_root in agent.detection_dirs
         else:
