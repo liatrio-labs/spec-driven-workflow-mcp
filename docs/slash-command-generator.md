@@ -6,7 +6,7 @@ The Slash Command Generator automates the creation of slash command files for AI
 
 The generator reads markdown prompts from the `prompts/` directory and produces command files in the appropriate format for each configured AI assistant. It supports:
 
-- **Multiple agents**: 6 supported AI assistants with different command formats
+- **Multiple agents**: 7 supported AI assistants with different command formats
 - **Auto-detection**: Automatically detects configured agents in your workspace
 - **Dry run mode**: Preview changes without writing files
 - **Safe overwrite handling**: Prompts before overwriting existing files with backup support
@@ -193,6 +193,7 @@ The following agents are supported:
 | `codex-cli` | Codex CLI | Markdown | `.md` | `.codex/prompts` | [Home](https://developers.openai.com/codex) · [Docs](https://developers.openai.com/codex/cli/) |
 | `cursor` | Cursor | Markdown | `.md` | `.cursor/commands` | [Home](https://cursor.com/) · [Docs](https://cursor.com/docs) |
 | `gemini-cli` | Gemini CLI | TOML | `.toml` | `.gemini/commands` | [Home](https://github.com/google-gemini/gemini-cli) · [Docs](https://geminicli.com/docs/) |
+| `opencode` | OpenCode CLI | Markdown | `.md` | `.config/opencode/command` | [Home](https://opencode.ai) · [Docs](https://opencode.ai/docs/commands) |
 | `vs-code` | VS Code | Markdown | `.prompt.md` | `.config/Code/User/prompts` | [Home](https://code.visualstudio.com/) · [Docs](https://code.visualstudio.com/docs) |
 | `windsurf` | Windsurf | Markdown | `.md` | `.codeium/windsurf/global_workflows` | [Home](https://windsurf.com/editor) · [Docs](https://docs.windsurf.com/) |
 
@@ -284,6 +285,7 @@ Generated files are placed in agent-specific directories:
 .codex/prompts/                # Codex CLI
 .cursor/commands/              # Cursor
 .gemini/commands/              # Gemini CLI
+.config/opencode/command/      # OpenCode CLI
 .codeium/windsurf/global_workflows/  # Windsurf
 ```
 
