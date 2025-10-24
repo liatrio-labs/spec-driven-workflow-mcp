@@ -59,6 +59,14 @@ _SUPPORTED_AGENT_DATA: tuple[tuple[str, str, str, CommandFormat, str, tuple[str,
         ".md",
         (".codeium", ".codeium/windsurf"),
     ),
+    (
+        "opencode",
+        "OpenCode CLI",
+        ".config/opencode/command",
+        CommandFormat.MARKDOWN,
+        ".md",
+        (".opencode",),
+    ),
 )
 
 _SORTED_AGENT_DATA = tuple(sorted(_SUPPORTED_AGENT_DATA, key=lambda item: item[0]))

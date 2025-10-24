@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v1.7.0 (2025-10-24)
+
+### Bug Fixes
+
+- Update project path to use '.opencode'
+  ([#20](https://github.com/liatrio-labs/spec-driven-workflow/pull/20),
+  [`cc556e7`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cc556e7ce3de92d9c1285a71d6195dc8ac427266))
+
+- **test**: Update config directory for corresponding test
+  ([#20](https://github.com/liatrio-labs/spec-driven-workflow/pull/20),
+  [`cc556e7`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cc556e7ce3de92d9c1285a71d6195dc8ac427266))
+
+### Features
+
+- Add support for opencode slash command generator
+  ([#20](https://github.com/liatrio-labs/spec-driven-workflow/pull/20),
+  [`cc556e7`](https://github.com/liatrio-labs/spec-driven-workflow/commit/cc556e7ce3de92d9c1285a71d6195dc8ac427266))
+
+
 ## v1.6.0 (2025-10-23)
 
 ### Bug Fixes
