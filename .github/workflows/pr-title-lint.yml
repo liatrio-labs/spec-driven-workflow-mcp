@@ -1,0 +1,72 @@
+name: Lint PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  lint-pr-title:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        id: lint_pr_title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Match commitlint config-conventional types
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          # Allow optional scope
+          requireScope: false
+          # Subject should not start with uppercase (matches conventional commits)
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            doesn't start with an uppercase character.
+
+      # Add comment when PR title is invalid
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: always() && (steps.lint_pr_title.outputs.error_message != null)
+        with:
+          header: pr-title-lint-error
+          message: |
+            👋 Thank you for opening this pull request!
+
+            We require PR titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/).
+
+            **Error details:**
+            ```
+            ${{ steps.lint_pr_title.outputs.error_message }}
+            ```
+
+            **Valid format:** `<type>(<optional scope>): <description>`
+
+            **Valid types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+            **Examples:**
+            - `feat(auth): add login button to navigation`
+            - `fix: resolve race condition in async handler`
+            - `docs: update installation instructions`
+
+            Please update your PR title and the check will run automatically.
+
+      # Delete comment when PR title is fixed
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.lint_pr_title.outputs.error_message == null }}
+        with:
+          header: pr-title-lint-error
+          delete: true
