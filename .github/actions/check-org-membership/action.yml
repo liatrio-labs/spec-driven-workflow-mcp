@@ -89,7 +89,7 @@ runs:
         fi
 
         # Check if user is a member of the organization
-        if gh api "orgs/$ORGANIZATION/members/$ACTOR" --silent 2>/dev/null; then
+        if gh api "orgs/$ORGANIZATION/members/$ACTOR"; then
           echo "User is authorized as $ORGANIZATION organization member"
           echo "authorized=true" >> "$GITHUB_OUTPUT"
         else
