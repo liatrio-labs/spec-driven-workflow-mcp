@@ -62,7 +62,7 @@
     - this has been fully tested with multiple clients (Claude Code, Windsurf, VS Code, Codex, Gemini CLI, etc.)
   - Proof Artifact(s): Connection configuration snippet and client-side screenshot/log showing prompt execution results.
   - [!] 3.1 Harden HTTP transport configuration (CORS headers, host/port envs) in `fastmcp.json` and `mcp_server/config.py`.
-    - Deferred to [issue #3](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/3)
+    - Deferred to [issue #3](https://github.com/liatrio-labs/spec-driven-workflow/issues/3)
   - [x] 3.2 Draft client onboarding instructions in `docs/operations.md` for FastMCP Inspector, Claude Desktop, and VS Code MCP plugin.
   - [x] 3.3 Record validated client session (screenshots/logs) invoking prompts/resources via HTTP endpoint.
   - [x] 3.4 Add integration test (async) using `fastmcp.Client` to call prompts over HTTP within pytest suite.
@@ -70,7 +70,7 @@
 - [!] 4.0 Package and deploy for Kubernetes
   - Demo Criteria: Build Docker image, apply Kustomize overlay to deploy in a test cluster, and verify `/mcp/health` readiness plus metrics endpoints.
   - Proof Artifact(s): Docker build log, rendered Kubernetes manifest, and `kubectl` output confirming pod readiness.
-  - Deferred to [issue #4](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/4)
+  - Deferred to [issue #4](https://github.com/liatrio-labs/spec-driven-workflow/issues/4)
   - [!] 4.1 Author Dockerfile leveraging `uv` for dependency sync and multi-stage build with non-root runtime user.
   - [!] 4.2 Provide container entrypoints/scripts (`uvx fastmcp run`) supporting both STDIO and HTTP configurations.
   - [!] 4.3 Create base and overlay Kustomize manifests defining config maps, secrets placeholders, volume mounts, and readiness probes.
@@ -80,7 +80,7 @@
 - [!] 5.0 Showcase protocol extensions and observability
   - Demo Criteria: Trigger helper tools, emit notifications on new artifacts, exercise sampling request flow, and capture structured logs/metrics.
   - Proof Artifact(s): Test run outputs covering tools/notifications/sampling; log excerpts illustrating structured events and metrics export.
-  - Deferred to [issue #5](https://github.com/liatrio-labs/spec-driven-workflow-mcp/issues/5)
+  - Deferred to [issue #5](https://github.com/liatrio-labs/spec-driven-workflow/issues/5)
   - [!] 5.1 Implement `mcp_server/tools.py` helper tools (list artifacts, create spec stub, summarize diff) with corresponding FastMCP decorators.
   - [!] 5.2 Build notification broadcaster (`mcp_server/notifications.py`) emitting events on workspace file creation with hooks into FastMCP emitter.
   - [!] 5.3 Implement sampling orchestrator (`mcp_server/sampling.py`) requesting client-generated summaries and handling responses.
