@@ -120,7 +120,6 @@ graph TB
 - `CHANGELOG.md` — Version history with semantic versioning
 - `docs/operations.md` — Server deployment, configuration, client integration
 - `docs/mcp-prompt-support.md` — MCP client compatibility matrix
-- `docs/roadmap/PROGRESS.md` — Implementation progress tracking (681 lines, very detailed)
 
 **Prompt Files (Product Core):**
 
