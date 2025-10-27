@@ -11,33 +11,59 @@ on:
     types: [submitted]
 
 jobs:
-  opencode:
-    timeout-minutes: 30 # to accommodate Codex's ability to run for extended periods
-    concurrency:
-      group: opencode-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
-      cancel-in-progress: true
+  # Check if the user is a member of liatrio-labs organization
+  check-org-membership:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: |
       (
         github.event_name == 'issue_comment' &&
-        contains(github.event.comment.body, '/oc-codex') &&
-        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+        contains(github.event.comment.body, '/oc-codex')
       ) || (
         github.event_name == 'pull_request_review_comment' &&
-        contains(github.event.comment.body, '/oc-codex') &&
-        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+        contains(github.event.comment.body, '/oc-codex')
       ) || (
         github.event_name == 'pull_request_review' &&
         github.event.review.body != null &&
-        contains(github.event.review.body, '/oc-codex') &&
-        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.review.author_association)
+        contains(github.event.review.body, '/oc-codex')
       ) || (
         github.event_name == 'issues' &&
         (
           (github.event.issue.body != null && contains(github.event.issue.body, '/oc-codex')) ||
           contains(github.event.issue.title, '/oc-codex')
-        ) &&
-        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+        )
       )
+    outputs:
+      is-authorized: ${{ steps.check.outputs.is-authorized }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check authorization
+        id: check
+        uses: ./.github/actions/check-org-membership
+        with:
+          trigger-command: '/oc-codex'
+          github-token: ${{ secrets.ORG_MEMBER_CHECK_TOKEN }}
+          event-name: ${{ github.event_name }}
+          comment-body: ${{ github.event.comment.body || '' }}
+          comment-author-association: ${{ github.event.comment.author_association || '' }}
+          review-body: ${{ github.event.review.body || '' }}
+          review-author-association: ${{ github.event.review.author_association || '' }}
+          issue-body: ${{ github.event.issue.body || '' }}
+          issue-title: ${{ github.event.issue.title || '' }}
+          issue-author-association: ${{ github.event.issue.author_association || '' }}
+          actor: ${{ github.actor }}
+          organization: 'liatrio-labs'
+
+  opencode:
+    needs: check-org-membership
+    if: needs.check-org-membership.outputs.is-authorized == 'true'
+    timeout-minutes: 30 # to accommodate Codex's ability to run for extended periods
+    concurrency:
+      group: opencode-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
