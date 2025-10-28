@@ -13,6 +13,7 @@ Located in `/agents`
 | [code-reusability-agent.md](agents/code-reusability-agent.md) | Find existing libraries/patterns | 97.5% reduction (5K vs 200K) | Before implementing new functionality |
 | [microservices-architect-agent.md](agents/microservices-architect-agent.md) | Design/review architectures | 95.6% reduction (10K vs 230K) | Architecture decisions, service design |
 | [debugger-agent.md](agents/debugger-agent.md) | Diagnose errors efficiently | 96% reduction (6K vs 150K) | Errors, test failures, issues |
+| [developer-agent.md](agents/developer-agent.md) | Execute PRD implementations | 85-90% reduction (20-30K vs 150K+) | Implementing features from PRDs |
 | [enterprise-codebase-documenter-agent.md](agents/enterprise-codebase-documenter-agent.md) | Analyze large codebases | 92.2% reduction (9K vs 115K) | Multi-repo analysis, dependency mapping |
 
 ---
@@ -26,6 +27,7 @@ Located in `/commands`
 | [setup.md](commands/setup.md) | Automated project setup | N/A (one-time setup) | Initial project configuration |
 | [architecture.md](commands/architecture.md) | Query architecture docs | 97% reduction (1K vs 35K) | Quick architecture questions |
 | [find-library-usage.md](commands/find-library-usage.md) | Find library usage examples | 90% reduction (10K vs 100K) | Need real code examples |
+| [jira-to-prd.md](commands/jira-to-prd.md) | Generate PRD from Jira story | 94% reduction (12K vs 200K) | Converting Jira stories to detailed PRDs |
 
 ---
 
@@ -37,6 +39,22 @@ Located in `/commands`
 | [SETUP-GUIDE.md](SETUP-GUIDE.md) | Step-by-step automated setup guide |
 | [DUPLICATE-PREVENTION.md](DUPLICATE-PREVENTION.md) | Duplicate detection and conflict resolution |
 | [CREATION-SUMMARY.md](CREATION-SUMMARY.md) | Development history and implementation notes |
+
+## Templates
+
+| File | Purpose |
+|------|---------|
+| [templates/WORKING-NOTES.md](templates/WORKING-NOTES.md) | Shared working document template for agent collaboration |
+
+---
+
+## Agent Collaboration Pattern
+
+**Problem**: Agents create separate files instead of collaborating, leading to fragmented information.
+
+**Solution**: Use shared `WORKING-NOTES.md` per ticket where all agents collaborate on open questions, decisions, findings, and action items.
+
+**Template**: See [templates/WORKING-NOTES.md](templates/WORKING-NOTES.md)
 
 ---
 

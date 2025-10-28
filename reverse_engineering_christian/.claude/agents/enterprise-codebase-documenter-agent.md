@@ -384,6 +384,52 @@ You're successful when:
 
 ---
 
+## Integration with Commands
+
+Work with other commands to provide comprehensive analysis:
+
+- **`/architecture [query]`** - Provide detailed documentation for specific services found during analysis
+  - Use when: Users need deeper information about a specific service you documented
+  - Example: "For detailed information about the authentication service, run `/architecture auth-service`"
+
+- **`/find-library-usage [library]`** - Deep-dive into how specific libraries are used across repos
+  - Use when: Analysis reveals a library used by multiple services
+  - Example: "To see exactly how these 15 services use [Library], run `/find-library-usage [Library]`"
+
+When to suggest commands:
+- You've provided high-level overview and user needs specifics
+- Multiple services use a particular library or pattern
+- User wants to understand a specific service in detail
+- Your analysis identifies areas needing deeper investigation
+
+## Collaboration with Other Agents
+
+Your documentation serves as input for other agents:
+
+- **microservices-architect**: Your dependency analysis informs architectural decisions
+  - When: Architect needs to understand current architecture before designing changes
+  - Example: "Provide this dependency map to microservices-architect for migration planning"
+
+- **code-reusability**: Your cross-repo analysis reveals duplication opportunities
+  - When: Multiple repos have similar code that could be extracted
+  - Example: "Code-reusability agent can use this analysis to identify 5 repos with duplicate authentication code"
+
+- **legacy-modernizer**: Your analysis identifies legacy systems needing modernization
+  - When: You find outdated frameworks, tech stacks, or patterns
+  - Example: "Legacy-modernizer can prioritize these 8 repos still using [OldFramework]"
+
+- **developer-agent**: Your documentation helps developers understand implementation context
+  - When: Developers need to make changes affecting multiple repos
+  - Example: "Developer-agent can reference this service catalog when implementing cross-service features"
+
+When to involve other agents:
+- **Architecture changes**: Provide your analysis to microservices-architect
+- **Duplication detected**: Suggest code-reusability agent review
+- **Legacy tech found**: Recommend legacy-modernizer assessment
+- **Implementation context**: Reference your docs in PRDs for developer-agent
+
+---
+
 ## Customization Notes
 
 **To adapt this agent to your project:**

@@ -26,14 +26,37 @@ Specialized AI agent templates with built-in context efficiency strategies:
 1. **code-reusability-agent.md** - Prevents code duplication by identifying existing shared libraries
 2. **microservices-architect-agent.md** - Designs and reviews distributed architectures
 3. **debugger-agent.md** - Diagnoses errors and issues efficiently
-4. **enterprise-codebase-documenter-agent.md** - Analyzes large multi-repo codebases
+4. **developer-agent.md** - Executes PRD implementations with phased, incremental approach
+5. **enterprise-codebase-documenter-agent.md** - Analyzes large multi-repo codebases
 
 ### Commands (`/commands`)
 
 User-facing slash command templates:
 
-1. **architecture.md** - Quick queries to architecture documentation
-2. **find-library-usage.md** - Search for library usage across services
+1. **setup.md** - Automated tech stack detection and project setup
+2. **architecture.md** - Quick queries to architecture documentation
+3. **find-library-usage.md** - Search for library usage across services
+4. **jira-to-prd.md** - Generate detailed PRDs from Jira stories with architecture awareness
+
+### Templates (`/templates`)
+
+Collaboration templates for multi-agent workflows:
+
+1. **WORKING-NOTES.md** - Shared working document template for agent collaboration on tickets/tasks
+
+---
+
+## Agent Collaboration Pattern
+
+**Problem**: Multiple agents create separate files, leading to fragmented information.
+
+**Solution**: Use a shared `WORKING-NOTES.md` file per ticket where all agents collaborate on:
+- Open questions needing answers
+- Decisions made with rationale
+- Technical findings from each agent
+- Action items for implementation
+
+See [templates/WORKING-NOTES.md](templates/WORKING-NOTES.md) for the template.
 
 ---
 
@@ -181,9 +204,11 @@ Based on production implementation:
 | code-reusability | 200K tokens | 5K tokens | 97.5% |
 | microservices-architect | 230K tokens | 10K tokens | 95.6% |
 | debugger | 150K tokens | 6K tokens | 96.0% |
+| developer | 150K tokens | 20-30K tokens | 80-90% |
 | enterprise-codebase-documenter | 115K tokens | 9K tokens | 92.2% |
 | architecture command | 35K tokens | 1K tokens | 97.1% |
 | find-library-usage | 100K tokens | 10K tokens | 90.0% |
+| jira-to-prd | 200K tokens | 12K tokens | 94.0% |
 
 **Average: 80-95% reduction** in token usage across all workflows.
 
