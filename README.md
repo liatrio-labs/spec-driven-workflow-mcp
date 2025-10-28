@@ -17,6 +17,12 @@
 
 ## TLDR
 
+0. Install `uv` on your system:
+
+    ```bash
+    brew install uv
+    ```
+
 1. Install the workflow prompts as slash commands in all your [local AI tools](#supported-ai-tools):
 
     ```bash
