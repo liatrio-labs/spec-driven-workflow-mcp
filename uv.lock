@@ -1438,7 +1438,7 @@ wheels = [
 ]
 
 [[package]]
-name = "spec-driven-development-mcp"
+name = "spec-driven-workflow"
 version = "1.7.0"
 source = { editable = "." }
 dependencies = [

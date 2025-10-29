@@ -1,5 +1,5 @@
 [project]
-name = "spec-driven-development-mcp"
+name = "spec-driven-workflow"
 version = "1.7.0"
 description = "A framework for spec driven development (SDD) that can be used anywhere an AI agent is used as a collaborator."
 readme = "README.md"
@@ -32,8 +32,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-spec-driven-development-mcp = "server:main"
-sdd-generate-commands = "slash_commands.cli:main"
+spec-driven-workflow = "server:main"
+sdd-commands = "slash_commands.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["mcp_server", "slash_commands"]

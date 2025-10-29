@@ -20,7 +20,7 @@
 1. Install the workflow prompts as slash commands in all your [local AI tools](#supported-ai-tools):
 
     ```bash
-    uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+    uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-commands generate --yes
     ```
 
 2. In your AI tool of choice, use `/generate-spec` with your idea:
@@ -174,15 +174,15 @@ Generate slash commands for your AI coding assistant and use the prompts as nati
 git clone https://github.com/liatrio-labs/spec-driven-workflow.git
 cd spec-driven-workflow
 uv sync
-uv run sdd-generate-commands generate --yes
+uv run sdd-commands generate --yes
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-generate-commands generate --yes
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow sdd-commands generate --yes
 ```
 
 This will auto-detect your configured AI assistants (Claude Code, Cursor, Windsurf, etc.) and generate command files in your home directory.
 
-**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp sdd-generate-commands generate --yes` for a one-liner installation.
+**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-workflow sdd-commands generate --yes` for a one-liner installation.
 
 See [docs/slash-command-generator.md](./docs/slash-command-generator.md) for details.
 
@@ -218,7 +218,7 @@ uv sync
 uvx fastmcp run server.py
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-workflow-mcp
 ```
 
 **With MCP Inspector:**
@@ -234,10 +234,10 @@ uvx fastmcp dev server.py
 uvx fastmcp run server.py --transport http --port 8000
 
 # Or run directly from the git repo via uvx
-uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-development-mcp --transport http --port 8000
+uvx --from git+https://github.com/liatrio-labs/spec-driven-workflow spec-driven-workflow-mcp --transport http --port 8000
 ```
 
-**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-development-mcp` for a one-liner installation with optional `--transport` and `--port` arguments. The `fastmcp run` approach remains available for development and advanced options.
+**Note**: Once available on PyPI, you'll be able to run `uvx spec-driven-workflow` for a one-liner installation with optional `--transport` and `--port` arguments. The `fastmcp run` approach remains available for development and advanced options.
 
 See [docs/operations.md](docs/operations.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for advanced configuration, deployment, and contribution guidelines.
 

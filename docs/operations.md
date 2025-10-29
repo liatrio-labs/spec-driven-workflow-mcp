@@ -100,7 +100,7 @@ Add the following to your Claude Desktop configuration (`~/Library/Application S
   "mcpServers": {
     "spec-driven-development": {
       "command": "uvx",
-      "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/server.py"]
+      "args": ["fastmcp", "run", "/path/to/spec-driven-workflow/server.py"]
     }
   }
 }
@@ -116,7 +116,7 @@ Add the following to your Claude Desktop configuration (`~/Library/Application S
      "mcp.servers": {
        "spec-driven-development": {
          "command": "uvx",
-         "args": ["fastmcp", "run", "/path/to/spec-driven-development-mcp/server.py"]
+         "args": ["fastmcp", "run", "/path/to/spec-driven-workflow/server.py"]
        }
      }
    }

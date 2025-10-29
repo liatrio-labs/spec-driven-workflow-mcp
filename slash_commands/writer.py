@@ -1,4 +1,4 @@
-"""Writer for generating slash command files for multiple agents."""
+"""Writer for generating slash commands for multiple agents."""
 
 from __future__ import annotations
 

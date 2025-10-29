@@ -20,7 +20,7 @@ def _get_version() -> str:
         return data["project"]["version"]
     else:
         # Installed package mode
-        return get_package_version("spec-driven-development-mcp")
+        return get_package_version("spec-driven-workflow")
 
 
 __version__ = _get_version()

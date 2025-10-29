@@ -1,5 +1,5 @@
 blank_issues_disabled: true
 contact_links:
   - name: Documentation
-    url: https://github.com/liatrio/spec-driven-development-mcp#readme
+    url: https://github.com/liatrio-labs/spec-driven-workflow#readme
     about: Refer to the README and docs for setup and usage guidance.

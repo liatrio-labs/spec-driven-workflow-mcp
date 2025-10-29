@@ -1,10 +1,10 @@
 # Slash Command Generator
 
-The Slash Command Generator automates the creation of slash command files for AI code assistants like Claude Code, Cursor, Windsurf, and others. It generates command files from markdown prompts, supporting multiple agents and formats.
+The Slash Command Generator automates the creation of slash command for AI code assistants like Claude Code, Cursor, Windsurf, and others. It generates command files from markdown prompts, supporting multiple agents and formats.
 
 ## Overview
 
-The generator reads markdown prompts from the `prompts/` directory and produces command files in the appropriate format for each configured AI assistant. It supports:
+The generator reads markdown prompts from the `prompts/` directory and produces slash command files in the appropriate format for each configured AI assistant. It supports:
 
 - **Multiple agents**: 7 supported AI assistants with different command formats
 - **Auto-detection**: Automatically detects configured agents in your workspace
@@ -62,7 +62,7 @@ This means:
 After installation, use `uv run` to execute the command:
 
 ```bash
-uv run sdd-generate-commands [OPTIONS]
+uv run sdd-commands [OPTIONS]
 ```
 
 ### Basic Usage
@@ -70,7 +70,7 @@ uv run sdd-generate-commands [OPTIONS]
 Generate commands for all auto-detected agents in your home directory:
 
 ```bash
-uv run sdd-generate-commands
+uv run sdd-commands
 ```
 
 **Note**: By default, the generator:
@@ -86,7 +86,7 @@ uv run sdd-generate-commands
 Generate commands for specific agents:
 
 ```bash
-uv run sdd-generate-commands --agents claude-code --agents cursor
+uv run sdd-commands --agent claude-code --agent cursor
 ```
 
 ### Dry Run
@@ -94,7 +94,7 @@ uv run sdd-generate-commands --agents claude-code --agents cursor
 Preview changes without writing files:
 
 ```bash
-uv run sdd-generate-commands --dry-run
+uv run sdd-commands --dry-run
 ```
 
 ### List Supported Agents
@@ -102,7 +102,7 @@ uv run sdd-generate-commands --dry-run
 View all available agents:
 
 ```bash
-uv run sdd-generate-commands --list-agents
+uv run sdd-commands --list-agents
 ```
 
 ### Custom Prompts Directory
@@ -110,7 +110,7 @@ uv run sdd-generate-commands --list-agents
 Specify a custom prompts directory:
 
 ```bash
-uv run sdd-generate-commands --prompts-dir ./my-prompts
+uv run sdd-commands --prompts-dir ./my-prompts
 ```
 
 ### Detection Path
@@ -118,7 +118,7 @@ uv run sdd-generate-commands --prompts-dir ./my-prompts
 Specify a custom directory to search for agents:
 
 ```bash
-uv run sdd-generate-commands --detection-path /path/to/project
+uv run sdd-commands --detection-path /path/to/project
 ```
 
 **Note**: By default, the generator searches for agents in your home directory. Use `--detection-path` to search in a different location (e.g., current directory for project-specific detection).
@@ -135,7 +135,7 @@ When existing command files are detected, the generator will prompt you for acti
 To skip prompts and auto-overwrite:
 
 ```bash
-uv run sdd-generate-commands --yes
+uv run sdd-commands --yes
 ```
 
 #### Backup File Management
@@ -158,24 +158,24 @@ Remove generated command files and backups:
 
 ```bash
 # Show what would be deleted (dry run)
-uv run sdd-generate-commands cleanup --dry-run
+uv run sdd-commands cleanup --dry-run
 
 # Clean up all generated files
-uv run sdd-generate-commands cleanup --yes
+uv run sdd-commands cleanup --yes
 
 # Clean up specific agents only
-uv run sdd-generate-commands cleanup --agents claude-code --agents cursor --yes
+uv run sdd-commands cleanup --agent claude-code --agent cursor --yes
 
 # Clean up without including backup files
-uv run sdd-generate-commands cleanup --no-backups --yes
+uv run sdd-commands cleanup --no-backups --yes
 
 # Clean up with custom target path
-uv run sdd-generate-commands cleanup --target-path /path/to/project --yes
+uv run sdd-commands cleanup --target-path /path/to/project --yes
 ```
 
 **Options**:
 
-- `--agents`: Specify which agents to clean (can be specified multiple times). If not specified, cleans all agents.
+- `--agent`: Specify which agents to clean (can be specified multiple times). If not specified, cleans all agents.
 - `--dry-run`: Show what would be deleted without actually deleting files
 - `--yes`, `-y`: Skip confirmation prompts
 - `--target-path`, `-t`: Target directory to search for generated files (defaults to home directory)
@@ -294,7 +294,7 @@ Generated files are placed in agent-specific directories:
 ### List Supported Agents
 
 ```bash
-uv run sdd-generate-commands --list-agents
+uv run sdd-commands --list-agents
 ```
 
 **Output**:
@@ -318,7 +318,7 @@ uv run sdd-generate-commands --list-agents
 
 ```bash
 # Auto-detect agents
-uv run sdd-generate-commands --yes
+uv run sdd-commands --yes
 ```
 
 **Output**:
@@ -349,7 +349,7 @@ Files:
 
 ```bash
 # See what would be generated
-uv run sdd-generate-commands --dry-run --yes
+uv run sdd-commands --dry-run --yes
 ```
 
 **Output**:
@@ -380,7 +380,7 @@ Files:
 
 ```bash
 # Prompt for overwrite action (without --yes)
-uv run sdd-generate-commands
+uv run sdd-commands
 ```
 
 **Interactive prompt**:
@@ -415,7 +415,7 @@ Files:
 ### Generate for Specific Agents
 
 ```bash
-uv run sdd-generate-commands --agents claude-code --agents gemini-cli --yes
+uv run sdd-commands --agent claude-code --agent gemini-cli --yes
 ```
 
 **Output**:
@@ -446,7 +446,7 @@ Files:
 
 ```bash
 # Preview what would be deleted
-uv run sdd-generate-commands cleanup --dry-run
+uv run sdd-commands cleanup --dry-run
 ```
 
 **Output**:
@@ -487,7 +487,7 @@ After confirmation, the output shows:
 Specify a custom target directory for output:
 
 ```bash
-uv run sdd-generate-commands --target-path /path/to/project
+uv run sdd-commands --target-path /path/to/project
 ```
 
 **Note**: By default, commands are generated in your home directory. Use `--target-path` to specify a different location.
@@ -508,22 +508,22 @@ uv run sdd-generate-commands --target-path /path/to/project
    mkdir -p .claude
    ```
 
-2. **Specify agents manually**: Use `--agents` to explicitly select agents:
+2. **Specify agents manually**: Use `--agent` to explicitly select agents:
 
    ```bash
-   uv run sdd-generate-commands --agents claude-code
+   uv run sdd-commands --agent claude-code
    ```
 
 3. **Use detection path**: Specify a different directory to search:
 
    ```bash
-   uv run sdd-generate-commands --detection-path /path/to/home
+   uv run sdd-commands --detection-path /path/to/home
    ```
 
 4. **List supported agents**: See all available agents:
 
    ```bash
-   uv run sdd-generate-commands --list-agents
+   uv run sdd-commands --list-agents
    ```
 
 ### Invalid Agent Key
@@ -537,7 +537,7 @@ uv run sdd-generate-commands --target-path /path/to/project
 1. **Check agent keys**: Use `--list-agents` to see all valid agent keys:
 
    ```bash
-   uv run sdd-generate-commands --list-agents
+   uv run sdd-commands --list-agents
    ```
 
 2. **Verify spelling**: Ensure agent keys are spelled correctly (e.g., `claude-code` not `claude_code`)
@@ -567,13 +567,13 @@ uv run sdd-generate-commands --target-path /path/to/project
 3. **Use different base path**: Specify a writable directory:
 
    ```bash
-   uv run sdd-generate-commands --target-path /tmp/test-output
+   uv run sdd-commands --target-path /tmp/test-output
    ```
 
 4. **Run with elevated permissions**: If appropriate, use `sudo`:
 
    ```bash
-   sudo uv run sdd-generate-commands
+   sudo uv run sdd-commands
    ```
 
 ### I/O Error
@@ -601,7 +601,7 @@ uv run sdd-generate-commands --target-path /path/to/project
 4. **Try different location**: Use a different base path:
 
    ```bash
-   uv run sdd-generate-commands --target-path /tmp/test-output
+   uv run sdd-commands --target-path /tmp/test-output
    ```
 
 ### Prompts Directory Not Found
@@ -621,7 +621,7 @@ uv run sdd-generate-commands --target-path /path/to/project
 2. **Specify correct path**: Use `--prompts-dir` to point to the correct location:
 
    ```bash
-   uv run sdd-generate-commands --prompts-dir /path/to/prompts
+   uv run sdd-commands --prompts-dir /path/to/prompts
    ```
 
 3. **Create prompts directory**: If missing, create it:
@@ -666,7 +666,7 @@ The generator only prompts when files exist and `--yes` is not set. To prompt fo
 
 ```bash
 # Don't use --yes flag
-uv run sdd-generate-commands
+uv run sdd-commands
 ```
 
 ### Backup Files Not Created
@@ -689,7 +689,7 @@ The CLI uses consistent exit codes:
 Use these codes to script error handling:
 
 ```bash
-uv run sdd-generate-commands && echo "Success" || echo "Failed with exit code $?"
+uv run sdd-commands && echo "Success" || echo "Failed with exit code $?"
 ```
 
 ## Integration with SDD Workflow
@@ -698,7 +698,7 @@ The Slash Command Generator complements the Spec-Driven Development workflow:
 
 1. **Generate prompts** using the SDD workflow
 2. **Place prompts** in the `prompts/` directory
-3. **Generate commands** using `uv run sdd-generate-commands`
+3. **Generate commands** using `uv run sdd-commands`
 4. **Test commands** in your AI assistant
 5. **Iterate** based on feedback
 

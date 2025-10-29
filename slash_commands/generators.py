@@ -1,4 +1,4 @@
-"""Generators for producing agent-specific slash command files."""
+"""Generators for producing agent-specific slash commands."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ except ImportError:
     from importlib.metadata import PackageNotFoundError, version
 
     try:
-        __version__ = version("spec-driven-development-mcp")
+        __version__ = version("spec-driven-workflow")
     except PackageNotFoundError:
         __version__ = "0.0.0"
 
@@ -150,7 +150,7 @@ def _replace_placeholders(
 
 
 class MarkdownCommandGenerator:
-    """Generator for Markdown-format slash command files."""
+    """Generator for Markdown-format slash commands."""
 
     def generate(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
         """Generate a Markdown-formatted command file.
@@ -213,7 +213,7 @@ class MarkdownCommandGenerator:
 
 
 class TomlCommandGenerator:
-    """Generator for TOML-format slash command files (Gemini CLI spec)."""
+    """Generator for TOML-format slash commands (Gemini CLI spec)."""
 
     def generate(self, prompt: MarkdownPrompt, agent: AgentConfig) -> str:
         """Generate a TOML-formatted command file following Gemini CLI spec.

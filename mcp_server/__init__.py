@@ -14,7 +14,7 @@ except ImportError:
     # Fallback for when installed as a package
     from importlib.metadata import version
 
-    __version__ = version("spec-driven-development-mcp")
+    __version__ = version("spec-driven-workflow")
 
 from .config import config
 from .prompts_loader import register_prompts
@@ -27,7 +27,7 @@ def create_app() -> FastMCP:
         Configured FastMCP server instance
     """
     # Initialize FastMCP server
-    mcp = FastMCP(name="spec-driven-development-mcp")
+    mcp = FastMCP(name="spec-driven-workflow-mcp")
 
     @mcp.custom_route("/health", methods=["GET"])
     async def health_check(request: Request) -> PlainTextResponse:

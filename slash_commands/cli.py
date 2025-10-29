@@ -20,8 +20,8 @@ from slash_commands import (
 )
 
 app = typer.Typer(
-    name="sdd-generate-commands",
-    help="Generate slash command files for AI code assistants",
+    name="sdd-commands",
+    help="Manage slash commands for the spec-driven workflow in your AI assistants",
 )
 
 console = Console()
@@ -71,9 +71,9 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
     agents: Annotated[
         list[str] | None,
         typer.Option(
-            "--agents",
+            "--agent",
             "-a",
-            help="Agent keys to generate commands for (can be specified multiple times)",
+            help="Agent key to generate commands for (can be specified multiple times)",
         ),
     ] = None,
     dry_run: Annotated[
@@ -115,7 +115,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
         ),
     ] = False,
 ) -> None:
-    """Generate slash command files for AI code assistants."""
+    """Generate slash commands for AI code assistants."""
     # Handle --list-agents
     if list_agents_flag:
         # Create Rich table
@@ -166,7 +166,7 @@ def generate(  # noqa: PLR0913 PLR0912 PLR0915
                 file=sys.stderr,
             )
             print(
-                "  2. Or use --agents to specify agents manually: --agents claude-code",
+                "  2. Or use --agent to specify agents manually: --agent claude-code",
                 file=sys.stderr,
             )
             print(
@@ -278,7 +278,7 @@ def cleanup(
     agents: Annotated[
         list[str] | None,
         typer.Option(
-            "--agents",
+            "--agent",
             "-a",
             help=(
                 "Agent keys to clean (can be specified multiple times). "
@@ -317,7 +317,7 @@ def cleanup(
         ),
     ] = True,
 ) -> None:
-    """Clean up generated slash command files."""
+    """Clean up generated slash commands."""
     # Determine target path (default to home directory)
     actual_target_path = target_path if target_path is not None else Path.home()
 
