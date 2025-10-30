@@ -10,5 +10,5 @@ coverage.xml
 # Misc
 temp/
 
-#IDE specific files
+# IDE specific files
 .vscode/
