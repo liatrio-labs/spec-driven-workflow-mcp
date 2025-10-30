@@ -12,7 +12,7 @@ Liatrio’s Spec‑Driven Workflow treats your development process like any othe
 
 The workflow features:
 
-- Repeatable work breakdown guides small batch deployable increments that keep feedback tight and progress visible.
+- Repeatable work breakdown guides small batch-deployable increments that keep feedback tight and progress visible.
 - Scales from solo developers to enterprise platforms and keeps artifacts in predictable locations across single repos, multi‑repo platforms, or external storage — the same logical artifacts and semantic links regardless of location.
 - Lightweight and minimal framework avoids overburdening context for AI agents and humans.
 
