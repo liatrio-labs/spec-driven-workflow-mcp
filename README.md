@@ -17,6 +17,8 @@
 
 ## TLDR
 
+Ensure `uv` is [installed on your system](https://docs.astral.sh/uv/getting-started/installation/). Use `brew install uv` on macOS & Linux
+
 1. Install the workflow prompts as slash commands in all your [local AI tools](#supported-ai-tools):
 
     ```bash
