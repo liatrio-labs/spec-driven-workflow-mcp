@@ -1,3 +1,4 @@
+> **Note:** This press release is a hypothetical example created for demonstration purposes. It illustrates how to document and communicate the Spec-Driven Workflow and is included in this repository as sample documentation.
 # Liatrio Launches Spec-Driven Workflow: A Codified, Versioned, Installable Framework for AI-Native Development
 
 **October 18, 2025 —** Liatrio, an enterprise transformation consultancy, announced the Spec-Driven Workflow, an installable and versioned package that gives AI–native development teams a consistent way to ship features across products and platforms. The workflow drops into any repository like a standard package and instantly aligns contributors on the same work breakdown and execution model.
